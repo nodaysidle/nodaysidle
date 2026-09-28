@@ -47,15 +47,21 @@ function formatFeaturedProjects(projects) {
     const num = String(idx + 1).padStart(2, '0');
     const tagsRow = p.tags.map(t => `\`${t}\``).join(' • ');
     const highlights = p.highlights.map(h => `  - ✦ ${h}`).join('\n');
+    const starBadge = p.isStar
+      ? `[![Star System](https://img.shields.io/badge/%E2%98%85_STAR_PROJECT-CASCADE_V3-000000?style=flat-square&labelColor=171717&color=262626)](${p.repo}) `
+      : '';
     const releaseBadge = p.release
       ? `[![Release](https://img.shields.io/badge/Release-${encodeURIComponent(p.status)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.release})`
       : `[![Status](https://img.shields.io/badge/Status-${encodeURIComponent(p.status)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.repo})`;
     const categoryBadge = `[![Domain](https://img.shields.io/badge/Domain-${encodeURIComponent(p.category)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.repo})`;
+    const heading = p.isStar
+      ? `### // ${num} • ★ [${p.name}](${p.repo})`
+      : `### // ${num} • [${p.name}](${p.repo})`;
 
-    return `### // ${num} • [${p.name}](${p.repo})
+    return `${heading}
 > **${p.tagline}**
 > 
-> ${categoryBadge} ${releaseBadge}
+> ${starBadge}${categoryBadge} ${releaseBadge}
 
 ${p.description}
 

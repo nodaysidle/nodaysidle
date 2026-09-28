@@ -41,139 +41,127 @@
   ],
   "featuredProjects": [
     {
-      "id": "flowstate",
-      "name": "FlowState",
-      "tagline": "Adaptive focus detection & deep work pacing for macOS",
-      "description": "Native macOS menu-bar utility that calculates real-time focus depth through hardware input telemetry (IOKit HID) and applies gentle screen-tint nudges when flow is broken. Zero arbitrary timers, zero cloud dependencies.",
-      "category": "macOS Native",
-      "status": "v1.0.1 Stable",
-      "badge": "macOS 14+ • Swift 6 • SwiftUI • AppKit",
-      "repo": "https://github.com/nodaysidle/nodaysidle-flowstate",
-      "release": "https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1",
+      "id": "cascade-v3",
+      "name": "NODAYSIDLE Cascade v3",
+      "isStar": true,
+      "tagline": "Deterministic AI architecture engine turning one idea into five verified markdown contracts",
+      "description": "Spec-driven AI engineering platform that converts ambiguous product ideas into five immutable, agent-ready markdown contracts (PRD, ARD, TRD, TASKS, AGENTS). Features TypeSafe Jev viability preflights, Rust HTTPS provider boundaries, AST validation, and atomic exact-five exports across Native macOS, Tauri 2, Astro Web, and Android Compose presets.",
+      "category": "Deterministic AI Architecture",
+      "status": "v3.0.0 Active",
+      "badge": "Tauri 2 • Rust • TypeScript • DeepSeek • Jev Systems",
+      "repo": "https://github.com/nodaysidle/nodaysidle-cascade-v3",
+      "release": "https://github.com/nodaysidle/nodaysidle-cascade-v3",
       "highlights": [
-        "Real-time IOKit HID activity scoring",
-        "Adaptive screen-tint flow reinforcement",
-        "100% on-device local persistence"
+        "Turns 1 product concept into 5 verified agent-ready contracts (PRD/ARD/TRD/TASKS/AGENTS)",
+        "TypeSafe Jev viability preflight & platform-fit healing gates",
+        "Deterministic local normalization & atomic exact-five export with SHA-256 validation"
+      ],
+      "tags": [
+        "Rust",
+        "Tauri 2",
+        "TypeScript",
+        "DeepSeek",
+        "Jev Systems",
+        "Spec-Driven"
+      ]
+    },
+    {
+      "id": "synapse-notes",
+      "name": "Synapse Notes",
+      "isStar": false,
+      "tagline": "Voice-to-knowledge pipeline with AI transcription, FLUX visuals & 3D Obsidian-like orbs",
+      "description": "Voice-first capture system with a continuous multimodal synthesis pipeline: tap the mic to record, get verbatim transcription via OpenRouter Whisper Large V3 Turbo, automatically synthesize a contextual note illustration via Replicate FLUX Schnell stored in your gallery, and navigate linked notes in an interactive 3D force-directed knowledge graph with pgvector semantic search.",
+      "category": "Multimodal Voice & 3D Knowledge",
+      "status": "v1.0.0 Shipped",
+      "badge": "Android (Capacitor) • Web • Whisper V3 • FLUX Schnell • Three.js",
+      "repo": "https://github.com/nodaysidle/synapse-notes",
+      "release": "https://github.com/nodaysidle/synapse-notes",
+      "highlights": [
+        "Continuous voice recording to verbatim AI note transcription pipeline",
+        "Automated FLUX Schnell visual synthesis saved directly into note gallery",
+        "Force-directed 3D knowledge graph (Three.js) + pgvector 768-dim semantic search"
+      ],
+      "tags": [
+        "Voice-First",
+        "Three.js",
+        "Whisper V3",
+        "FLUX Schnell",
+        "pgvector",
+        "Capacitor"
+      ]
+    },
+    {
+      "id": "nodaysidle-browser",
+      "name": "NODAYSIDLE Browser",
+      "isStar": false,
+      "tagline": "Surgical, telemetry-free native macOS browser built on Swift 6 and WebKit",
+      "description": "Focused native macOS browser engineered with zero Electron overhead, zero trackers, and zero background analytics. Features a single @Observable @MainActor state store, native tabs with ⌘K tab palette, local session persistence, and an encrypted CryptoKit vault for private bookmark and history syncing.",
+      "category": "Native macOS Systems",
+      "status": "v1.0.0 Stable",
+      "badge": "macOS 14+ • Swift 6 • SwiftUI • WebKit • CryptoKit",
+      "repo": "https://github.com/nodaysidle/nodaysidle-browser",
+      "release": "https://github.com/nodaysidle/nodaysidle-browser",
+      "highlights": [
+        "100% native Swift 6 and WebKit architecture with zero Electron footprint",
+        "Local-first persistence with encrypted CryptoKit sync vault",
+        "Zero analytics, telemetry, or application-owned browsing backend"
       ],
       "tags": [
         "Swift 6",
         "SwiftUI",
-        "AppKit",
-        "IOKit HID",
+        "WebKit",
+        "CryptoKit",
+        "macOS 14+",
         "Local-First"
       ]
     },
     {
-      "id": "orbit-browser",
-      "name": "Orbit Browser",
-      "tagline": "Minimal chrome, full web. Native macOS browser",
-      "description": "Distraction-free desktop browser built on Tauri v2, Rust, and WKWebView. Features native tab management, distraction-free reader mode, built-in tracker stripping, and local SQLite session persistence without Chrome's footprint.",
-      "category": "Desktop App",
-      "status": "v1.0.5 Shipped",
-      "badge": "Tauri v2 • Rust • WKWebView • SQLite",
-      "repo": "https://github.com/nodaysidle/orbit-browser",
-      "release": "https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5",
+      "id": "nodaysidle-sonora",
+      "name": "NODAYSIDLE Sonora",
+      "isStar": false,
+      "tagline": "Native desktop audio player replacing bloated Electron streaming apps",
+      "description": "Rethinks the desktop music player from the bare metal up to replace bloated Chromium shells. Unites Spotify, YouTube Music, and local FLAC audio into a single canvas with sample-accurate gapless playback, hardware EBU R128 loudness normalization, instant Asian lyric romanization, and <105 MB idle RAM consumption.",
+      "category": "Desktop Audio Engine",
+      "status": "v0.1.1 Shipped",
+      "badge": "macOS (.dmg) • Linux (.AppImage) • Tauri 2 • Rust • React 19",
+      "repo": "https://github.com/nodaysidle/nodaysidle-sonora",
+      "release": "https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1",
       "highlights": [
-        "Native WKWebView tabs with drag reorder",
-        "Domain blocking & parameter-clean link sharing",
-        "Zero telemetry, zero Electron overhead"
+        "Solves bloated Electron memory consumption: <105 MB RAM idle vs 1.2 GB",
+        "Hardware EBU R128 loudness normalization (-14 LUFS real-time gain stage)",
+        "Unified canvas uniting local FLACs, Spotify playlists, and YouTube Music streams"
       ],
       "tags": [
         "Rust",
-        "Tauri v2",
-        "WKWebView",
-        "SQLite",
-        "Zero-Telemetry"
+        "Tauri 2",
+        "React 19",
+        "Audio Engine",
+        "Spotify",
+        "Zero-Electron"
       ]
     },
     {
-      "id": "cloudscribe",
-      "name": "CloudScribe",
-      "tagline": "Sub-second floating dictation pill for macOS",
-      "description": "Low-latency global dictation utility streaming to Deepgram nova-3 with instant keyboard injection. Features a minimal floating HUD, global hotkey listener, and encrypted credential storage backed by the macOS Keychain.",
-      "category": "macOS Native",
-      "status": "v0.1.0 Shipped",
-      "badge": "Swift 6 • Deepgram nova-3 • Keychain",
-      "repo": "https://github.com/nodaysidle/nodaysidle-cloudscribe",
-      "release": "https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0",
+      "id": "whisper-bar",
+      "name": "WhisperBar",
+      "isStar": false,
+      "tagline": "Native macOS menu bar dictation with sub-150ms structured inference",
+      "description": "Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.",
+      "category": "macOS Menu Bar Utility",
+      "status": "v1.0.0 Shipped",
+      "badge": "macOS 14+ • Swift 6 • Deepgram Nova-3 • TypeSafe Jev • Keychain",
+      "repo": "https://github.com/nodaysidle/whisper-bar",
+      "release": "https://github.com/nodaysidle/whisper-bar",
       "highlights": [
-        "Global hotkey HUD overlay",
-        "Deepgram nova-3 streaming transcription",
-        "Hardware-backed macOS Keychain security"
-      ],
-      "tags": [
-        "SwiftUI",
-        "Deepgram",
-        "Keychain",
-        "AppKit",
-        "Audio"
-      ]
-    },
-    {
-      "id": "shareguard",
-      "name": "ShareGuard",
-      "tagline": "Pre-share privacy scanner & local redaction engine",
-      "description": "Local-first security scanner for pre-commit and pre-upload inspection. Scans files, folders, and clipboard buffers for leaked API keys, tokens, and PII before they leave your machine. Runs fully offline.",
-      "category": "macOS Native & Security",
-      "status": "v0.1.0 Shipped",
-      "badge": "Swift 6 • SwiftUI • AppKit • Privacy",
-      "repo": "https://github.com/nodaysidle/nodaysidle-shareguard",
-      "release": "https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0",
-      "highlights": [
-        "Drag-and-drop workspace vulnerability scan",
-        "Interactive redacted diff preview",
-        "Zero network permissions requested"
+        "Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate",
+        "288-term SuperWhisper technical vocabulary replacement engine",
+        "Zero third-party dependencies, strict Keychain credential isolation"
       ],
       "tags": [
         "Swift 6",
-        "Security",
-        "Privacy-First",
-        "AppKit"
-      ]
-    },
-    {
-      "id": "echocore-pro",
-      "name": "EchoCore Pro",
-      "tagline": "Local voice intelligence & neural speech engine",
-      "description": "High-throughput on-device speech synthesis and voice cloning engine optimized for Apple Silicon Metal acceleration. Pairs WhisperKit transcription with local Kokoro and Qwen3 neural weights.",
-      "category": "Apple Silicon AI/ML",
-      "status": "Active Atelier",
-      "badge": "Swift 6 • Metal • WhisperKit • Core ML",
-      "repo": "https://github.com/nodaysidle/nodaysidle-echocore-pro",
-      "release": "https://github.com/nodaysidle/nodaysidle-echocore-pro",
-      "highlights": [
-        "Metal GPU-accelerated tensor execution",
-        "Zero cloud audio transfer — 100% private",
-        "Low-latency IPC audio stream pipeline"
-      ],
-      "tags": [
-        "Metal",
-        "Core ML",
-        "WhisperKit",
-        "TTS",
-        "Apple Silicon"
-      ]
-    },
-    {
-      "id": "nodaysidlecompiler",
-      "name": "Ironclad / NDI Compiler",
-      "tagline": "Deterministic spec-driven AI development platform",
-      "description": "Multi-tier code compilation platform that ingests ambiguous natural language goals and generates strict, auditable 5-document technical specifications (PRD, ARD, TRD, TASKS, AGENT) with reproducible code output.",
-      "category": "Full-Stack & Systems",
-      "status": "Core Tooling",
-      "badge": "React 19 • TypeScript • Rust WASM • Vite",
-      "repo": "https://github.com/nodaysidle/nodaysidlecompiler",
-      "release": "https://github.com/nodaysidle/nodaysidlecompiler",
-      "highlights": [
-        "Deterministic 5-Document specification engine",
-        "WASM-accelerated AST validator",
-        "Strict phased task generation"
-      ],
-      "tags": [
-        "Spec-Driven",
-        "Rust WASM",
-        "TypeScript",
-        "React 19"
+        "Deepgram Nova-3",
+        "TypeSafe Jev",
+        "Keychain",
+        "macOS Menu Bar"
       ]
     }
   ],
@@ -339,7 +327,7 @@
   ],
   "meta": {
     "schemaVersion": "1.0.0",
-    "lastGenerated": "2026-09-28T17:57:50.668Z",
+    "lastGenerated": "2026-09-28T18:07:20.280Z",
     "generator": "scripts/generate.js",
     "author": "NODAYSIDLE"
   }

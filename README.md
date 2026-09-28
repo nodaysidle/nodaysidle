@@ -71,111 +71,93 @@ My work focuses on transforming unstructured, ambiguous goals into deterministic
 
 ## 03 // FLAGSHIP SYSTEMS
 
-### // 01 • [FlowState](https://github.com/nodaysidle/nodaysidle-flowstate)
-> **Adaptive focus detection & deep work pacing for macOS**
+### // 01 • ★ [NODAYSIDLE Cascade v3](https://github.com/nodaysidle/nodaysidle-cascade-v3)
+> **Deterministic AI architecture engine turning one idea into five verified markdown contracts**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-flowstate) [![Release](https://img.shields.io/badge/Release-v1.0.1%20Stable-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
+> [![Star System](https://img.shields.io/badge/%E2%98%85_STAR_PROJECT-CASCADE_V3-000000?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cascade-v3) [![Domain](https://img.shields.io/badge/Domain-Deterministic%20AI%20Architecture-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cascade-v3) [![Release](https://img.shields.io/badge/Release-v3.0.0%20Active-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cascade-v3)
 
-Native macOS menu-bar utility that calculates real-time focus depth through hardware input telemetry (IOKit HID) and applies gentle screen-tint nudges when flow is broken. Zero arbitrary timers, zero cloud dependencies.
+Spec-driven AI engineering platform that converts ambiguous product ideas into five immutable, agent-ready markdown contracts (PRD, ARD, TRD, TASKS, AGENTS). Features TypeSafe Jev viability preflights, Rust HTTPS provider boundaries, AST validation, and atomic exact-five exports across Native macOS, Tauri 2, Astro Web, and Android Compose presets.
 
 **Architecture & Systems Spec:**
-  - ✦ Real-time IOKit HID activity scoring
-  - ✦ Adaptive screen-tint flow reinforcement
-  - ✦ 100% on-device local persistence
+  - ✦ Turns 1 product concept into 5 verified agent-ready contracts (PRD/ARD/TRD/TASKS/AGENTS)
+  - ✦ TypeSafe Jev viability preflight & platform-fit healing gates
+  - ✦ Deterministic local normalization & atomic exact-five export with SHA-256 validation
 
-**Stack:** `Swift 6` • `SwiftUI` • `AppKit` • `IOKit HID` • `Local-First`
+**Stack:** `Rust` • `Tauri 2` • `TypeScript` • `DeepSeek` • `Jev Systems` • `Spec-Driven`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-flowstate) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-cascade-v3) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-cascade-v3)
 
 ---
 
-### // 02 • [Orbit Browser](https://github.com/nodaysidle/orbit-browser)
-> **Minimal chrome, full web. Native macOS browser**
+### // 02 • [Synapse Notes](https://github.com/nodaysidle/synapse-notes)
+> **Voice-to-knowledge pipeline with AI transcription, FLUX visuals & 3D Obsidian-like orbs**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-Desktop%20App-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/orbit-browser) [![Release](https://img.shields.io/badge/Release-v1.0.5%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
+> [![Domain](https://img.shields.io/badge/Domain-Multimodal%20Voice%20%26%203D%20Knowledge-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes)
 
-Distraction-free desktop browser built on Tauri v2, Rust, and WKWebView. Features native tab management, distraction-free reader mode, built-in tracker stripping, and local SQLite session persistence without Chrome's footprint.
+Voice-first capture system with a continuous multimodal synthesis pipeline: tap the mic to record, get verbatim transcription via OpenRouter Whisper Large V3 Turbo, automatically synthesize a contextual note illustration via Replicate FLUX Schnell stored in your gallery, and navigate linked notes in an interactive 3D force-directed knowledge graph with pgvector semantic search.
 
 **Architecture & Systems Spec:**
-  - ✦ Native WKWebView tabs with drag reorder
-  - ✦ Domain blocking & parameter-clean link sharing
-  - ✦ Zero telemetry, zero Electron overhead
+  - ✦ Continuous voice recording to verbatim AI note transcription pipeline
+  - ✦ Automated FLUX Schnell visual synthesis saved directly into note gallery
+  - ✦ Force-directed 3D knowledge graph (Three.js) + pgvector 768-dim semantic search
 
-**Stack:** `Rust` • `Tauri v2` • `WKWebView` • `SQLite` • `Zero-Telemetry`
+**Stack:** `Voice-First` • `Three.js` • `Whisper V3` • `FLUX Schnell` • `pgvector` • `Capacitor`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/orbit-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/synapse-notes) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/synapse-notes)
 
 ---
 
-### // 03 • [CloudScribe](https://github.com/nodaysidle/nodaysidle-cloudscribe)
-> **Sub-second floating dictation pill for macOS**
+### // 03 • [NODAYSIDLE Browser](https://github.com/nodaysidle/nodaysidle-browser)
+> **Surgical, telemetry-free native macOS browser built on Swift 6 and WebKit**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cloudscribe) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
+> [![Domain](https://img.shields.io/badge/Domain-Native%20macOS%20Systems-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Stable-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser)
 
-Low-latency global dictation utility streaming to Deepgram nova-3 with instant keyboard injection. Features a minimal floating HUD, global hotkey listener, and encrypted credential storage backed by the macOS Keychain.
+Focused native macOS browser engineered with zero Electron overhead, zero trackers, and zero background analytics. Features a single @Observable @MainActor state store, native tabs with ⌘K tab palette, local session persistence, and an encrypted CryptoKit vault for private bookmark and history syncing.
 
 **Architecture & Systems Spec:**
-  - ✦ Global hotkey HUD overlay
-  - ✦ Deepgram nova-3 streaming transcription
-  - ✦ Hardware-backed macOS Keychain security
+  - ✦ 100% native Swift 6 and WebKit architecture with zero Electron footprint
+  - ✦ Local-first persistence with encrypted CryptoKit sync vault
+  - ✦ Zero analytics, telemetry, or application-owned browsing backend
 
-**Stack:** `SwiftUI` • `Deepgram` • `Keychain` • `AppKit` • `Audio`
+**Stack:** `Swift 6` • `SwiftUI` • `WebKit` • `CryptoKit` • `macOS 14+` • `Local-First`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-cloudscribe) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-browser)
 
 ---
 
-### // 04 • [ShareGuard](https://github.com/nodaysidle/nodaysidle-shareguard)
-> **Pre-share privacy scanner & local redaction engine**
+### // 04 • [NODAYSIDLE Sonora](https://github.com/nodaysidle/nodaysidle-sonora)
+> **Native desktop audio player replacing bloated Electron streaming apps**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native%20%26%20Security-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-shareguard) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
+> [![Domain](https://img.shields.io/badge/Domain-Desktop%20Audio%20Engine-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-sonora) [![Release](https://img.shields.io/badge/Release-v0.1.1%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1)
 
-Local-first security scanner for pre-commit and pre-upload inspection. Scans files, folders, and clipboard buffers for leaked API keys, tokens, and PII before they leave your machine. Runs fully offline.
+Rethinks the desktop music player from the bare metal up to replace bloated Chromium shells. Unites Spotify, YouTube Music, and local FLAC audio into a single canvas with sample-accurate gapless playback, hardware EBU R128 loudness normalization, instant Asian lyric romanization, and <105 MB idle RAM consumption.
 
 **Architecture & Systems Spec:**
-  - ✦ Drag-and-drop workspace vulnerability scan
-  - ✦ Interactive redacted diff preview
-  - ✦ Zero network permissions requested
+  - ✦ Solves bloated Electron memory consumption: <105 MB RAM idle vs 1.2 GB
+  - ✦ Hardware EBU R128 loudness normalization (-14 LUFS real-time gain stage)
+  - ✦ Unified canvas uniting local FLACs, Spotify playlists, and YouTube Music streams
 
-**Stack:** `Swift 6` • `Security` • `Privacy-First` • `AppKit`
+**Stack:** `Rust` • `Tauri 2` • `React 19` • `Audio Engine` • `Spotify` • `Zero-Electron`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-shareguard) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-sonora) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1)
 
 ---
 
-### // 05 • [EchoCore Pro](https://github.com/nodaysidle/nodaysidle-echocore-pro)
-> **Local voice intelligence & neural speech engine**
+### // 05 • [WhisperBar](https://github.com/nodaysidle/whisper-bar)
+> **Native macOS menu bar dictation with sub-150ms structured inference**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-Apple%20Silicon%20AI%2FML-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-echocore-pro) [![Release](https://img.shields.io/badge/Release-Active%20Atelier-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-echocore-pro)
+> [![Domain](https://img.shields.io/badge/Domain-macOS%20Menu%20Bar%20Utility-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar)
 
-High-throughput on-device speech synthesis and voice cloning engine optimized for Apple Silicon Metal acceleration. Pairs WhisperKit transcription with local Kokoro and Qwen3 neural weights.
+Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.
 
 **Architecture & Systems Spec:**
-  - ✦ Metal GPU-accelerated tensor execution
-  - ✦ Zero cloud audio transfer — 100% private
-  - ✦ Low-latency IPC audio stream pipeline
+  - ✦ Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate
+  - ✦ 288-term SuperWhisper technical vocabulary replacement engine
+  - ✦ Zero third-party dependencies, strict Keychain credential isolation
 
-**Stack:** `Metal` • `Core ML` • `WhisperKit` • `TTS` • `Apple Silicon`
+**Stack:** `Swift 6` • `Deepgram Nova-3` • `TypeSafe Jev` • `Keychain` • `macOS Menu Bar`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-echocore-pro) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-echocore-pro)
-
----
-
-### // 06 • [Ironclad / NDI Compiler](https://github.com/nodaysidle/nodaysidlecompiler)
-> **Deterministic spec-driven AI development platform**
-> 
-> [![Domain](https://img.shields.io/badge/Domain-Full-Stack%20%26%20Systems-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidlecompiler) [![Release](https://img.shields.io/badge/Release-Core%20Tooling-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidlecompiler)
-
-Multi-tier code compilation platform that ingests ambiguous natural language goals and generates strict, auditable 5-document technical specifications (PRD, ARD, TRD, TASKS, AGENT) with reproducible code output.
-
-**Architecture & Systems Spec:**
-  - ✦ Deterministic 5-Document specification engine
-  - ✦ WASM-accelerated AST validator
-  - ✦ Strict phased task generation
-
-**Stack:** `Spec-Driven` • `Rust WASM` • `TypeScript` • `React 19`
-
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidlecompiler) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidlecompiler)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/whisper-bar) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/whisper-bar)
 
 
 ---
@@ -229,7 +211,7 @@ npm run build
 ```
 
 <div align="right">
-<sub><i>Automated Studio Build: <code>2026-09-28 17:57 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
+<sub><i>Automated Studio Build: <code>2026-09-28 18:07 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
 </div>
 
 ---
