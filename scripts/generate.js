@@ -13,7 +13,7 @@ ${statement.atelier}
 
 ${statement.craft}
 
-> 💡 **Core Thesis:** Software should respect the machine it runs on and the person using it. Fast runtimes, local storage by default, zero telemetry, and rigorous execution.`;
+> ⚙️ **Operational Thesis:** Software should respect the machine it executes on and the operator directing it. Native runtimes, local storage by default, zero telemetry, and rigorous deterministic execution.`;
 }
 
 function formatPrinciplesSection(principles) {
@@ -24,13 +24,13 @@ function formatPrinciplesSection(principles) {
 
     output += '  <tr>\n';
     output += `    <td width="50%" valign="top">\n`;
-    output += `      <b>${left.number}. ${left.title}</b><br/>\n`;
+    output += `      <code>// ${left.number}</code> <b>${left.title}</b><br/>\n`;
     output += `      <sub>${left.summary}</sub>\n`;
     output += `    </td>\n`;
 
     if (right) {
       output += `    <td width="50%" valign="top">\n`;
-      output += `      <b>${right.number}. ${right.title}</b><br/>\n`;
+      output += `      <code>// ${right.number}</code> <b>${right.title}</b><br/>\n`;
       output += `      <sub>${right.summary}</sub>\n`;
       output += `    </td>\n`;
     } else {
@@ -48,23 +48,23 @@ function formatFeaturedProjects(projects) {
     const tagsRow = p.tags.map(t => `\`${t}\``).join(' • ');
     const highlights = p.highlights.map(h => `  - ✦ ${h}`).join('\n');
     const releaseBadge = p.release
-      ? `[![Release](https://img.shields.io/badge/Release-${encodeURIComponent(p.status)}-10b981?style=flat-square)](${p.release})`
-      : `[![Status](https://img.shields.io/badge/Status-${encodeURIComponent(p.status)}-6366f1?style=flat-square)](${p.repo})`;
-    const categoryBadge = `[![Category](https://img.shields.io/badge/Domain-${encodeURIComponent(p.category)}-0ea5e9?style=flat-square)](${p.repo})`;
+      ? `[![Release](https://img.shields.io/badge/Release-${encodeURIComponent(p.status)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.release})`
+      : `[![Status](https://img.shields.io/badge/Status-${encodeURIComponent(p.status)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.repo})`;
+    const categoryBadge = `[![Domain](https://img.shields.io/badge/Domain-${encodeURIComponent(p.category)}-0a0a0a?style=flat-square&labelColor=171717&color=262626)](${p.repo})`;
 
-    return `### ${num}. [${p.name}](${p.repo})
+    return `### // ${num} • [${p.name}](${p.repo})
 > **${p.tagline}**
 > 
 > ${categoryBadge} ${releaseBadge}
 
 ${p.description}
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
 ${highlights}
 
 **Stack:** ${tagsRow}
 
-👉 [**Inspect Source Code →**](${p.repo}) &nbsp;|&nbsp; [**Download Release Artifacts →**](${p.release || p.repo})
+[**Inspect Source Repository →**](${p.repo}) &nbsp;|&nbsp; [**Download Release Artifacts →**](${p.release || p.repo})
 `;
   }).join('\n---\n\n');
 }
@@ -72,7 +72,7 @@ ${highlights}
 function formatStackSection(stack) {
   let output = '';
   for (const [domain, items] of Object.entries(stack)) {
-    output += `#### ${domain}\n\n`;
+    output += `#### ${domain.toUpperCase()}\n\n`;
     const badges = items.map(item => {
       return `![${item.name}](https://img.shields.io/badge/${item.badge})`;
     }).join(' ');
@@ -84,12 +84,12 @@ function formatStackSection(stack) {
 function formatConnectSection(profile, socials) {
   const socialBadges = socials.map(s => {
     if (s.name === 'GitHub') {
-      return `[![GitHub](https://img.shields.io/badge/GitHub-${profile.handle}-181717?style=for-the-badge&logo=github&logoColor=white)](${s.url})`;
+      return `[![GitHub](https://img.shields.io/badge/GitHub-${profile.handle}-000000?style=for-the-badge&logo=github&logoColor=white)](${s.url})`;
     }
     if (s.name === 'Email') {
-      return `[![Email](https://img.shields.io/badge/Direct_Email-tutanota.de-EA4335?style=for-the-badge&logo=tutanota&logoColor=white)](${s.url})`;
+      return `[![Email](https://img.shields.io/badge/Direct_Channel-tutanota.de-171717?style=for-the-badge&logo=tutanota&logoColor=white)](${s.url})`;
     }
-    return `[![Portfolio](https://img.shields.io/badge/Showcase_Catalogue-NODAYSIDLE-0ea5e9?style=for-the-badge&logo=safari&logoColor=white)](${s.url})`;
+    return `[![Portfolio](https://img.shields.io/badge/Studio_Index-NODAYSIDLE-262626?style=for-the-badge&logo=safari&logoColor=white)](${s.url})`;
   }).join(' ');
 
   return `<div align="center">
@@ -98,7 +98,7 @@ ${socialBadges}
 
 <br/><br/>
 
-\`${profile.email}\` • \`${profile.location}\` • \`${profile.pgp}\`
+<code>${profile.email}</code> • <code>${profile.location}</code> • <code>${profile.pgp}</code>
 
 </div>`;
 }

@@ -15,22 +15,22 @@
   <img alt="NODAYSIDLE — Turning ambiguous problems into real products and working systems." src="./assets/hero-dark.svg" width="100%">
 </picture>
 
-<br/>
+<br/><br/>
 
 <p align="center">
-  <a href="#-the-atelier"><b>Atelier</b></a> •
-  <a href="#-operating-principles"><b>Principles</b></a> •
-  <a href="#-flagship-systems"><b>Flagship Systems</b></a> •
-  <a href="#-stack--engineering-domains"><b>Stack &amp; Domains</b></a> •
-  <a href="#-studio-metrics"><b>Metrics</b></a> •
-  <a href="#-direct-reach"><b>Contact</b></a>
+  <a href="#01--the-atelier"><img src="https://img.shields.io/badge/01-ATELIER-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Atelier"/></a> &nbsp;
+  <a href="#02--operating-principles"><img src="https://img.shields.io/badge/02-PRINCIPLES-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Principles"/></a> &nbsp;
+  <a href="#03--flagship-systems"><img src="https://img.shields.io/badge/03-FLAGSHIP_SYSTEMS-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Flagship Systems"/></a> &nbsp;
+  <a href="#04--architectural-stack--domains"><img src="https://img.shields.io/badge/04-STACK-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Stack"/></a> &nbsp;
+  <a href="#05--studio-telemetry"><img src="https://img.shields.io/badge/05-TELEMETRY-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Telemetry"/></a> &nbsp;
+  <a href="#06--direct-reach"><img src="https://img.shields.io/badge/06-CONTACT-0a0a0a?style=flat-square&labelColor=171717&color=262626" alt="Contact"/></a>
 </p>
 
 </div>
 
 ---
 
-## 🏛️ The Atelier
+## 01 // THE ATELIER
 
 ### A craft-driven engineering practice rooted in native performance and local-first architecture.
 
@@ -38,44 +38,30 @@ I design, architect, and ship production-grade software across macOS native envi
 
 My work focuses on transforming unstructured, ambiguous goals into deterministic software. From low-latency audio processing and on-device Core ML to custom desktop tools and spec-driven code synthesis, I build with high agency, deep respect for platform conventions, and strict privacy by default.
 
-> 💡 **Core Thesis:** Software should respect the machine it runs on and the person using it. Fast runtimes, local storage by default, zero telemetry, and rigorous execution.
+> ⚙️ **Operational Thesis:** Software should respect the machine it executes on and the operator directing it. Native runtimes, local storage by default, zero telemetry, and rigorous deterministic execution.
 
 ---
 
-## ⚡ Studio Metrics
-
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-card-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./assets/stats-card-light.svg">
-  <img alt="Studio Performance Metrics" src="./assets/stats-card-dark.svg" width="100%">
-</picture>
-
-</div>
-
----
-
-## 🎯 Operating Principles
+## 02 // OPERATING PRINCIPLES
 
 <table width="100%">
   <tr>
     <td width="50%" valign="top">
-      <b>01. Ship Real Products</b><br/>
+      <code>// 01</code> <b>Ship Real Products</b><br/>
       <sub>Finished tools over slide decks. If an application exists in the catalogue, it compiles cleanly, passes tests, and installs without a debug session.</sub>
     </td>
     <td width="50%" valign="top">
-      <b>02. Native First</b><br/>
+      <code>// 02</code> <b>Native First</b><br/>
       <sub>Build for the platform, not against it. Swift 6, AppKit, Metal, and Rust over heavy wrappers to guarantee instant responsiveness and zero memory bloat.</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <b>03. Local-First by Default</b><br/>
+      <code>// 03</code> <b>Local-First by Default</b><br/>
       <sub>User data lives on-device in local SQLite or filesystem storage. Cloud integrations are explicit opt-in enhancements, never architectural lock-in.</sub>
     </td>
     <td width="50%" valign="top">
-      <b>04. Deterministic Quality</b><br/>
+      <code>// 04</code> <b>Deterministic Quality</b><br/>
       <sub>Spec-driven architectures, strict typing, and end-to-end automated validation ensure systems behave predictably across every execution.</sub>
     </td>
   </tr>
@@ -83,165 +69,179 @@ My work focuses on transforming unstructured, ambiguous goals into deterministic
 
 ---
 
-## 🚀 Flagship Systems
+## 03 // FLAGSHIP SYSTEMS
 
-### 01. [FlowState](https://github.com/nodaysidle/nodaysidle-flowstate)
+### // 01 • [FlowState](https://github.com/nodaysidle/nodaysidle-flowstate)
 > **Adaptive focus detection & deep work pacing for macOS**
 > 
-> [![Category](https://img.shields.io/badge/Domain-macOS%20Native-0ea5e9?style=flat-square)](https://github.com/nodaysidle/nodaysidle-flowstate) [![Release](https://img.shields.io/badge/Release-v1.0.1%20Stable-10b981?style=flat-square)](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
+> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-flowstate) [![Release](https://img.shields.io/badge/Release-v1.0.1%20Stable-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
 
 Native macOS menu-bar utility that calculates real-time focus depth through hardware input telemetry (IOKit HID) and applies gentle screen-tint nudges when flow is broken. Zero arbitrary timers, zero cloud dependencies.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Real-time IOKit HID activity scoring
   - ✦ Adaptive screen-tint flow reinforcement
   - ✦ 100% on-device local persistence
 
 **Stack:** `Swift 6` • `SwiftUI` • `AppKit` • `IOKit HID` • `Local-First`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/nodaysidle-flowstate) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-flowstate) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1)
 
 ---
 
-### 02. [Orbit Browser](https://github.com/nodaysidle/orbit-browser)
+### // 02 • [Orbit Browser](https://github.com/nodaysidle/orbit-browser)
 > **Minimal chrome, full web. Native macOS browser**
 > 
-> [![Category](https://img.shields.io/badge/Domain-Desktop%20App-0ea5e9?style=flat-square)](https://github.com/nodaysidle/orbit-browser) [![Release](https://img.shields.io/badge/Release-v1.0.5%20Shipped-10b981?style=flat-square)](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
+> [![Domain](https://img.shields.io/badge/Domain-Desktop%20App-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/orbit-browser) [![Release](https://img.shields.io/badge/Release-v1.0.5%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
 
 Distraction-free desktop browser built on Tauri v2, Rust, and WKWebView. Features native tab management, distraction-free reader mode, built-in tracker stripping, and local SQLite session persistence without Chrome's footprint.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Native WKWebView tabs with drag reorder
   - ✦ Domain blocking & parameter-clean link sharing
   - ✦ Zero telemetry, zero Electron overhead
 
 **Stack:** `Rust` • `Tauri v2` • `WKWebView` • `SQLite` • `Zero-Telemetry`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/orbit-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/orbit-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5)
 
 ---
 
-### 03. [CloudScribe](https://github.com/nodaysidle/nodaysidle-cloudscribe)
+### // 03 • [CloudScribe](https://github.com/nodaysidle/nodaysidle-cloudscribe)
 > **Sub-second floating dictation pill for macOS**
 > 
-> [![Category](https://img.shields.io/badge/Domain-macOS%20Native-0ea5e9?style=flat-square)](https://github.com/nodaysidle/nodaysidle-cloudscribe) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-10b981?style=flat-square)](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
+> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cloudscribe) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
 
 Low-latency global dictation utility streaming to Deepgram nova-3 with instant keyboard injection. Features a minimal floating HUD, global hotkey listener, and encrypted credential storage backed by the macOS Keychain.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Global hotkey HUD overlay
   - ✦ Deepgram nova-3 streaming transcription
   - ✦ Hardware-backed macOS Keychain security
 
 **Stack:** `SwiftUI` • `Deepgram` • `Keychain` • `AppKit` • `Audio`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/nodaysidle-cloudscribe) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-cloudscribe) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0)
 
 ---
 
-### 04. [ShareGuard](https://github.com/nodaysidle/nodaysidle-shareguard)
+### // 04 • [ShareGuard](https://github.com/nodaysidle/nodaysidle-shareguard)
 > **Pre-share privacy scanner & local redaction engine**
 > 
-> [![Category](https://img.shields.io/badge/Domain-macOS%20Native%20%26%20Security-0ea5e9?style=flat-square)](https://github.com/nodaysidle/nodaysidle-shareguard) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-10b981?style=flat-square)](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
+> [![Domain](https://img.shields.io/badge/Domain-macOS%20Native%20%26%20Security-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-shareguard) [![Release](https://img.shields.io/badge/Release-v0.1.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
 
 Local-first security scanner for pre-commit and pre-upload inspection. Scans files, folders, and clipboard buffers for leaked API keys, tokens, and PII before they leave your machine. Runs fully offline.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Drag-and-drop workspace vulnerability scan
   - ✦ Interactive redacted diff preview
   - ✦ Zero network permissions requested
 
 **Stack:** `Swift 6` • `Security` • `Privacy-First` • `AppKit`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/nodaysidle-shareguard) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-shareguard) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0)
 
 ---
 
-### 05. [EchoCore Pro](https://github.com/nodaysidle/nodaysidle-echocore-pro)
+### // 05 • [EchoCore Pro](https://github.com/nodaysidle/nodaysidle-echocore-pro)
 > **Local voice intelligence & neural speech engine**
 > 
-> [![Category](https://img.shields.io/badge/Domain-Apple%20Silicon%20AI%2FML-0ea5e9?style=flat-square)](https://github.com/nodaysidle/nodaysidle-echocore-pro) [![Release](https://img.shields.io/badge/Release-Active%20Atelier-10b981?style=flat-square)](https://github.com/nodaysidle/nodaysidle-echocore-pro)
+> [![Domain](https://img.shields.io/badge/Domain-Apple%20Silicon%20AI%2FML-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-echocore-pro) [![Release](https://img.shields.io/badge/Release-Active%20Atelier-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-echocore-pro)
 
 High-throughput on-device speech synthesis and voice cloning engine optimized for Apple Silicon Metal acceleration. Pairs WhisperKit transcription with local Kokoro and Qwen3 neural weights.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Metal GPU-accelerated tensor execution
   - ✦ Zero cloud audio transfer — 100% private
   - ✦ Low-latency IPC audio stream pipeline
 
 **Stack:** `Metal` • `Core ML` • `WhisperKit` • `TTS` • `Apple Silicon`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/nodaysidle-echocore-pro) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-echocore-pro)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-echocore-pro) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-echocore-pro)
 
 ---
 
-### 06. [Ironclad / NDI Compiler](https://github.com/nodaysidle/nodaysidlecompiler)
+### // 06 • [Ironclad / NDI Compiler](https://github.com/nodaysidle/nodaysidlecompiler)
 > **Deterministic spec-driven AI development platform**
 > 
-> [![Category](https://img.shields.io/badge/Domain-Full-Stack%20%26%20Systems-0ea5e9?style=flat-square)](https://github.com/nodaysidle/nodaysidlecompiler) [![Release](https://img.shields.io/badge/Release-Core%20Tooling-10b981?style=flat-square)](https://github.com/nodaysidle/nodaysidlecompiler)
+> [![Domain](https://img.shields.io/badge/Domain-Full-Stack%20%26%20Systems-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidlecompiler) [![Release](https://img.shields.io/badge/Release-Core%20Tooling-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidlecompiler)
 
 Multi-tier code compilation platform that ingests ambiguous natural language goals and generates strict, auditable 5-document technical specifications (PRD, ARD, TRD, TASKS, AGENT) with reproducible code output.
 
-**Architecture & Highlights:**
+**Architecture & Systems Spec:**
   - ✦ Deterministic 5-Document specification engine
   - ✦ WASM-accelerated AST validator
   - ✦ Strict phased task generation
 
 **Stack:** `Spec-Driven` • `Rust WASM` • `TypeScript` • `React 19`
 
-👉 [**Inspect Source Code →**](https://github.com/nodaysidle/nodaysidlecompiler) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidlecompiler)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidlecompiler) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidlecompiler)
 
 
 ---
 
-## 🛠️ Stack & Engineering Domains
+## 04 // ARCHITECTURAL STACK & DOMAINS
 
-#### macOS & Native Systems
+#### MACOS & NATIVE SYSTEMS
 
 ![Swift 6](https://img.shields.io/badge/Swift-F05138?style=flat-square&logo=swift&logoColor=white) ![SwiftUI](https://img.shields.io/badge/SwiftUI-007AFF?style=flat-square&logo=apple&logoColor=white) ![AppKit](https://img.shields.io/badge/AppKit-5856D6?style=flat-square&logo=apple&logoColor=white) ![Metal](https://img.shields.io/badge/Metal-888888?style=flat-square&logo=apple&logoColor=white) ![Core ML / Vision](https://img.shields.io/badge/Core%20ML-30D158?style=flat-square&logo=apple&logoColor=white) ![IOKit HID](https://img.shields.io/badge/IOKit-4A5568?style=flat-square&logo=apple&logoColor=white) ![SwiftData](https://img.shields.io/badge/SwiftData-FF9500?style=flat-square&logo=apple&logoColor=white)
 
-#### Systems & Desktop Engines
+#### SYSTEMS & DESKTOP ENGINES
 
 ![Rust](https://img.shields.io/badge/Rust-DEA584?style=flat-square&logo=rust&logoColor=white) ![Tauri v2](https://img.shields.io/badge/Tauri%20v2-24C8D8?style=flat-square&logo=tauri&logoColor=white) ![SQLite / SQLCipher](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white) ![WebAssembly](https://img.shields.io/badge/WASM-654FF0?style=flat-square&logo=webassembly&logoColor=white) ![Unix / Zsh / POSIX](https://img.shields.io/badge/Zsh-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
 
-#### Modern Web & Distributed Backends
+#### MODERN WEB & DISTRIBUTED BACKENDS
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![React 19 / 18](https://img.shields.io/badge/React%2019-20232A?style=flat-square&logo=react&logoColor=61DAFB) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white) ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
 
-#### Audio, ML & Signal Intelligence
+#### AUDIO, ML & SIGNAL INTELLIGENCE
 
 ![WhisperKit](https://img.shields.io/badge/WhisperKit-6366F1?style=flat-square&logo=openai&logoColor=white) ![Deepgram](https://img.shields.io/badge/Deepgram-13EF93?style=flat-square&logo=deepgram&logoColor=black) ![Web Audio API](https://img.shields.io/badge/Web%20Audio-FF5722?style=flat-square&logo=html5&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white) ![Gemini API](https://img.shields.io/badge/Gemini%20API-4285F4?style=flat-square&logo=google&logoColor=white)
 
 ---
 
-## 🔄 Self-Updating Pipeline
+## 05 // STUDIO TELEMETRY
 
-This profile is a self-generating landing page compiled from structured data:
+<div align="center">
 
-- **Single Source of Truth**: Content, projects, stack, and metrics are defined in [`data/profile.json`](./data/profile.json).
-- **Theme-Aware Rendering**: Dual dark/light SVG assets dynamically regenerated via [`scripts/generate-graphics.js`](./scripts/generate-graphics.js).
-- **Automated Daily Sync**: Built and refreshed daily at `04:00 UTC` via GitHub Actions ([`.github/workflows/daily-refresh.yml`](./.github/workflows/daily-refresh.yml)).
-- **Zero NPM Dependencies**: The build script runs directly on standard Node.js without third-party runtime baggage.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-card-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/stats-card-light.svg">
+  <img alt="Studio Telemetry Metrics" src="./assets/stats-card-dark.svg" width="100%">
+</picture>
 
-```bash
-# To regenerate locally:
-npm run build
-```
-
-<div align="right">
-<sub><i>Last automated studio build: 2026-09-28 17:51 UTC • Engine: <code>scripts/generate.js</code></i></sub>
 </div>
 
 ---
 
-## 📬 Direct Reach
+## 06 // DETERMINISTIC PIPELINE
+
+This landing surface compiles from structured JSON via an automated headless pipeline:
+
+- **Single Source of Truth**: Profile specs, product catalogue, stack, and telemetry are maintained in [`data/profile.json`](./data/profile.json).
+- **Aerospace Graphics Engine**: Responsive SVG telemetry banners generated by [`scripts/generate-graphics.js`](./scripts/generate-graphics.js).
+- **Daily Automated Synchronization**: Triggered at `04:00 UTC` daily via GitHub Actions ([`.github/workflows/daily-refresh.yml`](./.github/workflows/daily-refresh.yml)).
+- **Zero Third-Party Dependencies**: Runs strictly on standard native Node.js runtimes.
+
+```bash
+# Compile locally
+npm run build
+```
+
+<div align="right">
+<sub><i>Automated Studio Build: <code>2026-09-28 17:57 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
+</div>
+
+---
+
+## 07 // DIRECT REACH
 
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/GitHub-nodaysidle-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nodaysidle) [![Email](https://img.shields.io/badge/Direct_Email-tutanota.de-EA4335?style=for-the-badge&logo=tutanota&logoColor=white)](mailto:nodaysidle@tutanota.de) [![Portfolio](https://img.shields.io/badge/Showcase_Catalogue-NODAYSIDLE-0ea5e9?style=for-the-badge&logo=safari&logoColor=white)](https://github.com/nodaysidle)
+[![GitHub](https://img.shields.io/badge/GitHub-nodaysidle-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nodaysidle) [![Email](https://img.shields.io/badge/Direct_Channel-tutanota.de-171717?style=for-the-badge&logo=tutanota&logoColor=white)](mailto:nodaysidle@tutanota.de) [![Portfolio](https://img.shields.io/badge/Studio_Index-NODAYSIDLE-262626?style=for-the-badge&logo=safari&logoColor=white)](https://github.com/nodaysidle)
 
 <br/><br/>
 
-`nodaysidle@tutanota.de` • `Ljubljana / CET • Apple Silicon & Unix` • `OpenPGP Available on Request`
+<code>nodaysidle@tutanota.de</code> • <code>Ljubljana / CET • Apple Silicon & Unix</code> • <code>OpenPGP Available on Request</code>
 
 </div>

@@ -1,114 +1,105 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 376" width="1200" height="376" fill="none">
   <defs>
-    <!-- Background Gradient -->
-    <linearGradient id="bgGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#080a0d"/>
-      <stop offset="50%" stop-color="#0d1117"/>
-      <stop offset="100%" stop-color="#05070a"/>
+    <linearGradient id="spaceXBgDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#000000"/>
     </linearGradient>
 
-    <!-- Accent Radial Glow -->
-    <radialGradient id="limeGlowDark" cx="15%" cy="30%" r="55%">
-      <stop offset="0%" stop-color="#c8ff00" stop-opacity="0.16"/>
-      <stop offset="50%" stop-color="#c8ff00" stop-opacity="0.03"/>
-      <stop offset="100%" stop-color="#c8ff00" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="cyanGlowDark" cx="85%" cy="70%" r="50%">
-      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.12"/>
-      <stop offset="60%" stop-color="#00e5ff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Card Backgrounds -->
-    <linearGradient id="glassPillDark" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#161b22" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#21262d" stop-opacity="0.6"/>
-    </linearGradient>
-
-    <!-- Grid Pattern -->
-    <pattern id="gridDark" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#30363d" stroke-width="0.75" stroke-opacity="0.25"/>
-      <circle cx="0" cy="0" r="1" fill="#c8ff00" fill-opacity="0.3"/>
+    <!-- Hairline Aerospace Grid Pattern -->
+    <pattern id="spaceXGridDark" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#171717" stroke-width="0.8"/>
     </pattern>
 
-    <filter id="shadowDark" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
-    </filter>
+    <style>
+      @keyframes pulseDotDark {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.35; transform: scale(0.85); }
+      }
+      .pulsing-dot-dark {
+        transform-origin: 932px 51px;
+        animation: pulseDotDark 2.5s ease-in-out infinite;
+      }
+      .mono-txt {
+        font-family: 'SF Mono', 'Geist Mono', 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+      }
+      .sans-txt {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Segoe UI', sans-serif;
+      }
+    </style>
   </defs>
 
-  <style>
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-    .pulsing-dot {
-      transform-origin: 916px 52px;
-      animation: pulseDot 2.4s ease-in-out infinite;
-    }
-  </style>
-
   <!-- Base Canvas -->
-  <rect width="1200" height="380" rx="16" fill="url(#bgGradDark)"/>
-  <rect width="1200" height="380" rx="16" fill="url(#limeGlowDark)"/>
-  <rect width="1200" height="380" rx="16" fill="url(#cyanGlowDark)"/>
-  <rect width="1200" height="380" rx="16" fill="url(#gridDark)"/>
-  <rect width="1200" height="380" rx="16" stroke="#30363d" stroke-width="1.5" fill="none"/>
+  <rect width="1200" height="376" rx="6" fill="url(#spaceXBgDark)"/>
+  <rect width="1200" height="376" rx="6" fill="url(#spaceXGridDark)"/>
+  <rect width="1200" height="376" rx="6" stroke="#222222" stroke-width="1" fill="none"/>
 
-  <!-- Top Status Bar -->
-  <g transform="translate(48, 36)">
-    <!-- Atelier Badge -->
-    <rect x="0" y="0" width="220" height="32" rx="16" fill="url(#glassPillDark)" stroke="#30363d" stroke-width="1"/>
-    <circle cx="16" cy="16" r="4" fill="#c8ff00"/>
-    <text x="30" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif" font-size="11.5" font-weight="700" fill="#c8ff00" letter-spacing="1.2">ATELIER // SYSTEM 01</text>
+  <!-- Technical Corner Marks (Left: 56px, Right: 1144px) -->
+  <path d="M 50 42 L 50 32 L 60 32" stroke="#444444" stroke-width="1.2" fill="none"/>
+  <path d="M 1150 42 L 1150 32 L 1140 32" stroke="#444444" stroke-width="1.2" fill="none"/>
+  <path d="M 50 344 L 50 354 L 60 354" stroke="#444444" stroke-width="1.2" fill="none"/>
+  <path d="M 1150 344 L 1150 354 L 1140 354" stroke="#444444" stroke-width="1.2" fill="none"/>
 
-    <!-- Location & Target -->
-    <text x="240" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="12" font-weight="500" fill="#8b949e">
-      <tspan fill="#6e7681">ENV:</tspan> macOS • Apple Silicon • Local-First
-    </text>
+  <!-- Top Status Bar (x=56 to x=1144, width=1088) -->
+  <!-- Left Pill (starts x=56, width=190) -->
+  <rect x="56" y="36" width="190" height="30" rx="3" fill="#0d0d0d" stroke="#262626" stroke-width="1"/>
+  <text class="mono-txt" x="72" y="55" font-size="11" font-weight="600" fill="#d4d4d4" letter-spacing="2">ATELIER // SYSTEM 01</text>
 
-    <!-- Status Indicator (Right aligned) -->
-    <rect x="850" y="0" width="254" height="32" rx="16" fill="#161b22" stroke="#238636" stroke-width="1"/>
-    <circle class="pulsing-dot" cx="868" cy="16" r="4.5" fill="#3fb950"/>
-    <text x="882" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="11.5" font-weight="600" fill="#e6edf3" letter-spacing="0.5">ACTIVE IN STUDIO // SHIPPING DAILY</text>
+  <!-- Telemetry Spec Text (starts x=262) -->
+  <text class="mono-txt" x="262" y="55" font-size="11" fill="#666666" letter-spacing="1.2">SPEC: APPLE SILICON • UNIX • LOCAL-FIRST</text>
+
+  <!-- Right Pill (ends exactly at x=1144: x = 1144 - 230 = 914) -->
+  <rect x="914" y="36" width="230" height="30" rx="3" fill="#0d0d0d" stroke="#262626" stroke-width="1"/>
+  <circle class="pulsing-dot-dark" cx="932" cy="51" r="4" fill="#22c55e"/>
+  <text class="mono-txt" x="946" y="55" font-size="10.5" font-weight="600" fill="#f5f5f5" letter-spacing="1">ACTIVE IN STUDIO // 2026</text>
+
+  <!-- Main Hero Content (Left aligned exactly at x=56) -->
+  <!-- Kicker -->
+  <text class="mono-txt" x="56" y="122" font-size="11" font-weight="600" fill="#737373" letter-spacing="3.5">INDEPENDENT SYSTEMS ATELIER</text>
+
+  <!-- Title -->
+  <text class="sans-txt" x="56" y="180" font-size="62" font-weight="800" fill="#ffffff" letter-spacing="-0.8">
+    NODAYSIDLE
+  </text>
+
+  <!-- Hairline Precision Divider (from x=56 to x=1144) -->
+  <line x1="56" y1="202" x2="1144" y2="202" stroke="#1f1f1f" stroke-width="1"/>
+
+  <!-- Tagline -->
+  <text class="sans-txt" x="56" y="234" font-size="20" font-weight="500" fill="#e5e5e5" letter-spacing="-0.2">
+    Turning ambiguous problems into real products and working systems.
+  </text>
+
+  <!-- Subtitle -->
+  <text class="sans-txt" x="56" y="260" font-size="13.5" font-weight="400" fill="#888888">
+    Native macOS engineering • Local-first desktop runtimes • Spec-driven deterministic systems
+  </text>
+
+  <!-- Bottom 4 Telemetry Modules (x=56 to x=1144, width=1088, gaps=16, 4 cols of 260px) -->
+  <!-- Module 1: x=56 -->
+  <g transform="translate(56, 296)">
+    <rect width="260" height="48" rx="3" fill="#0a0a0a" stroke="#1f1f1f" stroke-width="1"/>
+    <text class="mono-txt" x="16" y="20" font-size="9.5" font-weight="600" fill="#666666" letter-spacing="1.5">// 01 REPOSITORIES</text>
+    <text class="sans-txt" x="16" y="38" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.4">70+ SHIPPED TOOLS</text>
   </g>
 
-  <!-- Hero Typography -->
-  <g transform="translate(48, 125)">
-    <!-- Subtitle Kicker -->
-    <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif" font-size="13" font-weight="700" fill="#00e5ff" letter-spacing="3">INDEPENDENT SOFTWARE ATELIER</text>
-
-    <!-- Brand Header -->
-    <text x="0" y="64" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif" font-size="64" font-weight="900" fill="#ffffff" letter-spacing="-1.5">
-      NODAYSIDLE
-    </text>
-
-    <!-- Accent bar -->
-    <rect x="0" y="82" width="72" height="4" rx="2" fill="#c8ff00"/>
-    <rect x="80" y="82" width="24" height="4" rx="2" fill="#00e5ff"/>
-
-    <!-- Main Tagline -->
-    <text x="0" y="126" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif" font-size="22" font-weight="500" fill="#e6edf3" letter-spacing="-0.3">
-      Turning ambiguous problems into real products and working systems.
-    </text>
-
-    <!-- Secondary Manifesto -->
-    <text x="0" y="156" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="14.5" font-weight="400" fill="#8b949e">
-      Native macOS tooling • Local-first desktop runtimes • Spec-driven deterministic engineering
-    </text>
+  <!-- Module 2: x=332 -->
+  <g transform="translate(332, 296)">
+    <rect width="260" height="48" rx="3" fill="#0a0a0a" stroke="#1f1f1f" stroke-width="1"/>
+    <text class="mono-txt" x="16" y="20" font-size="9.5" font-weight="600" fill="#666666" letter-spacing="1.5">// 02 NATIVE PLATFORM</text>
+    <text class="sans-txt" x="16" y="38" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.4">10+ macOS APPS</text>
   </g>
 
-  <!-- Bottom Metric Pills -->
-  <g transform="translate(48, 320)">
-    <rect x="0" y="0" width="160" height="34" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-    <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="12" font-weight="600" fill="#c8ff00">70+ <tspan fill="#8b949e" font-weight="400">Repositories</tspan></text>
+  <!-- Module 3: x=608 -->
+  <g transform="translate(608, 296)">
+    <rect width="260" height="48" rx="3" fill="#0a0a0a" stroke="#1f1f1f" stroke-width="1"/>
+    <text class="mono-txt" x="16" y="20" font-size="9.5" font-weight="600" fill="#666666" letter-spacing="1.5">// 03 ARCHITECTURE</text>
+    <text class="sans-txt" x="16" y="38" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.4">100% LOCAL-FIRST</text>
+  </g>
 
-    <rect x="172" y="0" width="190" height="34" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-    <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="12" font-weight="600" fill="#00e5ff" transform="translate(172, 0)">10+ <tspan fill="#8b949e" font-weight="400">Native macOS Apps</tspan></text>
-
-    <rect x="374" y="0" width="175" height="34" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-    <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="12" font-weight="600" fill="#7ee787" transform="translate(374, 0)">Local-First <tspan fill="#8b949e" font-weight="400">By Default</tspan></text>
-
-    <rect x="561" y="0" width="175" height="34" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
-    <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" font-size="12" font-weight="600" fill="#f0883e" transform="translate(561, 0)">Zero Cloud <tspan fill="#8b949e" font-weight="400">Lock-in</tspan></text>
+  <!-- Module 4: x=884 (Ends at exactly 884 + 260 = 1144) -->
+  <g transform="translate(884, 296)">
+    <rect width="260" height="48" rx="3" fill="#0a0a0a" stroke="#1f1f1f" stroke-width="1"/>
+    <text class="mono-txt" x="16" y="20" font-size="9.5" font-weight="600" fill="#666666" letter-spacing="1.5">// 04 TELEMETRY</text>
+    <text class="sans-txt" x="16" y="38" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.4">ZERO CLOUD LOCK-IN</text>
   </g>
 </svg>
