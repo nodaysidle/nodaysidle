@@ -1,0 +1,346 @@
+{
+  "profile": {
+    "name": "NODAYSIDLE",
+    "handle": "nodaysidle",
+    "title": "Independent Software Engineer & Systems Builder",
+    "tagline": "Turning ambiguous problems into real products and working systems.",
+    "status": "Active in Studio // Shipping Daily",
+    "statusTone": "emerald",
+    "location": "Ljubljana / CET • Apple Silicon & Unix",
+    "email": "nodaysidle@tutanota.de",
+    "website": "https://github.com/nodaysidle",
+    "pgp": "OpenPGP Available on Request"
+  },
+  "statement": {
+    "headline": "A craft-driven engineering practice rooted in native performance and local-first architecture.",
+    "atelier": "I design, architect, and ship production-grade software across macOS native environments, high-performance desktop runtimes, and resilient web services. I avoid disposable prototypes and roadmap hype: every project in the catalogue has one clear job, a reproducible build, and working code that runs directly on hardware.",
+    "craft": "My work focuses on transforming unstructured, ambiguous goals into deterministic software. From low-latency audio processing and on-device Core ML to custom desktop tools and spec-driven code synthesis, I build with high agency, deep respect for platform conventions, and strict privacy by default.",
+    "metricsSummary": "70+ repositories • 10+ native macOS apps • Local-first SQLite & zero unexpected telemetry."
+  },
+  "principles": [
+    {
+      "number": "01",
+      "title": "Ship Real Products",
+      "summary": "Finished tools over slide decks. If an application exists in the catalogue, it compiles cleanly, passes tests, and installs without a debug session."
+    },
+    {
+      "number": "02",
+      "title": "Native First",
+      "summary": "Build for the platform, not against it. Swift 6, AppKit, Metal, and Rust over heavy wrappers to guarantee instant responsiveness and zero memory bloat."
+    },
+    {
+      "number": "03",
+      "title": "Local-First by Default",
+      "summary": "User data lives on-device in local SQLite or filesystem storage. Cloud integrations are explicit opt-in enhancements, never architectural lock-in."
+    },
+    {
+      "number": "04",
+      "title": "Deterministic Quality",
+      "summary": "Spec-driven architectures, strict typing, and end-to-end automated validation ensure systems behave predictably across every execution."
+    }
+  ],
+  "featuredProjects": [
+    {
+      "id": "flowstate",
+      "name": "FlowState",
+      "tagline": "Adaptive focus detection & deep work pacing for macOS",
+      "description": "Native macOS menu-bar utility that calculates real-time focus depth through hardware input telemetry (IOKit HID) and applies gentle screen-tint nudges when flow is broken. Zero arbitrary timers, zero cloud dependencies.",
+      "category": "macOS Native",
+      "status": "v1.0.1 Stable",
+      "badge": "macOS 14+ • Swift 6 • SwiftUI • AppKit",
+      "repo": "https://github.com/nodaysidle/nodaysidle-flowstate",
+      "release": "https://github.com/nodaysidle/nodaysidle-flowstate/releases/tag/v1.0.1",
+      "highlights": [
+        "Real-time IOKit HID activity scoring",
+        "Adaptive screen-tint flow reinforcement",
+        "100% on-device local persistence"
+      ],
+      "tags": [
+        "Swift 6",
+        "SwiftUI",
+        "AppKit",
+        "IOKit HID",
+        "Local-First"
+      ]
+    },
+    {
+      "id": "orbit-browser",
+      "name": "Orbit Browser",
+      "tagline": "Minimal chrome, full web. Native macOS browser",
+      "description": "Distraction-free desktop browser built on Tauri v2, Rust, and WKWebView. Features native tab management, distraction-free reader mode, built-in tracker stripping, and local SQLite session persistence without Chrome's footprint.",
+      "category": "Desktop App",
+      "status": "v1.0.5 Shipped",
+      "badge": "Tauri v2 • Rust • WKWebView • SQLite",
+      "repo": "https://github.com/nodaysidle/orbit-browser",
+      "release": "https://github.com/nodaysidle/orbit-browser/releases/tag/v1.0.5",
+      "highlights": [
+        "Native WKWebView tabs with drag reorder",
+        "Domain blocking & parameter-clean link sharing",
+        "Zero telemetry, zero Electron overhead"
+      ],
+      "tags": [
+        "Rust",
+        "Tauri v2",
+        "WKWebView",
+        "SQLite",
+        "Zero-Telemetry"
+      ]
+    },
+    {
+      "id": "cloudscribe",
+      "name": "CloudScribe",
+      "tagline": "Sub-second floating dictation pill for macOS",
+      "description": "Low-latency global dictation utility streaming to Deepgram nova-3 with instant keyboard injection. Features a minimal floating HUD, global hotkey listener, and encrypted credential storage backed by the macOS Keychain.",
+      "category": "macOS Native",
+      "status": "v0.1.0 Shipped",
+      "badge": "Swift 6 • Deepgram nova-3 • Keychain",
+      "repo": "https://github.com/nodaysidle/nodaysidle-cloudscribe",
+      "release": "https://github.com/nodaysidle/nodaysidle-cloudscribe/releases/tag/v0.1.0",
+      "highlights": [
+        "Global hotkey HUD overlay",
+        "Deepgram nova-3 streaming transcription",
+        "Hardware-backed macOS Keychain security"
+      ],
+      "tags": [
+        "SwiftUI",
+        "Deepgram",
+        "Keychain",
+        "AppKit",
+        "Audio"
+      ]
+    },
+    {
+      "id": "shareguard",
+      "name": "ShareGuard",
+      "tagline": "Pre-share privacy scanner & local redaction engine",
+      "description": "Local-first security scanner for pre-commit and pre-upload inspection. Scans files, folders, and clipboard buffers for leaked API keys, tokens, and PII before they leave your machine. Runs fully offline.",
+      "category": "macOS Native & Security",
+      "status": "v0.1.0 Shipped",
+      "badge": "Swift 6 • SwiftUI • AppKit • Privacy",
+      "repo": "https://github.com/nodaysidle/nodaysidle-shareguard",
+      "release": "https://github.com/nodaysidle/nodaysidle-shareguard/releases/tag/v0.1.0",
+      "highlights": [
+        "Drag-and-drop workspace vulnerability scan",
+        "Interactive redacted diff preview",
+        "Zero network permissions requested"
+      ],
+      "tags": [
+        "Swift 6",
+        "Security",
+        "Privacy-First",
+        "AppKit"
+      ]
+    },
+    {
+      "id": "echocore-pro",
+      "name": "EchoCore Pro",
+      "tagline": "Local voice intelligence & neural speech engine",
+      "description": "High-throughput on-device speech synthesis and voice cloning engine optimized for Apple Silicon Metal acceleration. Pairs WhisperKit transcription with local Kokoro and Qwen3 neural weights.",
+      "category": "Apple Silicon AI/ML",
+      "status": "Active Atelier",
+      "badge": "Swift 6 • Metal • WhisperKit • Core ML",
+      "repo": "https://github.com/nodaysidle/nodaysidle-echocore-pro",
+      "release": "https://github.com/nodaysidle/nodaysidle-echocore-pro",
+      "highlights": [
+        "Metal GPU-accelerated tensor execution",
+        "Zero cloud audio transfer — 100% private",
+        "Low-latency IPC audio stream pipeline"
+      ],
+      "tags": [
+        "Metal",
+        "Core ML",
+        "WhisperKit",
+        "TTS",
+        "Apple Silicon"
+      ]
+    },
+    {
+      "id": "nodaysidlecompiler",
+      "name": "Ironclad / NDI Compiler",
+      "tagline": "Deterministic spec-driven AI development platform",
+      "description": "Multi-tier code compilation platform that ingests ambiguous natural language goals and generates strict, auditable 5-document technical specifications (PRD, ARD, TRD, TASKS, AGENT) with reproducible code output.",
+      "category": "Full-Stack & Systems",
+      "status": "Core Tooling",
+      "badge": "React 19 • TypeScript • Rust WASM • Vite",
+      "repo": "https://github.com/nodaysidle/nodaysidlecompiler",
+      "release": "https://github.com/nodaysidle/nodaysidlecompiler",
+      "highlights": [
+        "Deterministic 5-Document specification engine",
+        "WASM-accelerated AST validator",
+        "Strict phased task generation"
+      ],
+      "tags": [
+        "Spec-Driven",
+        "Rust WASM",
+        "TypeScript",
+        "React 19"
+      ]
+    }
+  ],
+  "stack": {
+    "macOS & Native Systems": [
+      {
+        "name": "Swift 6",
+        "level": "Primary",
+        "badge": "Swift-F05138?style=flat-square&logo=swift&logoColor=white"
+      },
+      {
+        "name": "SwiftUI",
+        "level": "Primary",
+        "badge": "SwiftUI-007AFF?style=flat-square&logo=apple&logoColor=white"
+      },
+      {
+        "name": "AppKit",
+        "level": "Primary",
+        "badge": "AppKit-5856D6?style=flat-square&logo=apple&logoColor=white"
+      },
+      {
+        "name": "Metal",
+        "level": "Advanced",
+        "badge": "Metal-888888?style=flat-square&logo=apple&logoColor=white"
+      },
+      {
+        "name": "Core ML / Vision",
+        "level": "Advanced",
+        "badge": "Core%20ML-30D158?style=flat-square&logo=apple&logoColor=white"
+      },
+      {
+        "name": "IOKit HID",
+        "level": "Systems",
+        "badge": "IOKit-4A5568?style=flat-square&logo=apple&logoColor=white"
+      },
+      {
+        "name": "SwiftData",
+        "level": "Primary",
+        "badge": "SwiftData-FF9500?style=flat-square&logo=apple&logoColor=white"
+      }
+    ],
+    "Systems & Desktop Engines": [
+      {
+        "name": "Rust",
+        "level": "Primary",
+        "badge": "Rust-DEA584?style=flat-square&logo=rust&logoColor=white"
+      },
+      {
+        "name": "Tauri v2",
+        "level": "Primary",
+        "badge": "Tauri%20v2-24C8D8?style=flat-square&logo=tauri&logoColor=white"
+      },
+      {
+        "name": "SQLite / SQLCipher",
+        "level": "Primary",
+        "badge": "SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white"
+      },
+      {
+        "name": "WebAssembly",
+        "level": "Advanced",
+        "badge": "WASM-654FF0?style=flat-square&logo=webassembly&logoColor=white"
+      },
+      {
+        "name": "Unix / Zsh / POSIX",
+        "level": "Systems",
+        "badge": "Zsh-4EAA25?style=flat-square&logo=gnubash&logoColor=white"
+      }
+    ],
+    "Modern Web & Distributed Backends": [
+      {
+        "name": "TypeScript",
+        "level": "Primary",
+        "badge": "TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"
+      },
+      {
+        "name": "React 19 / 18",
+        "level": "Primary",
+        "badge": "React%2019-20232A?style=flat-square&logo=react&logoColor=61DAFB"
+      },
+      {
+        "name": "Next.js",
+        "level": "Primary",
+        "badge": "Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white"
+      },
+      {
+        "name": "Node.js",
+        "level": "Primary",
+        "badge": "Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"
+      },
+      {
+        "name": "Express",
+        "level": "Primary",
+        "badge": "Express-000000?style=flat-square&logo=express&logoColor=white"
+      },
+      {
+        "name": "Tailwind CSS",
+        "level": "Primary",
+        "badge": "Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white"
+      },
+      {
+        "name": "PostgreSQL",
+        "level": "Primary",
+        "badge": "PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white"
+      },
+      {
+        "name": "Redis",
+        "level": "Advanced",
+        "badge": "Redis-DC382D?style=flat-square&logo=redis&logoColor=white"
+      }
+    ],
+    "Audio, ML & Signal Intelligence": [
+      {
+        "name": "WhisperKit",
+        "level": "Advanced",
+        "badge": "WhisperKit-6366F1?style=flat-square&logo=openai&logoColor=white"
+      },
+      {
+        "name": "Deepgram",
+        "level": "Advanced",
+        "badge": "Deepgram-13EF93?style=flat-square&logo=deepgram&logoColor=black"
+      },
+      {
+        "name": "Web Audio API",
+        "level": "Advanced",
+        "badge": "Web%20Audio-FF5722?style=flat-square&logo=html5&logoColor=white"
+      },
+      {
+        "name": "PyTorch",
+        "level": "Advanced",
+        "badge": "PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white"
+      },
+      {
+        "name": "Gemini API",
+        "level": "Advanced",
+        "badge": "Gemini%20API-4285F4?style=flat-square&logo=google&logoColor=white"
+      }
+    ]
+  },
+  "stats": {
+    "totalProjects": "70+",
+    "nativeMacApps": "10+",
+    "fullStackWeb": "25+",
+    "architecturePattern": "Local-First",
+    "telemetryPolicy": "Zero Unwanted",
+    "openSource": "100%"
+  },
+  "socials": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/nodaysidle",
+      "icon": "github"
+    },
+    {
+      "name": "Email",
+      "url": "mailto:nodaysidle@tutanota.de",
+      "icon": "mail"
+    },
+    {
+      "name": "Portfolio Showcase",
+      "url": "https://github.com/nodaysidle",
+      "icon": "globe"
+    }
+  ],
+  "meta": {
+    "schemaVersion": "1.0.0",
+    "lastGenerated": "2026-09-28T17:49:40.296Z",
+    "generator": "scripts/generate.js",
+    "author": "NODAYSIDLE"
+  }
+}

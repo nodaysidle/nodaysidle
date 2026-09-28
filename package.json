@@ -1,0 +1,21 @@
+{
+  "name": "github-profile-readme",
+  "version": "1.0.0",
+  "description": "Dynamic, automated GitHub profile README generated from structured data",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/generate-graphics.js && node scripts/generate.js",
+    "generate": "node scripts/generate.js",
+    "generate:assets": "node scripts/generate-graphics.js",
+    "watch": "node scripts/generate.js --watch"
+  },
+  "keywords": [
+    "github-profile",
+    "readme",
+    "automation",
+    "profile-readme",
+    "portfolio"
+  ],
+  "author": "NODAYSIDLE",
+  "license": "MIT"
+}
