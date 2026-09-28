@@ -89,43 +89,25 @@ Spec-driven AI engineering platform that converts ambiguous product ideas into f
 
 ---
 
-### // 02 • [Synapse Notes](https://github.com/nodaysidle/synapse-notes)
-> **Voice-to-knowledge pipeline with AI transcription, FLUX visuals & 3D Obsidian-like orbs**
+### // 02 • [WhisperBar](https://github.com/nodaysidle/whisper-bar)
+> **Native macOS menu bar dictation with sub-150ms structured inference**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-Multimodal%20Voice%20%26%203D%20Knowledge-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes)
+> [![Domain](https://img.shields.io/badge/Domain-macOS%20Menu%20Bar%20Utility-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar)
 
-Voice-first capture system with a continuous multimodal synthesis pipeline: tap the mic to record, get verbatim transcription via OpenRouter Whisper Large V3 Turbo, automatically synthesize a contextual note illustration via Replicate FLUX Schnell stored in your gallery, and navigate linked notes in an interactive 3D force-directed knowledge graph with pgvector semantic search.
+Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.
 
 **Architecture & Systems Spec:**
-  - ✦ Continuous voice recording to verbatim AI note transcription pipeline
-  - ✦ Automated FLUX Schnell visual synthesis saved directly into note gallery
-  - ✦ Force-directed 3D knowledge graph (Three.js) + pgvector 768-dim semantic search
+  - ✦ Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate
+  - ✦ 288-term SuperWhisper technical vocabulary replacement engine
+  - ✦ Zero third-party dependencies, strict Keychain credential isolation
 
-**Stack:** `Voice-First` • `Three.js` • `Whisper V3` • `FLUX Schnell` • `pgvector` • `Capacitor`
+**Stack:** `Swift 6` • `Deepgram Nova-3` • `TypeSafe Jev` • `Keychain` • `macOS Menu Bar`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/synapse-notes) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/synapse-notes)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/whisper-bar) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/whisper-bar)
 
 ---
 
-### // 03 • [NODAYSIDLE Browser](https://github.com/nodaysidle/nodaysidle-browser)
-> **Surgical, telemetry-free native macOS browser built on Swift 6 and WebKit**
-> 
-> [![Domain](https://img.shields.io/badge/Domain-Native%20macOS%20Systems-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Stable-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser)
-
-Focused native macOS browser engineered with zero Electron overhead, zero trackers, and zero background analytics. Features a single @Observable @MainActor state store, native tabs with ⌘K tab palette, local session persistence, and an encrypted CryptoKit vault for private bookmark and history syncing.
-
-**Architecture & Systems Spec:**
-  - ✦ 100% native Swift 6 and WebKit architecture with zero Electron footprint
-  - ✦ Local-first persistence with encrypted CryptoKit sync vault
-  - ✦ Zero analytics, telemetry, or application-owned browsing backend
-
-**Stack:** `Swift 6` • `SwiftUI` • `WebKit` • `CryptoKit` • `macOS 14+` • `Local-First`
-
-[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-browser)
-
----
-
-### // 04 • [NODAYSIDLE Sonora](https://github.com/nodaysidle/nodaysidle-sonora)
+### // 03 • [NODAYSIDLE Sonora](https://github.com/nodaysidle/nodaysidle-sonora)
 > **Native desktop audio player replacing bloated Electron streaming apps**
 > 
 > [![Domain](https://img.shields.io/badge/Domain-Desktop%20Audio%20Engine-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-sonora) [![Release](https://img.shields.io/badge/Release-v0.1.1%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1)
@@ -143,21 +125,39 @@ Rethinks the desktop music player from the bare metal up to replace bloated Chro
 
 ---
 
-### // 05 • [WhisperBar](https://github.com/nodaysidle/whisper-bar)
-> **Native macOS menu bar dictation with sub-150ms structured inference**
+### // 04 • [Synapse Notes](https://github.com/nodaysidle/synapse-notes)
+> **Voice-to-knowledge pipeline with AI transcription, FLUX visuals & 3D Obsidian-like orbs**
 > 
-> [![Domain](https://img.shields.io/badge/Domain-macOS%20Menu%20Bar%20Utility-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/whisper-bar)
+> [![Domain](https://img.shields.io/badge/Domain-Multimodal%20Voice%20%26%203D%20Knowledge-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Shipped-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/synapse-notes)
 
-Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.
+Voice-first capture system with a continuous multimodal synthesis pipeline: tap the mic to record, get verbatim transcription via OpenRouter Whisper Large V3 Turbo, automatically synthesize a contextual note illustration via Replicate FLUX Schnell stored in your gallery, and navigate linked notes in an interactive 3D force-directed knowledge graph with pgvector semantic search.
 
 **Architecture & Systems Spec:**
-  - ✦ Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate
-  - ✦ 288-term SuperWhisper technical vocabulary replacement engine
-  - ✦ Zero third-party dependencies, strict Keychain credential isolation
+  - ✦ Continuous voice recording to verbatim AI note transcription pipeline
+  - ✦ Automated FLUX Schnell visual synthesis saved directly into note gallery
+  - ✦ Force-directed 3D knowledge graph (Three.js) + pgvector 768-dim semantic search
 
-**Stack:** `Swift 6` • `Deepgram Nova-3` • `TypeSafe Jev` • `Keychain` • `macOS Menu Bar`
+**Stack:** `Voice-First` • `Three.js` • `Whisper V3` • `FLUX Schnell` • `pgvector` • `Capacitor`
 
-[**Inspect Source Repository →**](https://github.com/nodaysidle/whisper-bar) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/whisper-bar)
+[**Inspect Source Repository →**](https://github.com/nodaysidle/synapse-notes) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/synapse-notes)
+
+---
+
+### // 05 • [NODAYSIDLE Browser](https://github.com/nodaysidle/nodaysidle-browser)
+> **Surgical, telemetry-free native macOS browser built on Swift 6 and WebKit**
+> 
+> [![Domain](https://img.shields.io/badge/Domain-Native%20macOS%20Systems-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser) [![Release](https://img.shields.io/badge/Release-v1.0.0%20Stable-0a0a0a?style=flat-square&labelColor=171717&color=262626)](https://github.com/nodaysidle/nodaysidle-browser)
+
+Focused native macOS browser engineered with zero Electron overhead, zero trackers, and zero background analytics. Features a single @Observable @MainActor state store, native tabs with ⌘K tab palette, local session persistence, and an encrypted CryptoKit vault for private bookmark and history syncing.
+
+**Architecture & Systems Spec:**
+  - ✦ 100% native Swift 6 and WebKit architecture with zero Electron footprint
+  - ✦ Local-first persistence with encrypted CryptoKit sync vault
+  - ✦ Zero analytics, telemetry, or application-owned browsing backend
+
+**Stack:** `Swift 6` • `SwiftUI` • `WebKit` • `CryptoKit` • `macOS 14+` • `Local-First`
+
+[**Inspect Source Repository →**](https://github.com/nodaysidle/nodaysidle-browser) &nbsp;|&nbsp; [**Download Release Artifacts →**](https://github.com/nodaysidle/nodaysidle-browser)
 
 
 ---
@@ -211,7 +211,7 @@ npm run build
 ```
 
 <div align="right">
-<sub><i>Automated Studio Build: <code>2026-09-28 18:08 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
+<sub><i>Automated Studio Build: <code>2026-09-28 18:16 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
 </div>
 
 ---

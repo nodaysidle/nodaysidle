@@ -66,6 +66,55 @@
       ]
     },
     {
+      "id": "whisper-bar",
+      "name": "WhisperBar",
+      "isStar": false,
+      "tagline": "Native macOS menu bar dictation with sub-150ms structured inference",
+      "description": "Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.",
+      "category": "macOS Menu Bar Utility",
+      "status": "v1.0.0 Shipped",
+      "badge": "macOS 14+ • Swift 6 • Deepgram Nova-3 • TypeSafe Jev • Keychain",
+      "repo": "https://github.com/nodaysidle/whisper-bar",
+      "release": "https://github.com/nodaysidle/whisper-bar",
+      "highlights": [
+        "Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate",
+        "288-term SuperWhisper technical vocabulary replacement engine",
+        "Zero third-party dependencies, strict Keychain credential isolation"
+      ],
+      "tags": [
+        "Swift 6",
+        "Deepgram Nova-3",
+        "TypeSafe Jev",
+        "Keychain",
+        "macOS Menu Bar"
+      ]
+    },
+    {
+      "id": "nodaysidle-sonora",
+      "name": "NODAYSIDLE Sonora",
+      "isStar": false,
+      "tagline": "Native desktop audio player replacing bloated Electron streaming apps",
+      "description": "Rethinks the desktop music player from the bare metal up to replace bloated Chromium shells. Unites Spotify, YouTube Music, and local FLAC audio into a single canvas with sample-accurate gapless playback, hardware EBU R128 loudness normalization, instant Asian lyric romanization, and <105 MB idle RAM consumption.",
+      "category": "Desktop Audio Engine",
+      "status": "v0.1.1 Shipped",
+      "badge": "macOS (.dmg) • Linux (.AppImage) • Tauri 2 • Rust • React 19",
+      "repo": "https://github.com/nodaysidle/nodaysidle-sonora",
+      "release": "https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1",
+      "highlights": [
+        "Solves bloated Electron memory consumption: <105 MB RAM idle vs 1.2 GB",
+        "Hardware EBU R128 loudness normalization (-14 LUFS real-time gain stage)",
+        "Unified canvas uniting local FLACs, Spotify playlists, and YouTube Music streams"
+      ],
+      "tags": [
+        "Rust",
+        "Tauri 2",
+        "React 19",
+        "Audio Engine",
+        "Spotify",
+        "Zero-Electron"
+      ]
+    },
+    {
       "id": "synapse-notes",
       "name": "Synapse Notes",
       "isStar": false,
@@ -113,55 +162,6 @@
         "CryptoKit",
         "macOS 14+",
         "Local-First"
-      ]
-    },
-    {
-      "id": "nodaysidle-sonora",
-      "name": "NODAYSIDLE Sonora",
-      "isStar": false,
-      "tagline": "Native desktop audio player replacing bloated Electron streaming apps",
-      "description": "Rethinks the desktop music player from the bare metal up to replace bloated Chromium shells. Unites Spotify, YouTube Music, and local FLAC audio into a single canvas with sample-accurate gapless playback, hardware EBU R128 loudness normalization, instant Asian lyric romanization, and <105 MB idle RAM consumption.",
-      "category": "Desktop Audio Engine",
-      "status": "v0.1.1 Shipped",
-      "badge": "macOS (.dmg) • Linux (.AppImage) • Tauri 2 • Rust • React 19",
-      "repo": "https://github.com/nodaysidle/nodaysidle-sonora",
-      "release": "https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.1",
-      "highlights": [
-        "Solves bloated Electron memory consumption: <105 MB RAM idle vs 1.2 GB",
-        "Hardware EBU R128 loudness normalization (-14 LUFS real-time gain stage)",
-        "Unified canvas uniting local FLACs, Spotify playlists, and YouTube Music streams"
-      ],
-      "tags": [
-        "Rust",
-        "Tauri 2",
-        "React 19",
-        "Audio Engine",
-        "Spotify",
-        "Zero-Electron"
-      ]
-    },
-    {
-      "id": "whisper-bar",
-      "name": "WhisperBar",
-      "isStar": false,
-      "tagline": "Native macOS menu bar dictation with sub-150ms structured inference",
-      "description": "Lightweight, high-performance macOS menu-bar utility delivering instantaneous AI voice dictation to any application on your Mac. Features TypeSafe Jev System One sub-150ms inference gates, Deepgram Nova-3 live audio streaming, SuperWhisper 288-term deterministic vocabulary replacement, and hardware Keychain credential storage with zero disk audio leakage.",
-      "category": "macOS Menu Bar Utility",
-      "status": "v1.0.0 Shipped",
-      "badge": "macOS 14+ • Swift 6 • Deepgram Nova-3 • TypeSafe Jev • Keychain",
-      "repo": "https://github.com/nodaysidle/whisper-bar",
-      "release": "https://github.com/nodaysidle/whisper-bar",
-      "highlights": [
-        "Sub-150ms TypeSafe Jev System One decision engine with smart refinement gate",
-        "288-term SuperWhisper technical vocabulary replacement engine",
-        "Zero third-party dependencies, strict Keychain credential isolation"
-      ],
-      "tags": [
-        "Swift 6",
-        "Deepgram Nova-3",
-        "TypeSafe Jev",
-        "Keychain",
-        "macOS Menu Bar"
       ]
     }
   ],
@@ -327,7 +327,7 @@
   ],
   "meta": {
     "schemaVersion": "1.0.0",
-    "lastGenerated": "2026-09-28T18:08:26.470Z",
+    "lastGenerated": "2026-09-28T18:16:47.024Z",
     "generator": "scripts/generate.js",
     "author": "NODAYSIDLE"
   }
