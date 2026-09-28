@@ -229,7 +229,7 @@ npm run build
 ```
 
 <div align="right">
-<sub><i>Last automated studio build: 2026-09-28 17:50 UTC • Engine: <code>scripts/generate.js</code></i></sub>
+<sub><i>Last automated studio build: 2026-09-28 17:51 UTC • Engine: <code>scripts/generate.js</code></i></sub>
 </div>
 
 ---
