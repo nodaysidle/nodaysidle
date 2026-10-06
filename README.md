@@ -211,7 +211,7 @@ npm run build
 ```
 
 <div align="right">
-<sub><i>Automated Studio Build: <code>2026-10-05 11:17 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
+<sub><i>Automated Studio Build: <code>2026-10-06 11:06 UTC</code> • Engine: <code>scripts/generate.js</code></i></sub>
 </div>
 
 ---
