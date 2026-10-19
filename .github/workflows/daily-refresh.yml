@@ -2,16 +2,19 @@ name: Refresh Profile README
 
 on:
   schedule:
-    # Runs daily at 04:00 UTC
+    # Daily, plus just after the 17:30 Europe/Ljubljana launch slot
+    # (15:35 UTC in summer time, 16:35 UTC in winter time). An app appears
+    # here only once its showFrom time on nodaysidle-apps has passed.
     - cron: '0 4 * * *'
+    - cron: '35 15 * * *'
+    - cron: '35 16 * * *'
   push:
     branches:
       - main
-      - master
     paths:
       - 'data/**'
-      - 'templates/**'
       - 'scripts/**'
+      - 'assets/fonts/**'
   workflow_dispatch:
 
 permissions:
@@ -26,30 +29,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Regenerate SVG graphics
-        run: node scripts/generate-graphics.js
-
-      - name: Compile README from profile data
-        run: node scripts/generate.js
+      - name: Build README from the apps site
+        run: node scripts/build.mjs
 
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add README.md assets/*.svg data/profile.json
+          git add -A README.md assets/hero.svg assets/apps
           if git diff --staged --quiet; then
             echo "No changes detected. Skipping commit."
           else
-            git commit -m "build: auto-refresh profile README [skip ci]"
+            git commit -m "build: refresh profile README [skip ci]"
             git pull origin main --rebase
             git push origin main
           fi

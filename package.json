@@ -1,13 +1,10 @@
 {
   "name": "github-profile-readme",
   "version": "1.0.0",
-  "description": "Dynamic, automated GitHub profile README generated from structured data",
+  "description": "GitHub profile README for NODAYSIDLE, built from the apps on nodaysidle-apps.vercel.app",
   "type": "module",
   "scripts": {
-    "build": "node scripts/generate-graphics.js && node scripts/generate.js",
-    "generate": "node scripts/generate.js",
-    "generate:assets": "node scripts/generate-graphics.js",
-    "watch": "node scripts/generate.js --watch"
+    "build": "node scripts/build.mjs"
   },
   "keywords": [
     "github-profile",
