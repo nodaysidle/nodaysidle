@@ -6,7 +6,7 @@
 <a href="https://nodaysidle-apps.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Eight apps shipped."></a>
 
 <p>
-<a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="128" alt="VectorStudio, v0.2.0 · 22 Oct"></a>
+<a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="128" alt="VectorStudio, v0.3.0 · 22 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/"><img src="assets/apps/ai-rules-builder.svg" width="128" alt="AI Rules Builder, web · 21 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/cascade/"><img src="assets/apps/cascade.svg" width="128" alt="Cascade, v3.1.1 · 17 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/sonora/"><img src="assets/apps/sonora.svg" width="128" alt="Sonora, v0.1.2 · 17 Oct"></a>
