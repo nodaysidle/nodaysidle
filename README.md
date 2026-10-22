@@ -3,9 +3,10 @@
   https://nodaysidle-apps.vercel.app. Do not edit by hand: change the site's data/apps.json.
 -->
 
-<a href="https://nodaysidle-apps.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Seven apps shipped."></a>
+<a href="https://nodaysidle-apps.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Eight apps shipped."></a>
 
 <p>
+<a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="128" alt="VectorStudio, v0.1.0 · 22 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/"><img src="assets/apps/ai-rules-builder.svg" width="128" alt="AI Rules Builder, web · 21 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/cascade/"><img src="assets/apps/cascade.svg" width="128" alt="Cascade, v3.1.1 · 17 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/sonora/"><img src="assets/apps/sonora.svg" width="128" alt="Sonora, v0.1.2 · 17 Oct"></a>
@@ -17,6 +18,7 @@
 
 | App | What it does | Runs on | |
 |---|---|---|---|
+| **VectorStudio** | A small desktop vector editor for Linux that keeps your work on your machine. | Linux | [Get it](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) · [Source](https://github.com/nodaysidle/no-vector-days) |
 | **AI Rules Builder** | Create, preview and share AGENTS.md and Cursor rules for AI coding agents. | Web | [Get it](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) · [Source](https://github.com/nodaysidle/markdown-helper) |
 | **Cascade** | Turn one software idea into five agent-ready markdown contracts. | macOS · Linux | [Get it](https://nodaysidle-apps.vercel.app/apps/cascade/) · [Source](https://github.com/nodaysidle/nodaysidle-cascade-v3) |
 | **Sonora** | Universal native desktop music player for Spotify, YouTube Music, and local files. | macOS · Linux | [Get it](https://nodaysidle-apps.vercel.app/apps/sonora/) · [Source](https://github.com/nodaysidle/nodaysidle-sonora) |
