@@ -3,9 +3,10 @@
   https://nodaysidle-apps.vercel.app. Do not edit by hand: change the site's data/apps.json.
 -->
 
-<a href="https://nodaysidle-apps.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Nine apps shipped."></a>
+<a href="https://nodaysidle-apps.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Ten apps shipped."></a>
 
 <p>
+<a href="https://nodaysidle-apps.vercel.app/apps/neuralcanvas/"><img src="assets/apps/neuralcanvas.svg" width="128" alt="NeuralCanvas, v0.1.0 · 25 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/"><img src="assets/apps/f1-telemetry-pro.svg" width="128" alt="F1 Telemetry Pro, web · 24 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="128" alt="VectorStudio, v0.3.0 · 22 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/"><img src="assets/apps/ai-rules-builder.svg" width="128" alt="AI Rules Builder, web · 21 Oct"></a>
@@ -19,6 +20,7 @@
 
 | App | What it does | Runs on | |
 |---|---|---|---|
+| **NeuralCanvas** | Sketch an interface by hand and get a clean wireframe, on a GPU canvas for Linux. | Linux | [Get it](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) · [Source](https://github.com/nodaysidle/neural-canvas) |
 | **F1 Telemetry Pro** | Formula 1 telemetry analysis and session replay in the browser, on real OpenF1 timing data. | Web | [Get it](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) · [Source](https://github.com/nodaysidle/F1-nodaysidle) |
 | **VectorStudio** | A small desktop vector editor for Linux that keeps your work on your machine. | Linux | [Get it](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) · [Source](https://github.com/nodaysidle/no-vector-days) |
 | **AI Rules Builder** | Create, preview and share AGENTS.md and Cursor rules for AI coding agents. | Web | [Get it](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) · [Source](https://github.com/nodaysidle/markdown-helper) |
