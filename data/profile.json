@@ -1,6 +1,7 @@
 {
   "name": "NODAYSIDLE",
   "site": "https://nodaysidle-apps.vercel.app",
+  "lead": ["f1-telemetry-pro", "levele", "neuralcanvas"],
   "apps": "https://raw.githubusercontent.com/nodaysidle/nodaysidle-apps/main/data/apps.json",
   "assets": "https://raw.githubusercontent.com/nodaysidle/nodaysidle-apps/main/public",
   "github": "https://github.com/nodaysidle",
