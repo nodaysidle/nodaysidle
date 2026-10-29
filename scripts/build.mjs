@@ -9,6 +9,7 @@
 //     NOW=2026-10-21T17:31:00+02:00 node scripts/build.mjs   # offline / preview a date
 
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -39,6 +40,31 @@ function visibleApps(apps) {
     .filter(({ at }) => at <= now.getTime())
     .sort((a, b) => b.at - a.at || a.order - b.order)
     .map(({ app }) => app);
+}
+
+function applyLeadOrder(apps, lead) {
+  const appById = new Map(apps.map((app) => [app.id, app]));
+  const promoted = [];
+  const promotedIds = new Set();
+  for (const id of lead) {
+    const app = appById.get(id);
+    if (!app || promotedIds.has(id)) continue;
+    promoted.push(app);
+    promotedIds.add(id);
+  }
+  return [...promoted, ...apps.filter((app) => !promotedIds.has(app.id))];
+}
+
+function assertLeadOrder(apps, visible, lead) {
+  const visibleIds = new Set(visible.map((app) => app.id));
+  const expectedLead = lead.filter((id, index) => index === lead.indexOf(id) && visibleIds.has(id));
+  const actualLead = apps.slice(0, expectedLead.length).map((app) => app.id);
+  assert.deepEqual(actualLead, expectedLead, 'visible lead apps must come first in profile.lead order');
+
+  const promotedIds = new Set(expectedLead);
+  const expectedRest = visible.map((app) => app.id).filter((id) => !promotedIds.has(id));
+  const actualRest = apps.slice(expectedLead.length).map((app) => app.id);
+  assert.deepEqual(actualRest, expectedRest, 'all other apps must keep the showcase order');
 }
 
 // ---- Wording, mirrored from the site's lib/render.mjs ----------------------------
@@ -178,8 +204,11 @@ ${rows}
 
 // ---- Build -----------------------------------------------------------------------
 
-const apps = visibleApps(await loadApps());
+const lead = Array.isArray(profile.lead) ? profile.lead : [];
+const visible = visibleApps(await loadApps());
+const apps = applyLeadOrder(visible, lead);
 if (!apps.length) throw new Error('No released apps: refusing to write an empty profile.');
+assertLeadOrder(apps, visible, lead);
 
 await rm(join(ROOT, 'assets/apps'), { recursive: true, force: true });
 await mkdir(join(ROOT, 'assets/apps'), { recursive: true });
