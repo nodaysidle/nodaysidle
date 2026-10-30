@@ -15,6 +15,8 @@ site, so an unreleased app never shows up here early. The headline count
 `data/profile.json` holds the few profile-level values: the site URL, the data and
 asset sources, the GitHub link and the contact address.
 
+`data/tracks.json` defines the 3 strategic tracks (AI Agent Engineering & Compiler Suite, Autonomous Personal Voice Agents, High-Craft Local-First Native & Web Apps) and the projects displayed in the README.
+
 ## Build
 
 ```bash
@@ -33,7 +35,7 @@ APPS_FILE=../nodaysidle-apps/data/apps.json ASSETS_DIR=../nodaysidle-apps/public
 | File | What it is |
 |---|---|
 | `assets/hero.svg` | "Lights out" header: five start lights that go out once, the headline and the intro line |
-| `assets/apps/<id>.svg` | One tile per released app: greyscale icon, name, version and date |
+| `assets/apps/<id>.svg` | One tile per released app: full-color icon on elevated card, name, version and date |
 | `README.md` | Hero, tiles linking to each app's page, and a table with pitch, platforms and links |
 
 The images embed the site's fonts (Saira Condensed, IBM Plex; licences in

@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const profile = JSON.parse(await readFile(join(ROOT, 'data/profile.json'), 'utf8'));
+const tracksData = JSON.parse(await readFile(join(ROOT, 'data/tracks.json'), 'utf8'));
 const now = process.env.NOW ? new Date(process.env.NOW) : new Date();
 
 // ---- Sources -------------------------------------------------------------------
@@ -94,24 +95,31 @@ async function heroSvg(apps) {
     `Native apps for ${listJoin(platformNames(apps))}. Built by one studio,`,
     'released on a schedule, one after another.',
   ];
-  // Start lights: all five on, then out left to right, once (as on the site).
+  // Start lights: authentic F1 starting gantry housing with 5 lights
   const lights = [0, 1, 2, 3, 4]
-    .map((i) => `<circle class="light" style="animation-delay:${(0.9 + i * 0.22).toFixed(2)}s" cx="${75 + i * 34}" cy="138" r="12"/>`)
+    .map((i) => {
+      const cx = 80 + i * 36;
+      return `<circle cx="${cx}" cy="139" r="13" fill="#1c1c1c"/>` +
+        `<circle class="light" style="animation-delay:${(0.9 + i * 0.22).toFixed(2)}s" cx="${cx}" cy="139" r="10"/>`;
+    })
     .join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="${xml(`${lines.join(' ')} ${sub.join(' ')}`)}">
 <style>${fonts}
-.mark{font:800 28px Saira,'Arial Narrow',sans-serif;fill:${COLORS.ink};letter-spacing:.5px}
-.head{font:800 122px/1 Saira,'Arial Narrow',sans-serif;fill:${COLORS.ink}}
-.sub{font:400 23px Plex,system-ui,sans-serif;fill:${COLORS.ink2}}
+.hero-card{fill:#070707;stroke:#222222;stroke-width:1.5}
+.gantry{fill:#121212;stroke:#282828;stroke-width:1.2}
+.mark{font:800 24px Saira,-apple-system,BlinkMacSystemFont,"Segoe UI","Arial Narrow",sans-serif;fill:${COLORS.ink};letter-spacing:1.5px}
+.head{font:800 116px/1 Saira,-apple-system,BlinkMacSystemFont,"Segoe UI","Arial Narrow",sans-serif;fill:${COLORS.ink};letter-spacing:-1px}
+.sub{font:400 23px Plex,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:${COLORS.ink2}}
 .light{fill:${COLORS.red};animation:out 60ms linear forwards}
 @keyframes out{to{fill:${COLORS.off}}}
 @media (prefers-reduced-motion:reduce){.light{animation:none;fill:${COLORS.off}}}
 </style>
-<rect width="1200" height="520" rx="22" fill="${COLORS.bg}"/>
-<text class="mark" x="64" y="84">${xml(profile.name)}</text>
+<rect class="hero-card" x="1" y="1" width="1198" height="518" rx="22"/>
+<text class="mark" x="64" y="82">${xml(profile.name)}</text>
+<rect class="gantry" x="60" y="117" width="186" height="44" rx="8"/>
 ${lights}
-<text class="head" x="60" y="290">${xml(lines[0])}</text>
-<text class="head" x="60" y="400">${xml(lines[1])}</text>
+<text class="head" x="60" y="286">${xml(lines[0])}</text>
+<text class="head" x="60" y="396">${xml(lines[1])}</text>
 <text class="sub" x="64" y="452">${xml(sub[0])}</text>
 <text class="sub" x="64" y="484">${xml(sub[1])}</text>
 </svg>
@@ -128,15 +136,14 @@ async function tileSvg(app) {
   const name = (app.shortName ?? app.name).toUpperCase();
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 228" width="200" height="228" role="img" aria-label="${xml(`${app.name}, ${appMeta(app)}`)}">
 <style>${fonts}
-.name{font:600 25px Saira,'Arial Narrow',sans-serif;fill:${COLORS.ink}}
-.meta{font:400 14px PlexMono,ui-monospace,monospace;fill:${COLORS.label}}
+.card{fill:#0b0b0b;stroke:#262626;stroke-width:1.2}
+.name{font:600 24px Saira,-apple-system,BlinkMacSystemFont,"Segoe UI","Arial Narrow",sans-serif;fill:${COLORS.ink};letter-spacing:.5px}
+.meta{font:400 13px PlexMono,ui-monospace,monospace;fill:${COLORS.label};letter-spacing:.3px}
 </style>
-<!-- Greyscale like the site's resting state (filter: grayscale(1) brightness(.85)). -->
-<filter id="rest"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope=".85"/><feFuncG type="linear" slope=".85"/><feFuncB type="linear" slope=".85"/></feComponentTransfer></filter>
-<rect width="200" height="228" rx="20" fill="${COLORS.bg}"/>
-<image href="data:image/${type};base64,${icon}" x="46" y="22" width="108" height="108" filter="url(#rest)"/>
+<rect class="card" x="1" y="1" width="198" height="226" rx="18"/>
+<image href="data:image/${type};base64,${icon}" x="46" y="24" width="108" height="108"/>
 <text class="name" x="100" y="170" text-anchor="middle">${xml(name)}</text>
-<text class="meta" x="100" y="199" text-anchor="middle">${xml(appMeta(app))}</text>
+<text class="meta" x="100" y="198" text-anchor="middle">${xml(appMeta(app))}</text>
 </svg>
 `;
 }
@@ -146,33 +153,69 @@ async function tileSvg(app) {
 const appPage = (app) => `${profile.site}/apps/${app.id}/`;
 const runsOn = (app) => (app.kind === 'web' ? 'Web' : platformNames([app]).join(' · '));
 
-function readme(apps) {
+function readme(apps, tracksData) {
   const headline = `Lights out. ${numberWord(apps.length)} apps shipped.`;
-  const tiles = apps
-    .map((app) => `<a href="${appPage(app)}"><img src="assets/apps/${app.id}.svg" width="128" alt="${xml(`${app.name}, ${appMeta(app)}`)}"></a>`)
-    .join('\n');
-  const rows = apps
-    .map((app) => {
-      const links = [`[Get it](${appPage(app)})`, app.repo && `[Source](${app.repo})`].filter(Boolean).join(' · ');
-      return `| **${app.name}** | ${app.pitch} | ${runsOn(app)} | ${links} |`;
-    })
-    .join('\n');
+
+  const cols = 5;
+  const rows = [];
+  for (let i = 0; i < apps.length; i += cols) {
+    const chunk = apps.slice(i, i + cols);
+    const cells = chunk.map((app) => 
+      `    <td align="center" width="20%">
+      <a href="${appPage(app)}">
+        <img src="assets/apps/${app.id}.svg" width="100%" alt="${xml(`${app.name}, ${appMeta(app)}`)}">
+      </a>
+    </td>`
+    ).join('\n');
+    rows.push(`  <tr>\n${cells}\n  </tr>`);
+  }
+  const appGrid = `<table width="100%">\n${rows.join('\n')}\n</table>`;
+
+  const metaStory = `### Architecture & Engineering Principles
+
+**NODAYSIDLE** is an independent software studio building zero-bloat native systems, high-speed web apps, and deterministic agent compilers. Everything is local-first, memory-safe, and shipped with zero telemetry.
+
+- **Lights-Out Shipping:** Apps released on a relentless cadence, fully realized and self-contained. No phantom roadmaps, no waitlists.
+- **Native Systems Craft:** High-performance Linux (Rust, Wayland, wgpu, WebKitGTK), macOS (Swift 6, SwiftUI, TextKit 2, Metal), and sub-second voice assistant daemons.
+- **Deterministic Spec-to-Agent Pipeline:** Ideas are compiled through [Cascade V3](https://github.com/nodaysidle/nodaysidle-cascade-v3) into five immutable markdown contracts (\`PRD.md\`, \`ARD.md\`, \`TRD.md\`, \`TASKS.md\`, \`AGENTS.md\`), governed by [AI Rules Builder](https://github.com/nodaysidle/markdown-helper) and refined via [Prompt Optimizer](https://github.com/nodaysidle/nodaysidle-prompt-optimizer).
+- **System One Cognitive Gating:** \`TypeSafe Jev\` acts as a fast preflight boundary across apps to prevent context drift, heal platform boundaries, and triage memory before invoking LLMs.
+- **Zero-Persistence Privacy:** Memory-only or user-supplied API keys, local SQLite/IndexedDB state, and zero telemetry.`;
+
+  const trackSections = (tracksData?.tracks ?? []).map((track) => {
+    const rows = track.apps
+      .map((app) => {
+        const links = [
+          app.url && `[App](${app.url})`,
+          app.repo && `[Code](${app.repo})`
+        ].filter(Boolean).join(' · ');
+        const platformBadges = (app.runsOn ?? 'Web').split(' · ').map((p) => `\`${p}\``).join(' ');
+        return `| **${app.name}** | ${app.pitch} | ${platformBadges} | ${links} |`;
+      })
+      .join('\n');
+
+    return `### ${track.title}
+
+| Application | Purpose | Platform | Links |
+| :--- | :--- | :--- | :--- |
+${rows}`;
+  }).join('\n\n');
+
+  const footer = `<sub><code>${profile.site.replace('https://', '')}</code> · <a href="${profile.github}">GitHub</a> · <a href="mailto:${profile.email}">${profile.email}</a></sub>`;
+
   return `<!--
-  Generated by scripts/build.mjs from data/profile.json and the apps on
-  ${profile.site}. Do not edit by hand: change the site's data/apps.json.
+  Generated by scripts/build.mjs from data/profile.json, data/tracks.json, and the apps on
+  ${profile.site}.
 -->
 
 <a href="${profile.site}"><img src="assets/hero.svg" width="100%" alt="${xml(headline)}"></a>
 
-<p>
-${tiles}
-</p>
+${appGrid}
 
-| App | What it does | Runs on | |
-|---|---|---|---|
-${rows}
+${metaStory}
 
-<sub><code>${profile.site.replace('https://', '')}</code> · <a href="${profile.github}">GitHub</a> · <a href="mailto:${profile.email}">${profile.email}</a></sub>
+${trackSections}
+
+${footer}
 `;
 }
 
@@ -185,5 +228,5 @@ await rm(join(ROOT, 'assets/apps'), { recursive: true, force: true });
 await mkdir(join(ROOT, 'assets/apps'), { recursive: true });
 for (const app of apps) await writeFile(join(ROOT, 'assets/apps', `${app.id}.svg`), await tileSvg(app));
 await writeFile(join(ROOT, 'assets/hero.svg'), await heroSvg(apps));
-await writeFile(join(ROOT, 'README.md'), readme(apps));
+await writeFile(join(ROOT, 'README.md'), readme(apps, tracksData));
 console.log(`README: ${apps.length} apps (${apps.map((a) => a.id).join(', ')})`);

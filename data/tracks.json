@@ -1,0 +1,130 @@
+{
+  "tracks": [
+    {
+      "id": "agent-compiler-suite",
+      "title": "Track 1: AI Agent Engineering & Compiler Suite (Flagship)",
+      "apps": [
+        {
+          "name": "Cascade V3",
+          "id": "cascade",
+          "slug": "nodaysidle-cascade-v3",
+          "pitch": "Turns one software idea into five deterministic, agent-ready markdown contracts (PRD.md, ARD.md, TRD.md, TASKS.md, AGENTS.md).",
+          "runsOn": "macOS · Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/cascade/",
+          "repo": "https://github.com/nodaysidle/nodaysidle-cascade-v3"
+        },
+        {
+          "name": "NODAYSIDLE Prompt Optimizer",
+          "id": "prompt-optimizer",
+          "slug": "nodaysidle-prompt-optimizer",
+          "pitch": "Redline keep-or-revert prompt workbench with Mouse-1/Decision-1 verification gates.",
+          "runsOn": "Web",
+          "url": "https://nodaysidle-prompt-optimizer.vercel.app",
+          "repo": "https://github.com/nodaysidle/nodaysidle-prompt-optimizer"
+        },
+        {
+          "name": "AI Rules Builder",
+          "id": "ai-rules-builder",
+          "slug": "markdown-helper",
+          "pitch": "Client-first builder & exporter for AGENTS.md (agy, Codex, Command Code, deepseek-harness) and .cursor/rules.",
+          "runsOn": "Web",
+          "url": "https://markdown-helper.vercel.app",
+          "repo": "https://github.com/nodaysidle/markdown-helper"
+        }
+      ]
+    },
+    {
+      "id": "voice-agents",
+      "title": "Track 2: Autonomous Personal Voice Agents",
+      "apps": [
+        {
+          "name": "Kurek",
+          "id": "kurek",
+          "slug": "kureksistant",
+          "pitch": "Sub-second Arch Linux (Omarchy/Hyprland) voice assistant daemon (~333MB RAM, Middle Click C-trigger, Muse Memory, TypeSafe Jev System One cognitive gating).",
+          "runsOn": "Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/kurek/",
+          "repo": "https://github.com/nodaysidle/kureksistant"
+        },
+        {
+          "name": "Duet",
+          "id": "duet",
+          "slug": "duet-android",
+          "pitch": "Voice-first Android personal agent with morning briefs, human-in-the-loop approval cards, and Tailscale PC pairing.",
+          "runsOn": "Android",
+          "url": "https://github.com/nodaysidle/duet-android",
+          "repo": "https://github.com/nodaysidle/duet-android"
+        }
+      ]
+    },
+    {
+      "id": "native-web-craft",
+      "title": "Track 3: High-Craft Local-First Native & Web Apps",
+      "apps": [
+        {
+          "name": "NeuralCanvas",
+          "id": "neuralcanvas",
+          "slug": "neural-canvas",
+          "pitch": "GPU-accelerated (Rust/wgpu/Wayland) sketch-to-wireframe canvas for Linux.",
+          "runsOn": "Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/neuralcanvas/",
+          "repo": "https://github.com/nodaysidle/neural-canvas"
+        },
+        {
+          "name": "F1 Telemetry Pro",
+          "id": "f1-telemetry-pro",
+          "slug": "F1-nodaysidle",
+          "pitch": "60 FPS browser telemetry & session replay on real OpenF1 data.",
+          "runsOn": "Web",
+          "url": "https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/",
+          "repo": "https://github.com/nodaysidle/F1-nodaysidle"
+        },
+        {
+          "name": "NODAYSIDLE Browser for Linux",
+          "id": "browser-linux",
+          "slug": "nodaysidle-browser-linux",
+          "pitch": "Focused Rust + WebKitGTK Linux browser with optional TypeSafe Jev scam checks.",
+          "runsOn": "Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/browser-linux/",
+          "repo": "https://github.com/nodaysidle/nodaysidle-browser-linux"
+        },
+        {
+          "name": "VectorStudio",
+          "id": "vectorstudio",
+          "slug": "no-vector-days",
+          "pitch": "A small desktop vector editor for Linux that keeps your work on your machine.",
+          "runsOn": "Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/vectorstudio/",
+          "repo": "https://github.com/nodaysidle/no-vector-days"
+        },
+        {
+          "name": "Sonora",
+          "id": "sonora",
+          "slug": "nodaysidle-sonora",
+          "pitch": "Universal native desktop music player for Spotify, YouTube Music, and local files.",
+          "runsOn": "macOS · Linux",
+          "url": "https://nodaysidle-apps.vercel.app/apps/sonora/",
+          "repo": "https://github.com/nodaysidle/nodaysidle-sonora"
+        },
+        {
+          "name": "WhisperBar",
+          "id": "whisperbar",
+          "slug": "whisper-bar",
+          "pitch": "Native, privacy-first macOS menu bar dictation with real-time streaming.",
+          "runsOn": "macOS",
+          "url": "https://nodaysidle-apps.vercel.app/apps/whisperbar/",
+          "repo": "https://github.com/nodaysidle/whisper-bar"
+        },
+        {
+          "name": "nodaysrammar",
+          "id": "nodaysrammar",
+          "slug": "nodaysrammar",
+          "pitch": "Private, on-device grammar and spell checker for English, Italian, and Slovenian.",
+          "runsOn": "Chrome",
+          "url": "https://nodaysidle-apps.vercel.app/apps/nodaysrammar/",
+          "repo": "https://github.com/nodaysidle/nodaysrammar"
+        }
+      ]
+    }
+  ]
+}
