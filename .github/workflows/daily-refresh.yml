@@ -42,7 +42,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add -A README.md assets/hero.svg assets/apps
+          git add -A README.md assets/hero.svg assets/calendar.svg assets/flow.svg assets/apps
           if git diff --staged --quiet; then
             echo "No changes detected. Skipping commit."
           else

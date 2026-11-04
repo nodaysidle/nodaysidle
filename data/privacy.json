@@ -1,0 +1,13 @@
+{
+  "neuralcanvas": "Stays on your machine. No network, no account.",
+  "vectorstudio": "Stays on your machine. No network requests, no account.",
+  "nodaysrammar": "Your text is checked on your device and never sent to a server. Preferences use Chrome Sync.",
+  "ai-rules-builder": "Runs in your browser. Saved configs stay in localStorage, and share links carry the config in the URL. No account, no tracking.",
+  "f1-telemetry-pro": "Runs in your browser and fetches public race data from OpenF1. No account, no tracking.",
+  "browser-linux": "History and cookies stay local, with no application telemetry. The optional page assistant sends page data to TypeSafe Jev or Claude only when you click.",
+  "sonora": "Your library stays local, with no account or telemetry. Spotify, YouTube Music and LRCLIB connect directly from your machine.",
+  "cascade": "Your idea goes to TypeSafe Jev and DeepSeek using your own keys, which stay in memory. No account, no telemetry. The rest runs locally.",
+  "whisperbar": "Your voice goes to Deepgram or OpenRouter, and refinement text to OpenRouter, using your own keys in the macOS Keychain. Transcript history stays local.",
+  "kurek": "Cloud-based, using your own keys. Voice goes to OpenRouter by default, requests to DeepSeek, spoken replies to xAI and screen captures to Gemini. Speech-to-text can fall back to local.",
+  "levele": "Designs stay in your browser, and accounts are optional and local. No analytics or tracking. Live sessions are opt-in and send encrypted edits through a public relay."
+}

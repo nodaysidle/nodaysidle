@@ -4,5 +4,30 @@
   "apps": "https://raw.githubusercontent.com/nodaysidle/nodaysidle-apps/main/data/apps.json",
   "assets": "https://raw.githubusercontent.com/nodaysidle/nodaysidle-apps/main/public",
   "github": "https://github.com/nodaysidle",
-  "email": "nodaysidle@tutanota.de"
+  "email": "nodaysidle@tutanota.de",
+  "hero": {
+    "app": "F1 Telemetry Pro",
+    "footage": "assets/hero-footage.gif",
+    "url": "https://f1-telemetry-pro.vercel.app",
+    "alt": "F1 Telemetry Pro replaying the 2024 Belgian Grand Prix",
+    "cta": "Open the replay in your browser"
+  },
+  "live": {
+    "f1-telemetry-pro": "https://f1-telemetry-pro.vercel.app",
+    "ai-rules-builder": "https://markdown-helper.vercel.app"
+  },
+  "tryNow": [
+    {
+      "name": "F1 Telemetry Pro",
+      "url": "https://f1-telemetry-pro.vercel.app"
+    },
+    {
+      "name": "AI Rules Builder",
+      "url": "https://markdown-helper.vercel.app"
+    },
+    {
+      "name": "Prompt Optimizer",
+      "url": "https://nodaysidle-prompt-optimizer.vercel.app"
+    }
+  ]
 }
