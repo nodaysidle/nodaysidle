@@ -10,12 +10,14 @@ To add or change an app, change it there. This repo picks it up on the next buil
 
 An app appears only once its `showFrom` time has passed, in the same order as on the
 site, so an unreleased app never shows up here early. The headline count
-("Six apps shipped.") and the platform line follow the same rules as the site.
+("Ten apps shipped.") and the platform line follow the same rules as the site.
 
 `data/profile.json` holds the few profile-level values: the site URL, the data and
 asset sources, the GitHub link and the contact address.
 
-`data/tracks.json` defines the 3 strategic tracks (AI Agent Engineering & Compiler Suite, Autonomous Personal Voice Agents, High-Craft Local-First Native & Web Apps) and the projects displayed in the README.
+`data/privacy.json` holds one verified privacy line per app id. A new app without a line shows "See the repo." and the build prints a warning, so add its line before launch.
+
+To change the hero, update `hero` in `data/profile.json` and replace `assets/hero-footage.gif`.
 
 ## Build
 
@@ -34,9 +36,11 @@ APPS_FILE=../nodaysidle-apps/data/apps.json ASSETS_DIR=../nodaysidle-apps/public
 
 | File | What it is |
 |---|---|
-| `assets/hero.svg` | "Lights out" header: five start lights that go out once, the headline and the intro line |
-| `assets/apps/<id>.svg` | One tile per released app: full-color icon on elevated card, name, version and date |
-| `README.md` | Hero, tiles linking to each app's page, and a table with pitch, platforms and links |
+| `assets/hero.svg` | "Lights out" band: five start lights that go out once, and the headline |
+| `assets/apps/<id>.svg` | One timing tower row per released app: position, icon, name, version, platforms and gap |
+| `assets/calendar.svg` | Ship calendar across the release dates |
+| `assets/flow.svg` | One idea to five contracts to release |
+| `README.md` | Hero, tower, calendar, flow, and a table of what each app does and sends |
 
 The images embed the site's fonts (Saira Condensed, IBM Plex; licences in
 `assets/fonts/`) and icons, so they render the same on GitHub in light and dark mode.
