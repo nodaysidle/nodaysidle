@@ -9,5 +9,6 @@
   "cascade": "Your idea goes to TypeSafe Jev and DeepSeek using your own keys, which stay in memory. No account, no telemetry. The rest runs locally.",
   "whisperbar": "Your voice goes to Deepgram or OpenRouter, and refinement text to OpenRouter, using your own keys in the macOS Keychain. Transcript history stays local.",
   "kurek": "Cloud-based, using your own keys. Voice goes to OpenRouter by default, requests to DeepSeek, spoken replies to xAI and screen captures to Gemini. Speech-to-text can fall back to local.",
-  "levele": "Designs stay in your browser, and accounts are optional and local. No analytics or tracking. Live sessions are opt-in and send encrypted edits through a public relay."
+  "levele": "Designs stay in your browser, and accounts are optional and local. No analytics or tracking. Live sessions are opt-in and send encrypted edits through a public relay.",
+  "scratch-pad": "Stays on your machine. No network access, no account, no telemetry. The note is stored locally."
 }

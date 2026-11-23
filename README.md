@@ -3,11 +3,12 @@
   https://nodaysidle-apps.vercel.app.
 -->
 
-<a href="https://f1-telemetry-pro.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Ten apps shipped."></a>
+<a href="https://f1-telemetry-pro.vercel.app"><img src="assets/hero.svg" width="100%" alt="Lights out. Eleven apps shipped."></a>
 <a href="https://f1-telemetry-pro.vercel.app"><img src="assets/hero-footage.gif" width="100%" alt="F1 Telemetry Pro replaying the 2024 Belgian Grand Prix"></a>
 
 **Running above: F1 Telemetry Pro.** [Open the replay in your browser](https://f1-telemetry-pro.vercel.app)
 
+<a href="https://nodaysidle-apps.vercel.app/apps/scratch-pad/"><img src="assets/apps/scratch-pad.svg" width="100%" alt="Scratch Pad, v0.1.0 · 23 Nov"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/neuralcanvas/"><img src="assets/apps/neuralcanvas.svg" width="100%" alt="NeuralCanvas, v0.1.0 · 25 Oct"></a>
 <a href="https://f1-telemetry-pro.vercel.app"><img src="assets/apps/f1-telemetry-pro.svg" width="100%" alt="F1 Telemetry Pro, web · 24 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="100%" alt="VectorStudio, v0.3.0 · 22 Oct"></a>
@@ -23,9 +24,9 @@
 
 **Try one now:** [F1 Telemetry Pro](https://f1-telemetry-pro.vercel.app) · [AI Rules Builder](https://markdown-helper.vercel.app) · [Prompt Optimizer](https://nodaysidle-prompt-optimizer.vercel.app)
 
-### Ten apps between 22 Sep and 25 Oct
+### Eleven apps between 22 Sep and 23 Nov
 
-<img src="assets/calendar.svg" width="100%" alt="Calendar of 10 releases from 22 Sep to 25 Oct">
+<img src="assets/calendar.svg" width="100%" alt="Calendar of 11 releases from 22 Sep to 23 Nov">
 
 ### How an app gets built
 
@@ -39,6 +40,7 @@ Some apps need a cloud service to work. This table says which ones, and what the
 
 | App | What it does | Privacy |
 | :--- | :--- | :--- |
+| [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) · [Code](https://github.com/nodaysidle/scratch-pad) | One always-available note for Arch Linux and Hyprland, saved as you type. | Stays on your machine. No network access, no account, no telemetry. The note is stored locally. |
 | [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) · [Code](https://github.com/nodaysidle/neural-canvas) | Sketch an interface by hand and get a clean wireframe, on a GPU canvas for Linux. | Stays on your machine. No network, no account. |
 | [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) · [Code](https://github.com/nodaysidle/F1-nodaysidle) | Formula 1 telemetry analysis and session replay in the browser, on real OpenF1 timing data. | Runs in your browser and fetches public race data from OpenF1. No account, no tracking. |
 | [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) · [Code](https://github.com/nodaysidle/no-vector-days) | A small desktop vector editor for Linux that keeps your work on your machine. | Stays on your machine. No network requests, no account. |
