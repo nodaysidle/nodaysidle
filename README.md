@@ -8,7 +8,7 @@
 
 **Running above: F1 Telemetry Pro.** [Open the replay in your browser](https://f1-telemetry-pro.vercel.app)
 
-<a href="https://nodaysidle-apps.vercel.app/apps/scratch-pad/"><img src="assets/apps/scratch-pad.svg" width="100%" alt="Scratch Pad, v0.1.0 · 23 Nov"></a>
+<a href="https://nodaysidle-apps.vercel.app/apps/scratch-pad/"><img src="assets/apps/scratch-pad.svg" width="100%" alt="Scratch Pad, v0.2.1 · 24 Nov"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/neuralcanvas/"><img src="assets/apps/neuralcanvas.svg" width="100%" alt="NeuralCanvas, v0.1.0 · 25 Oct"></a>
 <a href="https://f1-telemetry-pro.vercel.app"><img src="assets/apps/f1-telemetry-pro.svg" width="100%" alt="F1 Telemetry Pro, web · 24 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="100%" alt="VectorStudio, v0.3.0 · 22 Oct"></a>
@@ -24,9 +24,9 @@
 
 **Try one now:** [F1 Telemetry Pro](https://f1-telemetry-pro.vercel.app) · [AI Rules Builder](https://markdown-helper.vercel.app) · [Prompt Optimizer](https://nodaysidle-prompt-optimizer.vercel.app)
 
-### Eleven apps between 22 Sep and 23 Nov
+### Eleven apps between 22 Sep and 24 Nov
 
-<img src="assets/calendar.svg" width="100%" alt="Calendar of 11 releases from 22 Sep to 23 Nov">
+<img src="assets/calendar.svg" width="100%" alt="Calendar of 11 releases from 22 Sep to 24 Nov">
 
 ### How an app gets built
 
