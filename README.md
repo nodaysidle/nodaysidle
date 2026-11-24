@@ -8,7 +8,7 @@
 
 **Running above: F1 Telemetry Pro.** [Open the replay in your browser](https://f1-telemetry-pro.vercel.app)
 
-<a href="https://nodaysidle-apps.vercel.app/apps/scratch-pad/"><img src="assets/apps/scratch-pad.svg" width="100%" alt="Scratch Pad, v0.2.1 · 24 Nov"></a>
+<a href="https://nodaysidle-apps.vercel.app/apps/scratch-pad/"><img src="assets/apps/scratch-pad.svg" width="100%" alt="Scratch Pad, v0.2.2 · 24 Nov"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/neuralcanvas/"><img src="assets/apps/neuralcanvas.svg" width="100%" alt="NeuralCanvas, v0.1.0 · 25 Oct"></a>
 <a href="https://f1-telemetry-pro.vercel.app"><img src="assets/apps/f1-telemetry-pro.svg" width="100%" alt="F1 Telemetry Pro, web · 24 Oct"></a>
 <a href="https://nodaysidle-apps.vercel.app/apps/vectorstudio/"><img src="assets/apps/vectorstudio.svg" width="100%" alt="VectorStudio, v0.3.0 · 22 Oct"></a>
