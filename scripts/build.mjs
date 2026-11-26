@@ -1,292 +1,305 @@
 #!/usr/bin/env node
-// Builds README.md and the SVGs in assets/ from the apps listed on
-// nodaysidle-apps.vercel.app. The site's data/apps.json is the single source of
-// truth: an app appears here only once its showFrom time has passed, exactly like
-// the site, so nothing about an unreleased app is ever written to this repo.
+// Deterministic profile README builder (v2).
+//
+// Every number in README.md is generated at build time. Nothing on the page is
+// hand-typed, so nothing can go stale or lie. Sources, in order of authority:
+//
+//   1. The GitHub REST API  - public repository count, latest release of every repo
+//   2. The apps site data   - launch dates for web apps, last-resort fallback
+//   3. data/apps.json       - the app registry: the only human-maintained facts
+//   4. data/privacy.json   - one verified privacy line per app id
+//   5. data/profile.json   - profile-level constants (site, GitHub, email)
+//
+// Anything that cannot be verified is rendered as UNKNOWN. Never guessed, never
+// silently dropped.
 //
 //   node scripts/build.mjs
-//   APPS_FILE=../nodaysidle-apps/data/apps.json ASSETS_DIR=../nodaysidle-apps/public \
-//     NOW=2026-10-21T17:31:00+02:00 node scripts/build.mjs   # offline / preview a date
+//   NOW=2026-12-01T06:00:00Z node scripts/build.mjs                       # frozen clock
+//   RELEASES_FILE=fixture.json APPS_FILE=site-apps.json node scripts/build.mjs  # fully offline
 
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const profile = JSON.parse(await readFile(join(ROOT, 'data/profile.json'), 'utf8'));
+const registry = JSON.parse(await readFile(join(ROOT, 'data/apps.json'), 'utf8'));
 const privacy = JSON.parse(await readFile(join(ROOT, 'data/privacy.json'), 'utf8'));
 const now = process.env.NOW ? new Date(process.env.NOW) : new Date();
 
-// ---- Sources -------------------------------------------------------------------
+const CLASSES = ['LOCAL', 'KEYS', 'PUBLIC'];
+const warnings = [];
+const warn = (message) => warnings.push(message);
 
-async function loadApps() {
-  if (process.env.APPS_FILE) return JSON.parse(await readFile(process.env.APPS_FILE, 'utf8')).apps;
-  const res = await fetch(profile.apps);
-  if (!res.ok) throw new Error(`apps.json: HTTP ${res.status}`);
-  return (await res.json()).apps;
+// ---- Registry validation -----------------------------------------------------------
+
+const apps = registry.apps;
+if (!Array.isArray(apps) || apps.length === 0) throw new Error('data/apps.json: no apps, refusing to build.');
+const ids = apps.map((app) => app.id);
+if (new Set(ids).size !== ids.length) throw new Error('data/apps.json: duplicate app ids.');
+for (const app of apps) {
+  if (!CLASSES.includes(app.privacyClass)) throw new Error(`data/apps.json: ${app.id}: unknown privacyClass "${app.privacyClass}".`);
+  if (!['web', 'download'].includes(app.kind)) throw new Error(`data/apps.json: ${app.id}: unknown kind "${app.kind}".`);
+  if (typeof app.telemetry !== 'boolean') throw new Error(`data/apps.json: ${app.id}: telemetry must be true or false.`);
+}
+const flagships = apps.filter((app) => app.flagship);
+if (flagships.length > 1) throw new Error('data/apps.json: at most one app may be the flagship.');
+if (flagships.length === 0) warn('data/apps.json: no flagship app is set.');
+
+// ---- Network sources ----------------------------------------------------------------
+
+const ghHeaders = { Accept: 'application/vnd.github+json' };
+if (process.env.GITHUB_TOKEN) ghHeaders.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+
+async function gh(path) {
+  try {
+    const res = await fetch(`https://api.github.com${path}`, { headers: ghHeaders });
+    if (res.status === 404) return { status: 404, data: null };
+    if (!res.ok) {
+      warn(`GitHub API ${path}: HTTP ${res.status}`);
+      return { status: res.status, data: null };
+    }
+    return { status: 200, data: await res.json() };
+  } catch (error) {
+    warn(`GitHub API ${path}: ${error.message}`);
+    return { status: 0, data: null };
+  }
 }
 
-async function loadAsset(path) {
-  if (process.env.ASSETS_DIR) return readFile(join(process.env.ASSETS_DIR, path));
-  const res = await fetch(`${profile.assets}${path}`);
-  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
-  return Buffer.from(await res.arrayBuffer());
+async function latestRelease(repo) {
+  if (process.env.RELEASES_FILE) {
+    const fixture = JSON.parse(await readFile(process.env.RELEASES_FILE, 'utf8'));
+    return fixture.latest?.[repo] ?? null;
+  }
+  const { data } = await gh(`/repos/${repo}/releases/latest`);
+  if (!data || !data.tag_name) return null;
+  return { tag: data.tag_name, at: data.published_at, url: data.html_url };
 }
 
-// Same rule and order as the site (nodaysidle-apps lib/data.mjs visibleApps).
-function visibleApps(apps) {
-  return apps
-    .map((app, order) => ({ app, order, at: Date.parse(app.showFrom) }))
-    .filter(({ at }) => at <= now.getTime())
-    .sort((a, b) => b.at - a.at || a.order - b.order)
-    .map(({ app }) => app);
+async function publicRepoCount() {
+  if (process.env.RELEASES_FILE) {
+    const fixture = JSON.parse(await readFile(process.env.RELEASES_FILE, 'utf8'));
+    return fixture.repos ?? 'UNKNOWN';
+  }
+  const { data } = await gh(`/users/${profile.github.split('/').pop()}`);
+  return data ? data.public_repos : 'UNKNOWN';
 }
 
-// ---- Wording, mirrored from the site's lib/render.mjs ----------------------------
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
-const numberWord = (n) => WORDS[n] ?? String(n);
-
-function shortDate(iso) {
-  const parts = new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric', month: 'numeric', timeZone: 'Europe/Ljubljana',
-  }).formatToParts(new Date(iso));
-  const get = (type) => Number(parts.find((p) => p.type === type).value);
-  return `${String(get('day')).padStart(2, '0')} ${MONTHS[get('month') - 1]}`;
+async function siteApps() {
+  if (process.env.APPS_FILE) {
+    return new Map(JSON.parse(await readFile(process.env.APPS_FILE, 'utf8')).apps.map((app) => [app.id, app]));
+  }
+  try {
+    const res = await fetch(profile.appsSource);
+    if (!res.ok) {
+      warn(`apps source: HTTP ${res.status}`);
+      return new Map();
+    }
+    return new Map((await res.json()).apps.map((app) => [app.id, app]));
+  } catch (error) {
+    warn(`apps source: ${error.message}`);
+    return new Map();
+  }
 }
 
-const shippedDate = (app) => (app.kind === 'web' ? app.showFrom : app.released);
+async function demoCheck(url) {
+  if (!url) return null;
+  for (const method of ['HEAD', 'GET']) {
+    try {
+      const res = await fetch(url, { method, redirect: 'follow' });
+      if (res.status === 405 || res.status === 501) continue;
+      return res.ok ? 'LIVE' : `UNKNOWN (HTTP ${res.status})`;
+    } catch (error) {
+      warn(`demo ${url}: ${error.message}`);
+    }
+  }
+  return 'UNKNOWN';
+}
+
+// ---- Date arithmetic (Europe/Ljubljana day keys, same rule as the apps site) --------
+
 const dayKey = (iso) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Ljubljana' }).format(new Date(iso));
 const dayNumber = (key) => Date.parse(`${key}T00:00:00Z`) / 86_400_000;
-const shippedDay = (app) => dayNumber(dayKey(shippedDate(app)));
-const releaseDates = (apps) =>
-  apps.map(shippedDate).sort((a, b) => dayNumber(dayKey(a)) - dayNumber(dayKey(b)));
-const appMeta = (app) => `${app.kind === 'web' ? 'web' : app.version} · ${shortDate(shippedDate(app))}`;
+const today = dayNumber(dayKey(now.toISOString()));
+const gapDays = (iso) => today - dayNumber(dayKey(iso));
+const isoDate = (iso) => dayKey(iso);
 
-const PLATFORM_GROUPS = [
-  ['macOS', (p) => p.startsWith('macOS')],
-  ['Linux', (p) => p.startsWith('Linux')],
-  ['Chrome', (p) => p.startsWith('Chrome')],
-];
+// ---- Assemble one ledger row per app --------------------------------------------------
 
-function platformNames(apps) {
-  const platforms = apps.flatMap((a) => a.platforms ?? []);
-  const names = PLATFORM_GROUPS.filter(([, match]) => platforms.some(match)).map(([name]) => name);
-  if (apps.some((a) => a.kind === 'web')) names.push('the web');
-  return names;
-}
+async function buildRow(app, site) {
+  const siteApp = site.get(app.id);
+  let version = 'UNKNOWN';
+  let releasedAt = null;
+  let releaseUrl = null;
+  let source = 'UNKNOWN';
 
-// ---- SVG -------------------------------------------------------------------------
+  if (app.kind === 'web') {
+    version = 'web';
+    releasedAt = siteApp?.showFrom ?? null;
+    source = releasedAt ? 'site' : 'UNKNOWN';
+  } else {
+    const release = await latestRelease(app.repo);
+    if (release) {
+      version = release.tag;
+      releasedAt = release.at;
+      releaseUrl = release.url;
+      source = 'github';
+    } else if (siteApp?.released && siteApp?.version) {
+      version = siteApp.version;
+      releasedAt = siteApp.released;
+      source = 'site';
+      warn(`${app.id}: no GitHub release found, using site data (${siteApp.version}).`);
+    }
+  }
 
-const xml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const gap = releasedAt ? gapDays(releasedAt) : null;
+  const demo = await demoCheck(app.demo);
+  const dormant = gap !== null && gap > 60;
+  const page = `${profile.site}/apps/${app.id}/`;
+  if (!privacy[app.id]) warn(`No privacy line for ${app.id}: add one to data/privacy.json.`);
 
-async function fontFace(family, file, weight) {
-  const data = (await readFile(join(ROOT, 'assets/fonts', file))).toString('base64');
-  return `@font-face{font-family:${family};font-weight:${weight};src:url(data:font/woff2;base64,${data}) format('woff2')}`;
-}
-
-const COLORS = { ink: '#f2f2f2', label: '#9a9a9a', off: '#2a2a2a', red: '#e10600' };
-
-async function heroSvg(apps) {
-  const fonts = [
-    await fontFace('Saira', 'saira-condensed-800.woff2', 800),
-    await fontFace('PlexMono', 'ibm-plex-mono-400.woff2', 400),
-  ].join('');
-  const headline = `Lights out. ${numberWord(apps.length)} apps shipped.`.toUpperCase();
-  const lights = [0, 1, 2, 3, 4]
-    .map((i) => {
-      const cx = 1010 + i * 36;
-      return `<circle cx="${cx}" cy="58" r="13" fill="#1c1c1c"/>` +
-        `<circle class="light" style="animation-delay:${(0.9 + i * 0.22).toFixed(2)}s" cx="${cx}" cy="58" r="10"/>`;
-    })
-    .join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 190" width="1200" height="190" role="img" aria-label="${xml(headline)}">
-<style>${fonts}
-.head{font:800 92px/1 Saira,"Arial Narrow",sans-serif;fill:${COLORS.ink}}
-.mark{font:400 24px PlexMono,ui-monospace,monospace;fill:${COLORS.label}}
-.light{fill:${COLORS.red};animation:out 60ms linear forwards}
-@keyframes out{to{fill:${COLORS.off}}}
-@media (prefers-reduced-motion:reduce){.light{animation:none;fill:${COLORS.off}}}
-</style>
-<rect x="0" y="0" width="1200" height="190" rx="14" fill="#070707"/>
-<rect x="0" y="24" width="10" height="142" fill="${COLORS.red}"/>
-<rect x="988" y="36" width="186" height="44" rx="8" fill="#121212" stroke="#282828" stroke-width="1.2"/>
-${lights}
-<text class="mark" x="44" y="66">${xml(profile.name)}</text>
-<text class="head" x="40" y="156">${xml(headline)}</text>
-</svg>
-`;
-}
-
-const TYRES = { W: '#f5c518', L: '#e6e6e6', M: '#d0342c', C: '#2fa84f' };
-
-async function rowSvg(app, position, leaderDay) {
-  const fonts = [
-    await fontFace('Saira', 'saira-condensed-600.woff2', 600),
-    await fontFace('PlexMono', 'ibm-plex-mono-400.woff2', 400),
-  ].join('');
-  const icon = (await loadAsset(app.icon)).toString('base64');
-  const type = app.icon.endsWith('.png') ? 'png' : 'webp';
-  const name = (app.shortName ?? app.name).toUpperCase();
-  const behind = leaderDay - shippedDay(app);
-  const gap = position === 1 ? 'LEADER' : `+${behind}d`;
-  const letters = app.kind === 'web' ? ['W'] : platformNames([app]).map((p) => p[0].toUpperCase());
-  const tyres = letters
-    .map((letter, i) => {
-      const cx = 640 - (letters.length - 1 - i) * 42;
-      return `<circle cx="${cx}" cy="38" r="17" fill="none" stroke="${TYRES[letter]}" stroke-width="5"/>` +
-        `<text class="tyre" x="${cx}" y="44" text-anchor="middle">${letter}</text>`;
-    })
-    .join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 76" width="860" height="76" role="img" aria-label="${xml(`Position ${position}: ${app.name}, ${appMeta(app)}`)}">
-<style>${fonts}
-.pos,.name{font:600 32px Saira,"Arial Narrow",sans-serif;fill:${COLORS.ink}}
-.name{letter-spacing:.5px}
-.meta{font:400 17px PlexMono,ui-monospace,monospace;fill:${COLORS.label}}
-.tyre{font:400 16px PlexMono,ui-monospace,monospace;fill:${COLORS.ink}}
-.gap{font:400 19px PlexMono,ui-monospace,monospace;fill:#f5c518}
-.go{font:400 19px PlexMono,ui-monospace,monospace;fill:#4493f8}
-</style>
-<rect x="0" y="0" width="860" height="72" rx="8" fill="${position === 1 ? '#2a0d0c' : '#0b0b0b'}" stroke="#262626"/>
-<text class="pos" x="42" y="47" text-anchor="end">${position}</text>
-<image href="data:image/${type};base64,${icon}" x="56" y="12" width="48" height="48"/>
-<text class="name" x="118" y="35">${xml(name)}</text>
-<text class="meta" x="118" y="58">${xml(appMeta(app))}</text>
-${tyres}
-<text class="gap" x="762" y="44" text-anchor="end">${gap}</text>
-<text class="go" x="842" y="44" text-anchor="end">${app.kind === 'web' ? 'Try it' : 'Get it'}</text>
-</svg>
-`;
-}
-
-async function calendarSvg(apps) {
-  const fonts = await fontFace('PlexMono', 'ibm-plex-mono-400.woff2', 400);
-  const days = apps.map(shippedDay);
-  const first = Math.min(...days);
-  const span = Math.max(...days) - first + 1;
-  const counts = Array(span).fill(0);
-  for (const day of days) counts[day - first] += 1;
-  if (counts.reduce((sum, n) => sum + n, 0) !== apps.length) throw new Error('Calendar lost a release.');
-  const cellColor = (releases) => {
-    if (releases === 0) return '#1a1a1a';
-    return releases === 1 ? COLORS.red : '#ff7a70';
+  return {
+    app,
+    version,
+    releasedAt,
+    releaseUrl,
+    source,
+    gap,
+    dormant,
+    demo,
+    page,
+    privacyLine: privacy[app.id] ?? 'See the repo.',
   };
-  const pitch = 860 / span;
-  const size = pitch - 3;
-  const cells = counts
-    .map((n, i) => `<rect x="${(i * pitch).toFixed(2)}" y="0" width="${size.toFixed(2)}" height="${size.toFixed(2)}" rx="3" fill="${cellColor(n)}"/>`)
-    .join('');
-  const dated = releaseDates(apps);
-  const height = Math.ceil(size) + 30;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 ${height}" width="860" height="${height}" role="img" aria-label="${xml(`${apps.length} releases over ${span} days`)}">
-<style>${fonts}
-.t{font:400 16px PlexMono,ui-monospace,monospace;fill:#8d96a0}
-</style>
-<rect x="0" y="0" width="860" height="${height}" fill="#050505"/>
-${cells}
-<text class="t" x="0" y="${height - 6}">${shortDate(dated[0])}</text>
-<text class="t" x="430" y="${height - 6}" text-anchor="middle">Brighter means several apps that day</text>
-<text class="t" x="857" y="${height - 6}" text-anchor="end">${shortDate(dated.at(-1))}</text>
-</svg>
-`;
 }
 
-async function flowSvg() {
-  const fonts = await fontFace('PlexMono', 'ibm-plex-mono-400.woff2', 400);
-  const box = (x, y, width, text, hot) =>
-    `<rect x="${x}" y="${y}" width="${width}" height="54" rx="6" fill="${hot ? '#2a0d0c' : '#0b0b0b'}" stroke="${hot ? COLORS.red : '#333'}"/>` +
-    `<text x="${x + width / 2}" y="${y + 34}" text-anchor="middle">${text}</text>`;
-  const docs = ['PRD.md', 'ARD.md', 'TRD.md', 'TASKS.md', 'AGENTS.md'];
-  const arrow = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#666" stroke-width="2" marker-end="url(#a)"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 230" width="860" height="230" role="img" aria-label="One idea goes into Cascade, which writes PRD, ARD, TRD, TASKS and AGENTS markdown files. Agents build from them, and the app is released.">
-<style>${fonts}
-text{font:400 20px PlexMono,ui-monospace,monospace;fill:${COLORS.ink}}
-</style>
-<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#666"/></marker></defs>
-<rect x="0" y="0" width="860" height="230" fill="#050505"/>
-${box(180, 0, 220, 'One idea')}${arrow(402, 27, 456, 27)}${box(460, 0, 220, 'Cascade', true)}
-${arrow(430, 56, 430, 84)}
-${docs.map((doc, i) => box(i * 174, 88, 164, doc)).join('')}
-${arrow(430, 144, 430, 172)}
-${box(180, 176, 220, 'Agents build')}${arrow(402, 203, 456, 203)}${box(460, 176, 220, 'Release')}
-</svg>
-`;
+const site = await siteApps();
+const rows = [];
+for (const app of apps) rows.push(await buildRow(app, site));
+rows.sort((a, b) => (b.releasedAt ? Date.parse(b.releasedAt) : 0) - (a.releasedAt ? Date.parse(a.releasedAt) : 0) || a.app.order - b.app.order);
+
+const repos = await publicRepoCount();
+const telemetryEndpoints = apps.reduce((sum, app) => sum + (app.telemetry ? 1 : 0), 0);
+const newest = rows.find((row) => row.gap !== null);
+const dayWord = (n) => `${n} day${Number(n) === 1 ? '' : 's'}`;
+const lastReleaseAgo = newest ? `${dayWord(newest.gap)} ago` : 'UNKNOWN';
+const buildDate = isoDate(now.toISOString());
+
+// ---- README ----------------------------------------------------------------------------
+
+const cell = (s) => String(s).replace(/\|/g, '\\|');
+const link = (text, url) => `[${cell(text)}](${url})`;
+
+function ledgerTable() {
+  const head = '| App | Version | Released | Gap (days) | Platform | Demo | Class |';
+  const rule = '| --- | --- | --- | --- | --- | --- | --- |';
+  const body = rows.map((row) => {
+    const name = link(row.app.name, row.page) + (row.dormant ? ' · dormant' : '');
+    const version = row.source === 'github' && row.releaseUrl ? link(row.version, row.releaseUrl) : row.version;
+    const released = row.releasedAt ? isoDate(row.releasedAt) : 'UNKNOWN';
+    const gap = row.gap === null ? 'UNKNOWN' : String(row.gap);
+    const demo = row.demo ?? '-';
+    return `| ${name} | ${version} | ${released} | ${gap} | ${cell(row.app.platform)} | ${demo} | ${row.app.privacyClass} |`;
+  });
+  return [head, rule, ...body].join('\n');
 }
 
-// ---- README ----------------------------------------------------------------------
+function privacyMatrix() {
+  const byClass = Object.fromEntries(CLASSES.map((cls) => [cls, []]));
+  for (const row of rows) byClass[row.app.privacyClass].push(link(row.app.name, row.page));
+  const columns = [
+    ['Stays on your machine', byClass.LOCAL],
+    ['Cloud calls, your own keys', byClass.KEYS],
+    ['Public data only', byClass.PUBLIC],
+  ];
+  const height = Math.max(...columns.map(([, names]) => names.length));
+  const head = `| ${columns.map(([title]) => title).join(' | ')} |`;
+  const rule = `| ${columns.map(() => ' --- ').join('|')}|`;
+  const body = [];
+  for (let i = 0; i < height; i += 1) {
+    body.push(`| ${columns.map(([, names]) => names[i] ?? '').join(' | ')} |`);
+  }
+  return [head, rule, ...body].join('\n');
+}
 
-const appPage = (app) => `${profile.site}/apps/${app.id}/`;
-const rowLink = (app) => profile.live[app.id] ?? appPage(app);
-const cell = (s) => s.replace(/\|/g, '\\|');
+function detailTable() {
+  const head = '| App | What it does | What leaves your machine |';
+  const rule = '| :--- | :--- | :--- |';
+  const body = rows.map((row) => {
+    const name = `${link(row.app.name, row.page)} · ${link('Code', `https://github.com/${row.app.repo}`)}`;
+    return `| ${name} | ${cell(row.app.description)} | ${cell(row.privacyLine)} |`;
+  });
+  return [head, rule, ...body].join('\n');
+}
 
-function readme(apps) {
-  const { hero } = profile;
-  const days = releaseDates(apps);
-  const tower = apps
-    .map((app) => `<a href="${rowLink(app)}"><img src="assets/apps/${app.id}.svg" width="100%" alt="${xml(`${app.name}, ${appMeta(app)}`)}"></a>`)
-    .join('\n');
-  const tryNow = profile.tryNow.map(({ name, url }) => `[${name}](${url})`).join(' · ');
-  const rows = apps
-    .map((app) => {
-      const repo = app.repo ? ` · [Code](${app.repo})` : '';
-      if (!privacy[app.id]) console.warn(`No privacy line for ${app.id}: add one to data/privacy.json.`);
-      return `| [${app.name}](${appPage(app)})${repo} | ${cell(app.pitch)} | ${cell(privacy[app.id] ?? 'See the repo.')} |`;
-    })
-    .join('\n');
-  const footer = `<sub><code>${profile.site.replace('https://', '')}</code> · <a href="${profile.github}">GitHub</a> · <a href="mailto:${profile.email}">${profile.email}</a></sub>`;
+function flagshipBlock() {
+  const row = rows.find(({ app }) => app.flagship);
+  if (!row) return '';
+  const repoUrl = `https://github.com/${row.app.repo}`;
+  const when = row.releasedAt ? ` (${isoDate(row.releasedAt)}, ${dayWord(row.gap)} ago)` : '';
+  const release = `  release: ${row.version}${when}${row.releaseUrl ? ` · ${link('latest release', row.releaseUrl)}` : ''}`;
+  return `## ${row.app.name}
 
-  return `<!--
-  Generated by scripts/build.mjs from data/profile.json, data/privacy.json, and the apps on
-  ${profile.site}.
+\`\`\`
+$ systemctl --user status kurek-daemon
+● kurek-daemon.service — active (running)
+${release}
+  class: ${row.app.privacyClass} · cloud calls with your own keys, never ours
+\`\`\`
+
+${row.app.description} ${link('Repository', repoUrl)} · ${link('App page', row.page)}`;
+}
+
+const readme = `<!--
+  Generated by scripts/build.mjs from data/apps.json, data/privacy.json, data/profile.json,
+  the GitHub REST API, and the apps site. Do not edit by hand: change the registry.
+  Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-<a href="${hero.url}"><img src="assets/hero.svg" width="100%" alt="${xml(`Lights out. ${numberWord(apps.length)} apps shipped.`)}"></a>
-<a href="${hero.url}"><img src="${hero.footage}" width="100%" alt="${xml(hero.alt)}"></a>
+# ${profile.name}
 
-**Running above: ${hero.app}.** [${hero.cta}](${hero.url})
+${profile.tagline}
 
-${tower}
+\`${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints\`
 
-<sub>W web · L Linux · M macOS · C Chrome · Gap is days behind the newest release</sub>
+${flagshipBlock()}
 
-**Try one now:** ${tryNow}
+## Release ledger
 
-### ${numberWord(apps.length)} apps between ${shortDate(days[0])} and ${shortDate(days.at(-1))}
+Every shipped app, one row, sorted by the newest release. The gap is days since the
+last release, computed at build time; web apps count from their launch. A gap over
+60 days reads as dormant, not deleted.
 
-<img src="assets/calendar.svg" width="100%" alt="${xml(`Calendar of ${apps.length} releases from ${shortDate(days[0])} to ${shortDate(days.at(-1))}`)}">
+${ledgerTable()}
 
-### How an app gets built
+## How software is built here
 
-<img src="assets/flow.svg" width="100%" alt="One idea goes into Cascade, which writes PRD, ARD, TRD, TASKS and AGENTS markdown files. Agents build from them, and the app is released.">
+01 IDEA → 02 PRD → 03 ARD → 04 TRD → 05 TASKS + AGENTS.md
 
-[Cascade](https://github.com/nodaysidle/nodaysidle-cascade-v3) turns one idea into five contracts that a coding agent can build from.
+One idea becomes five agent-ready contracts. Coding agents build from them.
+Nothing is called done until it runs live. [Cascade](https://github.com/nodaysidle/nodaysidle-cascade-v3) writes the contracts.
 
-### What each app does, and what leaves your machine
+## What leaves your machine
 
-Some apps need a cloud service to work. This table says which ones, and what they send.
+Each app appears exactly once below, in the class that matches its repository README.
 
-| App | What it does | Privacy |
-| :--- | :--- | :--- |
-${rows}
+${privacyMatrix()}
 
-${footer}
+${detailTable()}
+
+<sub><code>${profile.site.replace('https://', '')}</code> · <a href="${profile.github}">GitHub</a> · <a href="mailto:${profile.email}">${profile.email}</a> · rebuilt daily by CI, last build ${buildDate}</sub>
 `;
+
+await writeFile(join(ROOT, 'README.md'), readme);
+
+console.log(`README: ${apps.length} apps, public repos ${repos}, last release ${lastReleaseAgo}, build ${buildDate}`);
+for (const message of warnings) console.warn(`WARNING: ${message}`);
+if (warnings.length) console.warn(`${warnings.length} warning(s). Every unverified value renders as UNKNOWN.`);
+
+// Refuse to publish a broken page: if every version is UNKNOWN or the repository
+// count could not be fetched, the sources are down. CI fails the job and commits
+// nothing. Local previews can opt out with ALLOW_UNKNOWN=1.
+const unresolved = rows.filter((row) => row.source === 'UNKNOWN').length;
+if (!process.env.ALLOW_UNKNOWN && (unresolved === rows.length || repos === 'UNKNOWN')) {
+  console.error('REFUSING: critical sources unavailable; the build is not publishable.');
+  process.exitCode = 1;
 }
-
-// ---- Build -----------------------------------------------------------------------
-
-const apps = visibleApps(await loadApps());
-if (!apps.length) throw new Error('No released apps: refusing to write an empty profile.');
-
-await rm(join(ROOT, 'assets/apps'), { recursive: true, force: true });
-await mkdir(join(ROOT, 'assets/apps'), { recursive: true });
-const leaderDay = Math.max(...apps.map(shippedDay));
-for (const [i, app] of apps.entries()) {
-  await writeFile(join(ROOT, 'assets/apps', `${app.id}.svg`), await rowSvg(app, i + 1, leaderDay));
-}
-await writeFile(join(ROOT, 'assets/hero.svg'), await heroSvg(apps));
-await writeFile(join(ROOT, 'assets/calendar.svg'), await calendarSvg(apps));
-await writeFile(join(ROOT, 'assets/flow.svg'), await flowSvg());
-await writeFile(join(ROOT, 'README.md'), readme(apps));
-console.log(`README: ${apps.length} apps (${apps.map((a) => a.id).join(', ')})`);

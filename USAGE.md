@@ -1,23 +1,40 @@
 # Profile README
 
-`README.md` and the images in `assets/` are generated. Don't edit them by hand.
+`README.md` is generated. Do not edit it by hand: change the registry and rebuild.
 
-## Where the content comes from
+## How it works
 
-The apps come from the official site, [nodaysidle-apps.vercel.app](https://nodaysidle-apps.vercel.app):
-its `data/apps.json` in [nodaysidle/nodaysidle-apps](https://github.com/nodaysidle/nodaysidle-apps).
-To add or change an app, change it there. This repo picks it up on the next build.
+Every number on the page is generated at build time. Nothing is hand-typed, so nothing
+can go stale. Sources, in order of authority:
 
-An app appears only once its `showFrom` time has passed, in the same order as on the
-site, so an unreleased app never shows up here early. The headline count
-("Ten apps shipped.") and the platform line follow the same rules as the site.
+1. The GitHub REST API: public repository count, latest release of every repo.
+2. The apps site's `data/apps.json`: launch dates for web apps, last-resort fallback.
+3. `data/apps.json` in this repo: the app registry, the only human-maintained facts.
+4. `data/privacy.json`: one verified privacy line per app id.
+5. `data/profile.json`: site URL, GitHub link, contact address.
 
-`data/profile.json` holds the few profile-level values: the site URL, the data and
-asset sources, the GitHub link and the contact address.
+Anything that cannot be verified renders as UNKNOWN. It is never guessed and never
+silently dropped. A release older than 60 days is tagged dormant, not deleted.
 
-`data/privacy.json` holds one verified privacy line per app id. A new app without a line shows "See the repo." and the build prints a warning, so add its line before launch.
+## The registry
 
-To change the hero, update `hero` in `data/profile.json` and replace `assets/hero-footage.gif`.
+`data/apps.json` holds one entry per shipped app. Human-maintained fields only:
+
+| Field | Meaning |
+|---|---|
+| `id` | App id, matching the site's page slug |
+| `name` | Display name |
+| `repo` | `owner/repo`, used for the Releases API and code links |
+| `kind` | `download` or `web` |
+| `demo` | Live demo URL, or null |
+| `description` | One line, shown in the detail table |
+| `platform` | Short platform line for the ledger |
+| `privacyClass` | `LOCAL`, `KEYS`, or `PUBLIC`, matching the repo README |
+| `telemetry` | False unless the app has a telemetry endpoint |
+| `flagship` | Optional, at most one app |
+| `order` | Tie-break for equal release dates |
+
+Everything else (versions, dates, gaps, repo count, LIVE/UNKNOWN) is derived.
 
 ## Build
 
@@ -25,28 +42,30 @@ To change the hero, update `hero` in `data/profile.json` and replace `assets/her
 npm run build
 ```
 
-Offline, or to preview a future date:
+Offline, or to preview a date:
 
 ```bash
-APPS_FILE=../nodaysidle-apps/data/apps.json ASSETS_DIR=../nodaysidle-apps/public \
-  NOW=2026-10-21T17:31:00+02:00 node scripts/build.mjs
+NOW=2026-12-01T06:00:00Z npm run build
 ```
 
-## Output
+Fully offline, with the releases and repo count served from a fixture (shape:
+`{ "repos": 71, "latest": { "owner/repo": { "tag", "at", "url" } | null } }`):
 
-| File | What it is |
-|---|---|
-| `assets/hero.svg` | "Lights out" band: five start lights that go out once, and the headline |
-| `assets/apps/<id>.svg` | One timing tower row per released app: position, icon, name, version, platforms and gap |
-| `assets/calendar.svg` | Ship calendar across the release dates |
-| `assets/flow.svg` | One idea to five contracts to release |
-| `README.md` | Hero, tower, calendar, flow, and a table of what each app does and sends |
+```bash
+RELEASES_FILE=fixture.json APPS_FILE=../nodaysidle-apps/data/apps.json npm run build
+```
 
-The images embed the site's fonts (Saira Condensed, IBM Plex; licences in
-`assets/fonts/`) and icons, so they render the same on GitHub in light and dark mode.
+The build refuses to publish when every version is UNKNOWN or the repository count
+failed: sources are down, so CI fails and commits nothing. Use `ALLOW_UNKNOWN=1`
+for a degraded local preview.
 
 ## Automation
 
-`.github/workflows/daily-refresh.yml` rebuilds daily at 04:00 UTC and again just after
-the 17:30 Europe/Ljubljana launch slot, and on pushes that change the data, script or
-fonts. It commits only when the output changed.
+`.github/workflows/daily-refresh.yml` rebuilds daily at 04:00 UTC and just after the
+17:30 Europe/Ljubljana launch slot, and on pushes that change the data or the script.
+It commits only when the output changed, and never when the build refused.
+
+## Contracts
+
+The `contracts/` folder holds the Cascade chain for this redesign: IDEA, PRD, ARD,
+TRD, TASKS and AGENTS.md. Agents implement the remaining pull requests from there.
