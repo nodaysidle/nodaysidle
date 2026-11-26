@@ -1,7 +1,7 @@
 {
   "name": "github-profile-readme",
-  "version": "1.0.0",
-  "description": "GitHub profile README for NODAYSIDLE, built from the apps on nodaysidle-apps.vercel.app",
+  "version": "2.0.0",
+  "description": "GitHub profile README for NODAYSIDLE, built deterministically from the app registry, privacy lines, and the GitHub API",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs"

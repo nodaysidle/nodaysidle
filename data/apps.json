@@ -1,0 +1,137 @@
+{
+  "apps": [
+    {
+      "id": "kurek",
+      "name": "Kureksistant",
+      "repo": "nodaysidle/kureksistant",
+      "kind": "download",
+      "demo": null,
+      "description": "A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from anywhere, it answers with voice, deep-searches, and keeps its own notes.",
+      "platform": "Linux",
+      "privacyClass": "KEYS",
+      "telemetry": false,
+      "flagship": true,
+      "order": 1
+    },
+    {
+      "id": "browser-linux",
+      "name": "NODAYSIDLE Browser for Linux",
+      "repo": "nodaysidle/nodaysidle-browser-linux",
+      "kind": "download",
+      "demo": null,
+      "description": "A quiet, native Linux browser for focused browsing.",
+      "platform": "Linux",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 2
+    },
+    {
+      "id": "scratch-pad",
+      "name": "Scratch Pad",
+      "repo": "nodaysidle/scratch-pad",
+      "kind": "download",
+      "demo": null,
+      "description": "One always-available note for Arch Linux and Hyprland, saved as you type.",
+      "platform": "Linux",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 3
+    },
+    {
+      "id": "neuralcanvas",
+      "name": "NeuralCanvas",
+      "repo": "nodaysidle/neural-canvas",
+      "kind": "download",
+      "demo": null,
+      "description": "Sketch an interface by hand and get a clean wireframe, on a GPU canvas for Linux.",
+      "platform": "Linux",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 4
+    },
+    {
+      "id": "vectorstudio",
+      "name": "VectorStudio",
+      "repo": "nodaysidle/no-vector-days",
+      "kind": "download",
+      "demo": null,
+      "description": "A small desktop vector editor for Linux that keeps your work on your machine.",
+      "platform": "Linux",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 5
+    },
+    {
+      "id": "sonora",
+      "name": "Sonora",
+      "repo": "nodaysidle/nodaysidle-sonora",
+      "kind": "download",
+      "demo": null,
+      "description": "Universal native desktop music player for Spotify, YouTube Music, and local files.",
+      "platform": "Linux · macOS",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 6
+    },
+    {
+      "id": "cascade",
+      "name": "Cascade",
+      "repo": "nodaysidle/nodaysidle-cascade-v3",
+      "kind": "download",
+      "demo": null,
+      "description": "Turn one software idea into five agent-ready markdown contracts.",
+      "platform": "Linux · macOS",
+      "privacyClass": "KEYS",
+      "telemetry": false,
+      "order": 7
+    },
+    {
+      "id": "nodaysrammar",
+      "name": "nodaysrammar",
+      "repo": "nodaysidle/nodaysrammar",
+      "kind": "download",
+      "demo": null,
+      "description": "Private, on-device grammar and spell checker for English, Italian, and Slovenian.",
+      "platform": "Chrome",
+      "privacyClass": "LOCAL",
+      "telemetry": false,
+      "order": 8
+    },
+    {
+      "id": "whisperbar",
+      "name": "WhisperBar",
+      "repo": "nodaysidle/whisper-bar",
+      "kind": "download",
+      "demo": null,
+      "description": "Native, privacy-first macOS menu bar dictation with real-time streaming.",
+      "platform": "macOS",
+      "privacyClass": "KEYS",
+      "telemetry": false,
+      "order": 9
+    },
+    {
+      "id": "f1-telemetry-pro",
+      "name": "F1 Telemetry Pro",
+      "repo": "nodaysidle/F1-nodaysidle",
+      "kind": "web",
+      "demo": "https://f1-telemetry-pro.vercel.app",
+      "description": "Formula 1 telemetry analysis and session replay in the browser, on real OpenF1 timing data.",
+      "platform": "Web",
+      "privacyClass": "PUBLIC",
+      "telemetry": false,
+      "order": 10
+    },
+    {
+      "id": "ai-rules-builder",
+      "name": "AI Rules Builder",
+      "repo": "nodaysidle/markdown-helper",
+      "kind": "web",
+      "demo": "https://markdown-helper.vercel.app",
+      "description": "Create, preview and share AGENTS.md and Cursor rules for AI coding agents.",
+      "platform": "Web",
+      "privacyClass": "PUBLIC",
+      "telemetry": false,
+      "order": 11
+    }
+  ]
+}
