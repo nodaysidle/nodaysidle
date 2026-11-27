@@ -20,7 +20,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadFonts, writeAssets, CARD_IDS } from './svg.mjs';
+import { loadFonts, writeAssets, CARD_IDS, OUTLINE_STATS } from './svg.mjs';
 import { dayKey, dayNumber, isoDate } from './dates.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -194,6 +194,7 @@ const svgFiles = await writeAssets(ROOT, {
   telemetryEndpoints,
   profile,
 });
+if (process.env.SVG_STATS) console.error(JSON.stringify(OUTLINE_STATS));
 
 // ---- README ----------------------------------------------------------------------------
 
