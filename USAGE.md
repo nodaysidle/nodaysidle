@@ -42,6 +42,8 @@ Everything else (versions, dates, gaps, repo count, LIVE/UNKNOWN) is derived.
 npm run build
 ```
 
+`npm test` runs the SVG self-check (empty data, UNKNOWN gaps, a widened chart window).
+
 Offline, or to preview a date:
 
 ```bash

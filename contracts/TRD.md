@@ -39,16 +39,17 @@ dates.
 Day arithmetic uses Europe/Ljubljana day keys (`Intl.DateTimeFormat('en-CA')`),
 matching the apps site. Gaps are whole days between day keys, not milliseconds.
 
-## Output grammar (PR 1, Markdown only)
+## Output grammar
 
-README.md is assembled top to bottom: comment header, wordmark heading, tagline,
-status strip as inline code, flagship terminal block, ledger table, method strip,
-privacy matrix, detail table, footer. Ledger columns: App, Version, Released,
-Gap (days), Platform, Demo, Class. The App cell carries the dormant tag; the
-Version cell links to the release when the source is the API; the Demo cell is
-LIVE, UNKNOWN (HTTP n), or a dash. Cells escape pipes.
+README.md is assembled top to bottom: comment header, drum image
+(`assets/drum.svg`), flagship section with loupe (`assets/flagship.svg`), ledger
+table, selected-work cards grid (`assets/cards/<id>.svg`), method strip
+(`assets/method.svg`), privacy matrix, detail table, footer. Ledger columns: App,
+Version, Released, Gap (days), Platform, Demo, Class. The App cell carries the
+dormant tag; the Version cell links to the release when the source is the API;
+the Demo cell is LIVE, UNKNOWN (HTTP n), or a dash. Cells escape pipes.
 
-## Design tokens (SVG phase, PR 2)
+## Design tokens
 
 | Token | Hex | Use |
 |---|---|---|
@@ -58,25 +59,44 @@ LIVE, UNKNOWN (HTTP n), or a dash. Cells escape pipes.
 | Text primary | #E7E4DD | Headings, values |
 | Text secondary | #9AA0A8 | Labels |
 | Text muted | #6B7076 | Metadata |
-| Signal | #B5E853 | Verified-live markers only |
+| Signal | #B5E853 | Stylus (today) and verified-live markers |
 | LOCAL | #B5E853 | Class tick |
 | KEYS | #E0B458 | Class tick |
 | PUBLIC | #7FA8C9 | Class tick |
+| Grid | #15181B | Chart paper, one square per day |
+| Dormant | #E05A47 | 60-day line, dormant zone, dormant labels |
 
-Type: IBM Plex Sans 500 for labels, IBM Plex Mono 400/500 for data, outlined to
-paths at build (opentype.js), 8 px spacing grid, radius 0, no gradients, no glows.
-The signal color appears only on verified-live markers; never as fill decoration.
+Type: IBM Plex Sans 500 for labels, IBM Plex Mono 400 for data, Barlow Semi
+Condensed 600 for the wordmark and channel names (`assets/fonts/barlow-semi-condensed-600.ttf`,
+SIL OFL). All text is outlined to paths at build (`opentype.js`), 8 px spacing
+grid. Minimum label size in the drum and loupe is 13 px. Radius 0 on every
+rectangle; circles are allowed only for the stylus and the live-demo ring. Two
+subtle CSS animations inside the SVG are allowed (the stylus pulse and the live
+ring), both disabled under `prefers-reduced-motion`. Signal color is used for the
+stylus (today) and verified-live markers only; never as fill decoration. No
+gradients, no glows, no rounded rectangles, no iconography inside cards, no accent
+colors beyond the tokens.
 
-## Assets (PR 2)
+## Assets
 
-`assets/header.svg` (wordmark band, hand-built once), `assets/status.svg`
-(generated counters), `assets/flagship.svg` (Kureksistant terminal panel, version
-injected at build), `assets/cards/<id>.svg` (selected work grid, generated),
-`assets/method.svg` (contract chain strip, hand-built once). All self-contained:
-fonts embedded, no external references, camo-proxy safe.
+- `assets/drum.svg`: generated strip-chart recorder (840 px base canvas width;
+  replaces retired `assets/header.svg` and `assets/status.svg`). Chart window is
+  `max(70, ceil((maxGap + 4) / 10) * 10)` days; minimum label size 13 px. Channel
+  names drop the studio-name prefix, since the wordmark sits directly above.
+- `assets/flagship.svg`: generated flagship loupe (840 px base canvas width), a
+  magnified strip of the flagship app's own channel with window `max(14, gap + 2)`
+  days; minimum label size 13 px.
+- `assets/cards/<id>.svg`: generated selected-work grid cards (560 x 232 px).
+- `assets/method.svg`: generated contract chain strip (1200 x 168 px).
+
+All SVGs are self-contained: text outlined to paths at build, no `<text>`, no
+scripts, no external references, camo-proxy safe.
 
 ## CI
 
-Node 22, `node scripts/build.mjs`, `GITHUB_TOKEN` from secrets. Commit step stages
-`README.md` only, commits on diff with `[skip ci]`, rebases on main before push.
-The push trigger covers `data/**`, `scripts/**`, `package.json`.
+Node 22, `npm ci`, `node scripts/build.mjs`, `GITHUB_TOKEN` from secrets.
+Commit step stages
+`README.md assets/drum.svg assets/flagship.svg assets/method.svg assets/cards/`,
+commits on diff with `[skip ci]`, rebases on main before push. The push trigger
+covers `data/**`, `scripts/**`, `package.json`, `package-lock.json`,
+`assets/fonts/**`.
