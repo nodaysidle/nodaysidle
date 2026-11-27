@@ -41,19 +41,39 @@ function textWidth(font, text, size, tracking = 0) {
   return w - (text.length ? tracking * size : 0);
 }
 
+// Per-string outline stats, exported so builds can audit fragment counts.
+export const OUTLINE_STATS = [];
+
+// Path data for one glyph, or null if opentype.js produced nothing usable.
+function glyphPath(font, ch, x, y, size) {
+  const d = font.getPath(ch, x, y, size).toPathData(2);
+  return d && !d.includes('NaN') ? d : null;
+}
+
 // Outline a string to a single <path>. Baseline at y, left edge at x.
 // Coordinates are rounded to 2 decimals before each glyph: opentype.js's
-// toPathData can emit NaN for certain long floating-point inputs.
+// toPathData can emit NaN for certain long floating-point inputs. A glyph that
+// still fails is retried once with integer-rounded inputs, and if it still
+// fails the build throws: a glyph is never dropped silently.
 function outline(font, text, x, y, size, fill, tracking = 0) {
   let cursor = round2(x);
   const baseY = round2(y);
   const parts = [];
+  const expected = [...text].filter((ch) => ch !== ' ').length; // spaces have no outline
   for (const ch of text) {
-    const p = font.getPath(ch, cursor, baseY, size);
-    const d = p.toPathData(2);
-    if (d && !d.includes('NaN')) parts.push(d);
+    let d = ch === ' ' ? '' : glyphPath(font, ch, cursor, baseY, size);
+    if (!d && ch !== ' ') d = glyphPath(font, ch, Math.round(cursor), Math.round(baseY), Math.round(size));
+    if (!d && ch !== ' ') {
+      throw new Error(`scripts/svg.mjs: glyph ${JSON.stringify(ch)} (U+${ch.codePointAt(0).toString(16)}) of "${text}" at x=${cursor}, y=${baseY}, size=${size} produced no path; refusing to drop it.`);
+    }
+    if (d) parts.push(d);
     cursor = round2(cursor + font.getAdvanceWidth(ch, size) + tracking * size);
   }
+  const drawn = parts.length;
+  if (drawn !== expected) {
+    throw new Error(`scripts/svg.mjs: drew ${drawn} glyph fragments for ${expected} non-space characters of "${text}"; refusing to drop glyphs.`);
+  }
+  OUTLINE_STATS.push({ text, drawn, expected });
   return `<path fill="${fill}" d="${parts.join(' ')}"/>`;
 }
 
