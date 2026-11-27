@@ -50,26 +50,31 @@ A task is done only when its verification step passes live; otherwise it is UNKN
 
 ## PR 4: The Idle Drum
 
-- [ ] `assets/drum.svg`: generated 840 px strip-chart recorder replacing
+- [x] `assets/drum.svg`: generated 840 px strip-chart recorder replacing
       `assets/header.svg` and `assets/status.svg` (masthead with wordmark, studio
       line, build-date and scale log stamp; four counters; day-grid chart with
       window `max(70, ceil((maxGap + 4) / 10) * 10)`, 60-day dormant line, CH-00
       release trace with longest-flat bracket, CH-T telemetry channel, per-app
       channels with class colors, live-demo rings, and dashed UNKNOWN pen lifts,
       plus legend).
-- [ ] `assets/flagship.svg`: 840 px flagship loupe (window `max(14, gap + 2)`
+- [x] `assets/flagship.svg`: 840 px flagship loupe (window `max(14, gap + 2)`
       days) showing name, version, release date, privacy class, and legend.
-- [ ] README wiring: `scripts/build.mjs` opens with `assets/drum.svg`, removes
+- [x] README wiring: `scripts/build.mjs` opens with `assets/drum.svg`, removes
       `header.svg` and `status.svg` references, and updates the flagship alt text.
-- [ ] Workflow staging: `.github/workflows/daily-refresh.yml` stages
+- [x] Workflow staging: `.github/workflows/daily-refresh.yml` stages
       `README.md assets/drum.svg assets/flagship.svg assets/method.svg assets/cards/`
       and drops `assets/header.svg` and `assets/status.svg`.
-- [ ] Contracts: update `contracts/` (`PRD.md`, `TRD.md`, `ARD.md`, `TASKS.md`,
+- [x] Contracts: update `contracts/` (`PRD.md`, `TRD.md`, `ARD.md`, `TASKS.md`,
       `AGENTS.md`) to match The Idle Drum.
 - Verification: `npm test` (SVG edge cases: no rows, UNKNOWN gaps, widened
   window) passes; two `NOW`-frozen builds are byte-identical; rendered drum checked
   at 830 px and 360 px wide; live check at 1280 px and in GitHub mobile before
   merge.
+- Result (2026-11-27): merged as pull request #7. `npm test` passed; two frozen
+  builds were byte-identical; the drum was rendered and inspected at 830 px and
+  360 px. The owner checked the branch page on GitHub on desktop and on the
+  phone and confirmed it before the merge. The Actions run on `main` passed and
+  found no changes to commit.
 
 ## Standing verification for every PR
 
