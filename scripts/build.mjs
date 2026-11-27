@@ -21,6 +21,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadFonts, writeAssets, CARD_IDS } from './svg.mjs';
+import { dayKey, dayNumber, isoDate } from './dates.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const profile = JSON.parse(await readFile(join(ROOT, 'data/profile.json'), 'utf8'));
@@ -119,11 +120,8 @@ async function demoCheck(url) {
 
 // ---- Date arithmetic (Europe/Ljubljana day keys, same rule as the apps site) --------
 
-const dayKey = (iso) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Ljubljana' }).format(new Date(iso));
-const dayNumber = (key) => Date.parse(`${key}T00:00:00Z`) / 86_400_000;
 const today = dayNumber(dayKey(now.toISOString()));
 const gapDays = (iso) => today - dayNumber(dayKey(iso));
-const isoDate = (iso) => dayKey(iso);
 
 // ---- Assemble one ledger row per app --------------------------------------------------
 

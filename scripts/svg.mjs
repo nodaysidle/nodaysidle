@@ -6,6 +6,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import opentype from 'opentype.js';
+import { isoDate } from './dates.mjs';
 
 export const TOKENS = {
   bg: '#0B0C0E',
@@ -119,7 +120,7 @@ export function flagshipSvg(row) {
   const W = 1200;
   const H = 208;
   const M = 48;
-  const when = row.releasedAt ? ` (${row.releasedAt.slice(0, 10)}, ${row.gap} day${row.gap === 1 ? '' : 's'} ago)` : '';
+  const when = row.releasedAt ? ` (${isoDate(row.releasedAt)}, ${row.gap} day${row.gap === 1 ? '' : 's'} ago)` : '';
   const classColor = TOKENS[row.app.privacyClass] ?? TOKENS.muted;
   const legend = row.app.privacyClass === 'KEYS' ? 'cloud calls with your own keys, never ours'
     : row.app.privacyClass === 'LOCAL' ? 'stays on your machine'
@@ -146,7 +147,7 @@ export function cardSvg(row) {
   const P = 24;
   const maxText = W - 2 * P;
   const classColor = TOKENS[row.app.privacyClass] ?? TOKENS.muted;
-  const released = row.releasedAt ? row.releasedAt.slice(0, 10) : 'UNKNOWN';
+  const released = row.releasedAt ? isoDate(row.releasedAt) : 'UNKNOWN';
   const parts = [
     `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="${TOKENS.surface}" stroke="${TOKENS.hairline}" stroke-width="1"/>`,
     outline(SANS, fitText(SANS, row.app.name, 20, maxText), P, 56, 20, TOKENS.text),
