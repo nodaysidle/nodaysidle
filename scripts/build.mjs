@@ -20,6 +20,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadFonts, writeAssets, CARD_IDS } from './svg.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const profile = JSON.parse(await readFile(join(ROOT, 'data/profile.json'), 'utf8'));
@@ -184,6 +185,18 @@ const dayWord = (n) => `${n} day${Number(n) === 1 ? '' : 's'}`;
 const lastReleaseAgo = newest ? `${dayWord(newest.gap)} ago` : 'UNKNOWN';
 const buildDate = isoDate(now.toISOString());
 
+// ---- SVG assets (PR 2): outlined text, TRD tokens, live data injected -------------------
+
+await loadFonts(ROOT);
+const svgFiles = await writeAssets(ROOT, {
+  rows,
+  repos,
+  appsShipped: apps.length,
+  lastReleaseAgo,
+  telemetryEndpoints,
+  profile,
+});
+
 // ---- README ----------------------------------------------------------------------------
 
 const cell = (s) => String(s).replace(/\|/g, '\\|');
@@ -235,18 +248,26 @@ function flagshipBlock() {
   const row = rows.find(({ app }) => app.flagship);
   if (!row) return '';
   const repoUrl = `https://github.com/${row.app.repo}`;
-  const when = row.releasedAt ? ` (${isoDate(row.releasedAt)}, ${dayWord(row.gap)} ago)` : '';
-  const release = `  release: ${row.version}${when}${row.releaseUrl ? ` · ${link('latest release', row.releaseUrl)}` : ''}`;
+  const when = row.releasedAt ? `${isoDate(row.releasedAt)}, ${dayWord(row.gap)} ago` : 'UNKNOWN';
+  const alt = `systemctl --user status kurek-daemon: active (running), release ${row.version} (${when}), class ${row.app.privacyClass}`;
   return `## ${row.app.name}
 
-\`\`\`
-$ systemctl --user status kurek-daemon
-● kurek-daemon.service — active (running)
-${release}
-  class: ${row.app.privacyClass} · cloud calls with your own keys, never ours
-\`\`\`
+<img src="assets/flagship.svg" alt="${cell(alt)}">
 
 ${row.app.description} ${link('Repository', repoUrl)} · ${link('App page', row.page)}`;
+}
+
+function cardsGrid() {
+  const picked = CARD_IDS.map((id) => rows.find((row) => row.app.id === id)).filter(Boolean);
+  const lines = [];
+  for (let i = 0; i < picked.length; i += 2) {
+    const pair = picked.slice(i, i + 2).map((row) => {
+      const alt = `${row.app.name} — ${row.app.description}`;
+      return `<img src="assets/cards/${row.app.id}.svg" width="49%" alt="${cell(alt)}">`;
+    });
+    lines.push(pair.join(' '));
+  }
+  return `## Selected work\n\n${lines.join('\n')}`;
 }
 
 const readme = `<!--
@@ -255,11 +276,9 @@ const readme = `<!--
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-# ${profile.name}
+<img src="assets/header.svg" alt="${cell(`${profile.name} — ${profile.tagline}`)}">
 
-${profile.tagline}
-
-\`${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints\`
+<img src="assets/status.svg" alt="${cell(`${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints`)}">
 
 ${flagshipBlock()}
 
@@ -271,9 +290,11 @@ last release, computed at build time; web apps count from their launch. A gap ov
 
 ${ledgerTable()}
 
+${cardsGrid()}
+
 ## How software is built here
 
-01 IDEA → 02 PRD → 03 ARD → 04 TRD → 05 TASKS + AGENTS.md
+<img src="assets/method.svg" alt="01 IDEA, 02 PRD, 03 ARD, 04 TRD, 05 TASKS + AGENTS.md">
 
 One idea becomes five agent-ready contracts. Coding agents build from them.
 Nothing is called done until it runs live. [Cascade](https://github.com/nodaysidle/nodaysidle-cascade-v3) writes the contracts.
@@ -292,6 +313,7 @@ ${detailTable()}
 await writeFile(join(ROOT, 'README.md'), readme);
 
 console.log(`README: ${apps.length} apps, public repos ${repos}, last release ${lastReleaseAgo}, build ${buildDate}`);
+console.log(`SVG: wrote ${svgFiles.length} assets (${svgFiles.join(', ')})`);
 for (const message of warnings) console.warn(`WARNING: ${message}`);
 if (warnings.length) console.warn(`${warnings.length} warning(s). Every unverified value renders as UNKNOWN.`);
 

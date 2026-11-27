@@ -4,20 +4,13 @@
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-# NODAYSIDLE
+<img src="assets/header.svg" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux.">
 
-Independent software studio. Deterministic, privacy-first software for Linux.
-
-`71 public repositories · 11 apps shipped · last release 2 days ago · 0 telemetry endpoints`
+<img src="assets/status.svg" alt="71 public repositories · 11 apps shipped · last release 2 days ago · 0 telemetry endpoints">
 
 ## Kureksistant
 
-```
-$ systemctl --user status kurek-daemon
-● kurek-daemon.service — active (running)
-  release: v0.2.5 (2026-11-22, 5 days ago) · [latest release](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5)
-  class: KEYS · cloud calls with your own keys, never ours
-```
+<img src="assets/flagship.svg" alt="systemctl --user status kurek-daemon: active (running), release v0.2.5 (2026-11-22, 5 days ago), class KEYS">
 
 A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from anywhere, it answers with voice, deep-searches, and keeps its own notes. [Repository](https://github.com/nodaysidle/kureksistant) · [App page](https://nodaysidle-apps.vercel.app/apps/kurek/)
 
@@ -41,9 +34,15 @@ last release, computed at build time; web apps count from their launch. A gap ov
 | [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) | [v1.0.1](https://github.com/nodaysidle/nodaysrammar/releases/tag/v1.0.1) | 2026-10-09 | 49 | Chrome | - | LOCAL |
 | [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · dormant | [v1.1.2](https://github.com/nodaysidle/whisper-bar/releases/tag/v1.1.2) | 2026-09-22 | 66 | macOS | - | KEYS |
 
+## Selected work
+
+<img src="assets/cards/browser-linux.svg" width="49%" alt="NODAYSIDLE Browser for Linux — A quiet, native Linux browser for focused browsing."> <img src="assets/cards/scratch-pad.svg" width="49%" alt="Scratch Pad — One always-available note for Arch Linux and Hyprland, saved as you type.">
+<img src="assets/cards/sonora.svg" width="49%" alt="Sonora — Universal native desktop music player for Spotify, YouTube Music, and local files."> <img src="assets/cards/f1-telemetry-pro.svg" width="49%" alt="F1 Telemetry Pro — Formula 1 telemetry analysis and session replay in the browser, on real OpenF1 timing data.">
+<img src="assets/cards/ai-rules-builder.svg" width="49%" alt="AI Rules Builder — Create, preview and share AGENTS.md and Cursor rules for AI coding agents."> <img src="assets/cards/cascade.svg" width="49%" alt="Cascade — Turn one software idea into five agent-ready markdown contracts.">
+
 ## How software is built here
 
-01 IDEA → 02 PRD → 03 ARD → 04 TRD → 05 TASKS + AGENTS.md
+<img src="assets/method.svg" alt="01 IDEA, 02 PRD, 03 ARD, 04 TRD, 05 TASKS + AGENTS.md">
 
 One idea becomes five agent-ready contracts. Coding agents build from them.
 Nothing is called done until it runs live. [Cascade](https://github.com/nodaysidle/nodaysidle-cascade-v3) writes the contracts.

@@ -14,6 +14,8 @@ on:
       - 'data/**'
       - 'scripts/**'
       - 'package.json'
+      - 'package-lock.json'
+      - 'assets/fonts/**'
   workflow_dispatch:
 
 permissions:
@@ -34,7 +36,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Build README from the registry and the GitHub API
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build README and SVG assets from the registry and the GitHub API
         run: node scripts/build.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,7 +48,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add -A README.md
+          git add -A README.md assets/header.svg assets/status.svg assets/flagship.svg assets/method.svg assets/cards/
           if git diff --staged --quiet; then
             echo "No changes detected. Skipping commit."
           else

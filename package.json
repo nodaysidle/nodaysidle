@@ -14,5 +14,8 @@
     "portfolio"
   ],
   "author": "NODAYSIDLE",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "opentype.js": "^2.0.0"
+  }
 }
