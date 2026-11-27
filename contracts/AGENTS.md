@@ -28,14 +28,18 @@ README.md directly, stop: you are in the wrong file.
 
 ## Scope
 
-- PR 1 (deterministic core) is complete. PR 2 (generated SVG layer) and PR 3
-  (retire the old design) remain; see TASKS.md. Do not skip ahead in the same PR.
-- Use the design tokens in TRD.md exactly. The signal color is reserved for
-  verified-live markers. No gradients, no glows, no rounded corners, no new
-  accent colors, no iconography inside cards.
-- Minimal dependencies. The build script runs on plain Node 22 with no npm
-  packages; keep it that way. The SVG phase may add opentype.js only for
-  outlining fonts at build time.
+- PR 1 (deterministic core), PR 2 (generated SVG layer), and PR 3 (retire the old
+  design) are complete. PR 4 (The Idle Drum) is in progress; see TASKS.md. Do not
+  skip ahead in the same PR.
+- Use the design tokens in TRD.md exactly. Signal color is used for the stylus
+  (today) and verified-live markers only. Radius 0 applies to every rectangle;
+  circles are allowed only for the stylus and the live-demo ring. Two subtle CSS
+  animations inside the SVG are allowed (the stylus pulse and the live ring), both
+  disabled under `prefers-reduced-motion`. Still forbidden: gradients, glows,
+  rounded rectangles, iconography inside cards, any accent color beyond the
+  tokens.
+- Minimal dependencies. Node 22 plus `opentype.js` only, for outlining fonts at
+  build time; do not add other packages.
 - Never run destructive actions (deletes, force-pushes, releases, production
   deploys) without explicit approval from Alan.
 

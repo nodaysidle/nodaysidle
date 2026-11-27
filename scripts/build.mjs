@@ -193,6 +193,7 @@ const svgFiles = await writeAssets(ROOT, {
   lastReleaseAgo,
   telemetryEndpoints,
   profile,
+  buildDate,
 });
 if (process.env.SVG_STATS) console.error(JSON.stringify(OUTLINE_STATS));
 
@@ -248,7 +249,7 @@ function flagshipBlock() {
   if (!row) return '';
   const repoUrl = `https://github.com/${row.app.repo}`;
   const when = row.releasedAt ? `${isoDate(row.releasedAt)}, ${dayWord(row.gap)} ago` : 'UNKNOWN';
-  const alt = `systemctl --user status kurek-daemon: active (running), release ${row.version} (${when}), class ${row.app.privacyClass}`;
+  const alt = `${row.app.name} ${row.version}, released ${when}, class ${row.app.privacyClass}`;
   return `## ${row.app.name}
 
 <img src="assets/flagship.svg" alt="${cell(alt)}">
@@ -275,9 +276,7 @@ const readme = `<!--
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-<img src="assets/header.svg" alt="${cell(`${profile.name} — ${profile.tagline}`)}">
-
-<img src="assets/status.svg" alt="${cell(`${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints`)}">
+<img src="assets/drum.svg" alt="${cell(`${profile.name} — ${profile.tagline} ${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.`)}">
 
 ${flagshipBlock()}
 

@@ -6,10 +6,12 @@
 data/apps.json      registry, human-maintained facts only
 data/privacy.json   one verified privacy line per app id
 data/profile.json   site URL, GitHub link, contact address
-scripts/build.mjs   deterministic generator: fetch, compute, write README.md
+scripts/build.mjs   deterministic generator: fetch, compute, write README.md and SVGs
+scripts/svg.mjs     SVG renderer (drum, flagship loupe, cards, method; opentype.js)
+scripts/dates.mjs   shared Europe/Ljubljana day-key arithmetic for build and SVGs
 .github/workflows/  daily rebuild, commit only on change, fail on degraded build
 contracts/          this Cascade chain (IDEA, PRD, ARD, TRD, TASKS, AGENTS.md)
-assets/             SVG phase output; legacy assets retire in PR 3
+assets/             generated SVGs (drum, flagship, method, cards) and bundled fonts
 ```
 
 ## Data flow
@@ -17,9 +19,13 @@ assets/             SVG phase output; legacy assets retire in PR 3
 ```
 registry ──┐
 privacy ───┤
-profile ───┼──> scripts/build.mjs ──> README.md
-GitHub API ┤        (sort, compute gaps,   (committed by CI)
-site apps ─┘         check demos, render)
+profile ───┼──> scripts/build.mjs ──────────> README.md
+GitHub API ┤     ├── scripts/dates.mjs
+site apps ─┘     └── scripts/svg.mjs ───────> assets/drum.svg
+                                              assets/flagship.svg
+                                              assets/method.svg
+                                              assets/cards/<id>.svg
+                                              (all committed by CI)
 ```
 
 - The build fetches: the public user object (repo count), the latest release of
@@ -28,8 +34,10 @@ site apps ─┘         check demos, render)
 - Environment overrides: `NOW` (freeze the clock), `APPS_FILE` (offline site data),
   `RELEASES_FILE` (offline releases and repo count from a fixture), `GITHUB_TOKEN`
   (rate limit), `ALLOW_UNKNOWN` (degraded preview).
-- Output is a single file, `README.md`. The build writes it even on refusal, so
-  the failure is inspectable, but exits non-zero so CI commits nothing.
+- Output is `README.md` plus the generated SVG assets (`assets/drum.svg`,
+  `assets/flagship.svg`, `assets/method.svg`, `assets/cards/<id>.svg`). The build
+  writes them even on refusal, so the failure is inspectable, but exits non-zero
+  so CI commits nothing.
 
 ## State model per app
 
@@ -52,6 +60,8 @@ gap:    days since release; null -> UNKNOWN; > 60 -> dormant tag
 ## CI contract
 
 - Schedule: daily 04:00 UTC, plus 15:35 and 16:35 UTC (after the 17:30 Ljubljana
-  launch slot in summer and winter time), plus push on data/script changes.
+  launch slot in summer and winter time), plus push on data, script, package, or
+  font changes.
 - The job passes `secrets.GITHUB_TOKEN` to the build for API rate limits.
-- Commit only when the generated README differs; never commit when the build failed.
+- Commit only when the generated README or SVG assets differ; never commit when
+  the build failed.

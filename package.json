@@ -4,7 +4,8 @@
   "description": "GitHub profile README for NODAYSIDLE, built deterministically from the app registry, privacy lines, and the GitHub API",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/selfcheck.mjs"
   },
   "keywords": [
     "github-profile",

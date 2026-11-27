@@ -4,13 +4,11 @@
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-<img src="assets/header.svg" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux.">
-
-<img src="assets/status.svg" alt="71 public repositories · 11 apps shipped · last release 2 days ago · 0 telemetry endpoints">
+<img src="assets/drum.svg" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux. 71 public repositories · 11 apps shipped · last release 2 days ago · 0 telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.">
 
 ## Kureksistant
 
-<img src="assets/flagship.svg" alt="systemctl --user status kurek-daemon: active (running), release v0.2.5 (2026-11-22, 5 days ago), class KEYS">
+<img src="assets/flagship.svg" alt="Kureksistant v0.2.5, released 2026-11-22, 5 days ago, class KEYS">
 
 A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from anywhere, it answers with voice, deep-searches, and keeps its own notes. [Repository](https://github.com/nodaysidle/kureksistant) · [App page](https://nodaysidle-apps.vercel.app/apps/kurek/)
 
