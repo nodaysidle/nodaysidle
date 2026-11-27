@@ -4,11 +4,11 @@
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-<img src="assets/drum.svg" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux. 71 public repositories · 11 apps shipped · last release 2 days ago · 0 telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.">
+<img src="assets/drum.svg" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux. 71 public repositories · 11 apps shipped · last release 3 days ago · 0 telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.">
 
 ## Kureksistant
 
-<img src="assets/flagship.svg" alt="Kureksistant v0.2.5, released 2026-11-22, 5 days ago, class KEYS">
+<img src="assets/flagship.svg" alt="Kureksistant v0.2.5, released 2026-11-22, 6 days ago, class KEYS">
 
 A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from anywhere, it answers with voice, deep-searches, and keeps its own notes. [Repository](https://github.com/nodaysidle/kureksistant) · [App page](https://nodaysidle-apps.vercel.app/apps/kurek/)
 
@@ -20,17 +20,17 @@ last release, computed at build time; web apps count from their launch. A gap ov
 
 | App | Version | Released | Gap (days) | Platform | Demo | Class |
 | --- | --- | --- | --- | --- | --- | --- |
-| [NODAYSIDLE Browser for Linux](https://nodaysidle-apps.vercel.app/apps/browser-linux/) | [v0.4.0](https://github.com/nodaysidle/nodaysidle-browser-linux/releases/tag/v0.4.0) | 2026-11-25 | 2 | Linux | - | LOCAL |
-| [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) | [v0.2.2](https://github.com/nodaysidle/scratch-pad/releases/tag/v0.2.2) | 2026-11-24 | 3 | Linux | - | LOCAL |
-| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.5](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5) | 2026-11-22 | 5 | Linux | - | KEYS |
-| [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) | [v0.1.0](https://github.com/nodaysidle/neural-canvas/releases/tag/v0.1.0) | 2026-10-25 | 33 | Linux | - | LOCAL |
-| [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) | web | 2026-10-24 | 34 | Web | LIVE | PUBLIC |
-| [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) | [v0.3.0](https://github.com/nodaysidle/no-vector-days/releases/tag/v0.3.0) | 2026-10-22 | 36 | Linux | - | LOCAL |
-| [AI Rules Builder](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) | web | 2026-10-21 | 37 | Web | LIVE | PUBLIC |
-| [Sonora](https://nodaysidle-apps.vercel.app/apps/sonora/) | [v0.1.2](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.2) | 2026-10-17 | 41 | Linux · macOS | - | LOCAL |
-| [Cascade](https://nodaysidle-apps.vercel.app/apps/cascade/) | [v3.1.1](https://github.com/nodaysidle/nodaysidle-cascade-v3/releases/tag/v3.1.1) | 2026-10-17 | 41 | Linux · macOS | - | KEYS |
-| [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) | [v1.0.1](https://github.com/nodaysidle/nodaysrammar/releases/tag/v1.0.1) | 2026-10-09 | 49 | Chrome | - | LOCAL |
-| [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · dormant | [v1.1.2](https://github.com/nodaysidle/whisper-bar/releases/tag/v1.1.2) | 2026-09-22 | 66 | macOS | - | KEYS |
+| [NODAYSIDLE Browser for Linux](https://nodaysidle-apps.vercel.app/apps/browser-linux/) | [v0.4.0](https://github.com/nodaysidle/nodaysidle-browser-linux/releases/tag/v0.4.0) | 2026-11-25 | 3 | Linux | - | LOCAL |
+| [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) | [v0.2.2](https://github.com/nodaysidle/scratch-pad/releases/tag/v0.2.2) | 2026-11-24 | 4 | Linux | - | LOCAL |
+| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.5](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5) | 2026-11-22 | 6 | Linux | - | KEYS |
+| [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) | [v0.1.0](https://github.com/nodaysidle/neural-canvas/releases/tag/v0.1.0) | 2026-10-25 | 34 | Linux | - | LOCAL |
+| [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) | web | 2026-10-24 | 35 | Web | LIVE | PUBLIC |
+| [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) | [v0.3.0](https://github.com/nodaysidle/no-vector-days/releases/tag/v0.3.0) | 2026-10-22 | 37 | Linux | - | LOCAL |
+| [AI Rules Builder](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) | web | 2026-10-21 | 38 | Web | LIVE | PUBLIC |
+| [Sonora](https://nodaysidle-apps.vercel.app/apps/sonora/) | [v0.1.2](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.2) | 2026-10-17 | 42 | Linux · macOS | - | LOCAL |
+| [Cascade](https://nodaysidle-apps.vercel.app/apps/cascade/) | [v3.1.1](https://github.com/nodaysidle/nodaysidle-cascade-v3/releases/tag/v3.1.1) | 2026-10-17 | 42 | Linux · macOS | - | KEYS |
+| [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) | [v1.0.1](https://github.com/nodaysidle/nodaysrammar/releases/tag/v1.0.1) | 2026-10-09 | 50 | Chrome | - | LOCAL |
+| [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · dormant | [v1.1.2](https://github.com/nodaysidle/whisper-bar/releases/tag/v1.1.2) | 2026-09-22 | 67 | macOS | - | KEYS |
 
 ## Selected work
 
@@ -72,4 +72,4 @@ Each app appears exactly once below, in the class that matches its repository RE
 | [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) · [Code](https://github.com/nodaysidle/nodaysrammar) | Private, on-device grammar and spell checker for English, Italian, and Slovenian. | Your text is checked on your device and never sent to a server. Preferences use Chrome Sync. |
 | [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · [Code](https://github.com/nodaysidle/whisper-bar) | Native, privacy-first macOS menu bar dictation with real-time streaming. | Your voice goes to Deepgram or OpenRouter, and refinement text to OpenRouter, using your own keys in the macOS Keychain. Transcript history stays local. |
 
-<sub><code>nodaysidle-apps.vercel.app</code> · <a href="https://github.com/nodaysidle">GitHub</a> · <a href="mailto:nodaysidle@tutanota.de">nodaysidle@tutanota.de</a> · rebuilt daily by CI, last build 2026-11-27</sub>
+<sub><code>nodaysidle-apps.vercel.app</code> · <a href="https://github.com/nodaysidle">GitHub</a> · <a href="mailto:nodaysidle@tutanota.de">nodaysidle@tutanota.de</a> · rebuilt daily by CI, last build 2026-11-28</sub>
