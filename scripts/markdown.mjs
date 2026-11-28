@@ -30,17 +30,19 @@ export function themedImage(base, alt) {
   ].join('\n');
 }
 
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
 const byName = (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase(), 'en') || a.name.localeCompare(b.name, 'en');
 
 // index: array of { name, url, description, language, fork, archived }, or null
 // when the GitHub API could not be read.
 export function repoIndexBlock(index, publicRepos) {
   if (!Array.isArray(index)) {
-    return 'Repository index: UNKNOWN (the GitHub API could not be read at build time).';
+    return 'Repository index: UNKNOWN (the GitHub API could not be read).';
   }
   const own = index.filter((r) => !r.fork).sort(byName);
   const forks = index.filter((r) => r.fork).sort(byName);
-  const summary = `${own.length} own repositories and ${forks.length} forks, listed from the GitHub API at build time`;
+  const summary = `All ${plural(index.length, 'public repository', 'public repositories')}: ${own.length} own, ${plural(forks.length, 'fork', 'forks')}`;
   const head = '| Repository | Language | Description |';
   const rule = '| :--- | :--- | :--- |';
   const body = own.map((r) => {

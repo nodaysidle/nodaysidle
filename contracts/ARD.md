@@ -55,8 +55,11 @@ gap:    days since release; null -> UNKNOWN; > 60 -> dormant tag
 - Registry validation errors (duplicate ids, unknown class, unknown kind, missing
   telemetry flag, two flagships) crash the build before any fetch.
 - Network failures never crash the build; they produce UNKNOWN plus a warning.
-- A total source failure (all versions UNKNOWN, or repo count UNKNOWN) makes the
-  build unpublishable: exit 1, no commit, page still written for inspection.
+- A total source failure (all versions UNKNOWN, repo count UNKNOWN, or the
+  repository index failing 3 attempts with 2 s and 4 s backoff) makes the build
+  unpublishable: exit 1, no commit, page still written for inspection. CI's
+  commit step never runs after a failed build step, so `main` keeps the last
+  good page.
 
 ## CI contract
 

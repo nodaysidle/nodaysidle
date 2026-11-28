@@ -88,22 +88,32 @@ async function publicRepoCount() {
   return data ? data.public_repos : 'UNKNOWN';
 }
 
+const INDEX_ATTEMPTS = 3;
+
 async function repoIndex() {
   if (process.env.RELEASES_FILE) {
     const fixture = JSON.parse(await readFile(process.env.RELEASES_FILE, 'utf8'));
     return fixture.index ?? null;
   }
   const login = profile.github.split('/').pop();
-  const repos = [];
-  for (let page = 1; page <= 10; page += 1) {
-    const { data } = await gh(`/users/${login}/repos?type=owner&per_page=100&page=${page}`);
-    if (!Array.isArray(data)) return null;
-    for (const r of data) {
-      repos.push({ name: r.name, url: r.html_url, description: r.description, language: r.language, fork: r.fork, archived: r.archived });
+  const attempt = async () => {
+    const repos = [];
+    for (let page = 1; page <= 10; page += 1) {
+      const { data } = await gh(`/users/${login}/repos?type=owner&per_page=100&page=${page}`);
+      if (!Array.isArray(data)) return null;
+      for (const r of data) {
+        repos.push({ name: r.name, url: r.html_url, description: r.description, language: r.language, fork: r.fork, archived: r.archived });
+      }
+      if (data.length < 100) return repos;
     }
-    if (data.length < 100) return repos;
+    warn('repo index: more than 1000 repositories; the index is UNKNOWN.');
+    return null;
+  };
+  for (let tries = 1; tries <= INDEX_ATTEMPTS; tries += 1) {
+    const repos = await attempt();
+    if (repos) return repos;
+    if (tries < INDEX_ATTEMPTS) await new Promise((resolve) => setTimeout(resolve, 2000 * tries));
   }
-  warn('repo index: more than 1000 repositories; the index is UNKNOWN.');
   return null;
 }
 
@@ -198,7 +208,7 @@ rows.sort((a, b) => (b.releasedAt ? Date.parse(b.releasedAt) : 0) - (a.releasedA
 
 const repos = await publicRepoCount();
 const index = await repoIndex();
-if (index === null) warn('repo index: GitHub API unavailable, the index renders as UNKNOWN.');
+if (index === null) warn(`repo index: GitHub API unavailable after ${INDEX_ATTEMPTS} attempts, the index renders as UNKNOWN.`);
 else if (repos !== 'UNKNOWN' && index.length !== repos) warn(`repo index lists ${index.length} repositories, the profile reports ${repos}.`);
 const telemetryEndpoints = apps.reduce((sum, app) => sum + (app.telemetry ? 1 : 0), 0);
 const newest = rows.find((row) => row.gap !== null);
@@ -222,6 +232,8 @@ if (process.env.SVG_STATS) console.error(JSON.stringify(OUTLINE_STATS));
 
 // ---- README ----------------------------------------------------------------------------
 
+// Dates in the ledger use U+2011 so a narrow table never breaks one across lines.
+const NB_HYPHEN = '\u2011';
 const CLASS_ORDER = Object.fromEntries(CLASSES.map((cls, i) => [cls, i]));
 
 function ledgerTable() {
@@ -230,7 +242,7 @@ function ledgerTable() {
   const body = rows.map((row) => {
     const name = link(row.app.name, row.page) + (row.dormant ? ' · dormant' : '');
     const version = row.source === 'github' && row.releaseUrl ? link(row.version, row.releaseUrl) : row.version;
-    const released = row.releasedAt ? isoDate(row.releasedAt) : 'UNKNOWN';
+    const released = row.releasedAt ? isoDate(row.releasedAt).replace(/-/g, NB_HYPHEN) : 'UNKNOWN';
     const gap = row.gap === null ? 'UNKNOWN' : String(row.gap);
     const demo = row.demo === 'LIVE' ? link('LIVE', row.app.demo) : (row.demo ?? '-');
     return `| ${name} | ${version} | ${released} | ${gap} | ${cell(row.app.platform)} | ${demo} |`;
@@ -321,11 +333,12 @@ console.log(`SVG: wrote ${svgFiles.length} assets (${svgFiles.join(', ')})`);
 for (const message of warnings) console.warn(`WARNING: ${message}`);
 if (warnings.length) console.warn(`${warnings.length} warning(s). Every unverified value renders as UNKNOWN.`);
 
-// Refuse to publish a broken page: if every version is UNKNOWN or the repository
-// count could not be fetched, the sources are down. CI fails the job and commits
-// nothing. Local previews can opt out with ALLOW_UNKNOWN=1.
+// Refuse to publish a broken page: if every version is UNKNOWN, the repository
+// count could not be fetched, or the repository index failed every attempt, the
+// sources are down. CI fails the job and commits nothing, so the last good page
+// stays live. Local previews can opt out with ALLOW_UNKNOWN=1.
 const unresolved = rows.filter((row) => row.source === 'UNKNOWN').length;
-if (!process.env.ALLOW_UNKNOWN && (unresolved === rows.length || repos === 'UNKNOWN')) {
+if (!process.env.ALLOW_UNKNOWN && (unresolved === rows.length || repos === 'UNKNOWN' || index === null)) {
   console.error('REFUSING: critical sources unavailable; the build is not publishable.');
   process.exitCode = 1;
 }

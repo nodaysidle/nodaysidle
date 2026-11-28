@@ -55,14 +55,15 @@ NOW=2026-12-01T06:00:00Z npm run build
 
 Fully offline, with the releases and repo count served from a fixture (shape:
 `{ "repos": 71, "latest": { "owner/repo": { "tag", "at", "url" } | null }, "index": [ { "name", "url", "description", "language", "fork", "archived" } ] }`;
-without `index` the repository index renders as UNKNOWN):
+without `index` the build refuses to publish unless `ALLOW_UNKNOWN=1` is set, and the
+repository index then renders as UNKNOWN):
 
 ```bash
 RELEASES_FILE=fixture.json APPS_FILE=../nodaysidle-apps/data/apps.json npm run build
 ```
 
-The build refuses to publish when every version is UNKNOWN or the repository count
-failed: sources are down, so CI fails and commits nothing. Use `ALLOW_UNKNOWN=1`
+The build refuses to publish when every version is UNKNOWN, the repository count
+failed, or the repository list failed three attempts in a row: sources are down, so CI fails and commits nothing. Use `ALLOW_UNKNOWN=1`
 for a degraded local preview.
 
 ## Light and dark

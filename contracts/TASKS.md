@@ -94,9 +94,15 @@ A task is done only when its verification step passes live; otherwise it is UNKN
 - [x] Workflow staging: the commit step stages the four generated SVGs instead
       of the retired `method.svg` and `cards/`. Schedule, permissions and push
       behaviour unchanged.
+- [x] Review fixes: drum labels never cross the 60-day line or the chart edge
+      (placement rule in TRD, asserted over a gap sweep); steady live-demo ring
+      under the pulse; repository index retried 3 times, then the build refuses;
+      "1 fork" pluralisation and plainer index summary; unused `levele` privacy
+      line removed; workflow stages `'assets/*.svg'`; ledger dates use U+2011.
 - Verification: `npm test` checks both palettes, palette purity, hostile
   repository descriptions and the index's UNKNOWN and count-mismatch states. The
-  dark SVGs are byte-identical to PR 4's output on the same data. GitHub's
+  dark SVGs matched PR 4's output byte for byte before the label fixes, which
+  change the drum on purpose. GitHub's
   Markdown API render checked in light and dark. Live check at 1280 px and in
   GitHub mobile: UNKNOWN until the branch is pushed and the owner checks it.
 

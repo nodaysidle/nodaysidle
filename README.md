@@ -26,17 +26,17 @@ Every shipped app, newest release first. The gap is days since the last release,
 
 | App | Version | Released | Gap (days) | Platform | Demo |
 | :--- | :--- | :--- | ---: | :--- | :--- |
-| [NODAYSIDLE Browser for Linux](https://nodaysidle-apps.vercel.app/apps/browser-linux/) | [v0.4.0](https://github.com/nodaysidle/nodaysidle-browser-linux/releases/tag/v0.4.0) | 2026-11-25 | 3 | Linux | - |
-| [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) | [v0.2.2](https://github.com/nodaysidle/scratch-pad/releases/tag/v0.2.2) | 2026-11-24 | 4 | Linux | - |
-| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.5](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5) | 2026-11-22 | 6 | Linux | - |
-| [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) | [v0.1.0](https://github.com/nodaysidle/neural-canvas/releases/tag/v0.1.0) | 2026-10-25 | 34 | Linux | - |
-| [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) | web | 2026-10-24 | 35 | Web | [LIVE](https://f1-telemetry-pro.vercel.app) |
-| [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) | [v0.3.0](https://github.com/nodaysidle/no-vector-days/releases/tag/v0.3.0) | 2026-10-22 | 37 | Linux | - |
-| [AI Rules Builder](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) | web | 2026-10-21 | 38 | Web | [LIVE](https://markdown-helper.vercel.app) |
-| [Sonora](https://nodaysidle-apps.vercel.app/apps/sonora/) | [v0.1.2](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.2) | 2026-10-17 | 42 | Linux · macOS | - |
-| [Cascade](https://nodaysidle-apps.vercel.app/apps/cascade/) | [v3.1.1](https://github.com/nodaysidle/nodaysidle-cascade-v3/releases/tag/v3.1.1) | 2026-10-17 | 42 | Linux · macOS | - |
-| [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) | [v1.0.1](https://github.com/nodaysidle/nodaysrammar/releases/tag/v1.0.1) | 2026-10-09 | 50 | Chrome | - |
-| [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · dormant | [v1.1.2](https://github.com/nodaysidle/whisper-bar/releases/tag/v1.1.2) | 2026-09-22 | 67 | macOS | - |
+| [NODAYSIDLE Browser for Linux](https://nodaysidle-apps.vercel.app/apps/browser-linux/) | [v0.4.0](https://github.com/nodaysidle/nodaysidle-browser-linux/releases/tag/v0.4.0) | 2026‑11‑25 | 3 | Linux | - |
+| [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) | [v0.2.2](https://github.com/nodaysidle/scratch-pad/releases/tag/v0.2.2) | 2026‑11‑24 | 4 | Linux | - |
+| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.5](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5) | 2026‑11‑22 | 6 | Linux | - |
+| [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) | [v0.1.0](https://github.com/nodaysidle/neural-canvas/releases/tag/v0.1.0) | 2026‑10‑25 | 34 | Linux | - |
+| [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) | web | 2026‑10‑24 | 35 | Web | [LIVE](https://f1-telemetry-pro.vercel.app) |
+| [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) | [v0.3.0](https://github.com/nodaysidle/no-vector-days/releases/tag/v0.3.0) | 2026‑10‑22 | 37 | Linux | - |
+| [AI Rules Builder](https://nodaysidle-apps.vercel.app/apps/ai-rules-builder/) | web | 2026‑10‑21 | 38 | Web | [LIVE](https://markdown-helper.vercel.app) |
+| [Sonora](https://nodaysidle-apps.vercel.app/apps/sonora/) | [v0.1.2](https://github.com/nodaysidle/nodaysidle-sonora/releases/tag/v0.1.2) | 2026‑10‑17 | 42 | Linux · macOS | - |
+| [Cascade](https://nodaysidle-apps.vercel.app/apps/cascade/) | [v3.1.1](https://github.com/nodaysidle/nodaysidle-cascade-v3/releases/tag/v3.1.1) | 2026‑10‑17 | 42 | Linux · macOS | - |
+| [nodaysrammar](https://nodaysidle-apps.vercel.app/apps/nodaysrammar/) | [v1.0.1](https://github.com/nodaysidle/nodaysrammar/releases/tag/v1.0.1) | 2026‑10‑09 | 50 | Chrome | - |
+| [WhisperBar](https://nodaysidle-apps.vercel.app/apps/whisperbar/) · dormant | [v1.1.2](https://github.com/nodaysidle/whisper-bar/releases/tag/v1.1.2) | 2026‑09‑22 | 67 | macOS | - |
 
 ## What leaves your machine
 
@@ -67,7 +67,7 @@ One idea becomes five agent-ready contracts. Coding agents build from them. Noth
 ## Repositories
 
 <details>
-<summary>63 own repositories and 8 forks, listed from the GitHub API at build time</summary>
+<summary>All 71 public repositories: 63 own, 8 forks</summary>
 
 | Repository | Language | Description |
 | :--- | :--- | :--- |

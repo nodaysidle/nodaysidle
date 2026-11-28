@@ -45,6 +45,7 @@ export const PALETTES = {
 };
 
 const GRID = 8;
+const LINE_CLEAR = 4; // minimum gap between a chart label and the 60-day line
 const round2 = (n) => Math.round(n * 100) / 100;
 
 let SANS = null; // IBM Plex Sans 500, labels
@@ -100,7 +101,7 @@ function outline(font, text, x, y, size, fill, tracking = 0) {
   if (drawn !== expected) {
     throw new Error(`scripts/svg.mjs: drew ${drawn} glyph fragments for ${expected} non-space characters of "${text}"; refusing to drop glyphs.`);
   }
-  OUTLINE_STATS.push({ text, drawn, expected });
+  OUTLINE_STATS.push({ text, drawn, expected, x: round2(x), y: baseY, width: round2(textWidth(font, text, size, tracking)) });
   return `<path fill="${fill}" d="${parts.join(' ')}"/>`;
 }
 
@@ -156,9 +157,48 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
 
   const gaps = rows.map((r) => r.gap).filter((g) => g !== null && Number.isFinite(g));
   const maxGap = gaps.length ? Math.max(0, ...gaps) : 0;
-  const windowDays = Math.max(70, Math.ceil((maxGap + 4) / 10) * 10);
-  const pxPerDay = (X1 - X0) / windowDays;
-  const dayX = (d) => round2(X0 + d * pxPerDay);
+  const baseWindow = Math.max(70, Math.ceil((maxGap + 4) / 10) * 10);
+
+  // A chart label must stay inside the chart and must not cross the 60-day line.
+  // Each channel label goes right of its pip, else above the line to its left.
+  // When the full label fits nowhere, the window widens in 10-day steps; when no
+  // window fits it either, the label drops the version (the ledger carries it),
+  // then the demo state, keeping the gap.
+  const channelLabels = rows.map((row) => {
+    if (row.gap === null || !Number.isFinite(row.gap)) return null;
+    const demo = row.demo === 'LIVE' ? ' · LIVE'
+      : row.demo !== null && row.demo !== undefined ? ' · demo UNKNOWN' : '';
+    const texts = [`${row.version} · ${row.gap} d${demo}`, `${row.gap} d${demo}`, `${row.gap} d`];
+    const pad = row.demo === 'LIVE' ? 16 : 8; // clear of the ring
+    return [...new Set(texts)].map((text) => ({ text, width: textWidth(MONO, text, 13), pad }));
+  });
+  const scale = (days) => {
+    const px = (X1 - X0) / days;
+    const at = (d) => round2(X0 + d * px);
+    const x60 = at(60);
+    const clear = (x, w) => x >= X0 && x + w <= X1 && (x + w <= x60 - LINE_CLEAR || x >= x60 + LINE_CLEAR);
+    const place = (candidates, w) => candidates.find((c) => clear(c.x, w)) ?? null;
+    const placeChannel = (row, variants) => {
+      const pipX = at(row.gap);
+      for (const label of variants) {
+        const spot = place([
+          { x: round2(pipX + label.pad), dy: 4 },
+          { x: Math.floor((pipX - label.pad - label.width) * 100) / 100, dy: -8 },
+        ], label.width);
+        if (spot) return { ...spot, text: label.text };
+      }
+      return null;
+    };
+    return { days, px, at, x60, place, placeChannel };
+  };
+  const fitsAll = (sc, fullOnly) =>
+    rows.every((row, i) => !channelLabels[i] || sc.placeChannel(row, fullOnly ? channelLabels[i].slice(0, 1) : channelLabels[i]));
+  let sc = scale(baseWindow);
+  for (let days = baseWindow; days <= baseWindow + 300 && !fitsAll(sc, true); days += 10) sc = scale(days + 10);
+  if (!fitsAll(sc, true)) sc = scale(baseWindow);
+  const windowDays = sc.days;
+  const pxPerDay = sc.px;
+  const dayX = sc.at;
 
   const lastChannelY = rows.length ? YC0 + (rows.length - 1) * PITCH : Y_SEP + 24;
   const yLegend = lastChannelY + 44;
@@ -187,7 +227,12 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
   });
 
   // Chart field: dormant tint, day grid, 60-day boundary, axis labels
-  const x60 = dayX(60);
+  const { x60 } = sc;
+  const outlineClear = (text, y, fill) => {
+    const w = textWidth(MONO, text, 13);
+    const spot = sc.place([{ x: X0 + 8 }, { x: round2(x60 + 8) }], w) ?? { x: X0 + 8 };
+    return outline(MONO, text, spot.x, y, 13, fill);
+  };
   parts.push(
     `<rect x="${x60}" y="${TOP}" width="${round2(X1 - x60)}" height="${round2(chartBottom - TOP)}" fill="${t.dormant}" fill-opacity="0.08"/>`,
   );
@@ -257,8 +302,9 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     );
     const flatLabel = `${bestFlat.span} days flat · ${dateAtGap(baseDay, bestFlat.b - 1)} → ${dateAtGap(baseDay, bestFlat.a + 1)}`;
     const fw = textWidth(MONO, flatLabel, 13);
-    const fx = round2(Math.min(Math.max((bx0 + bx1) / 2 - fw / 2, X0), X1 - fw));
-    parts.push(outline(MONO, flatLabel, fx, Y00 + 52, 13, t.secondary));
+    const centred = round2(Math.min(Math.max((bx0 + bx1) / 2 - fw / 2, X0), X1 - fw));
+    const spot = sc.place([{ x: centred }, { x: Math.floor((x60 - LINE_CLEAR - fw) * 100) / 100 }, { x: round2(x60 + LINE_CLEAR) }], fw);
+    parts.push(outline(MONO, flatLabel, spot ? spot.x : centred, Y00 + 52, 13, t.secondary));
   }
   parts.push(`<circle class="sty" cx="${X0}" cy="${Y00}" r="5" fill="${t.signal}"/>`);
 
@@ -267,11 +313,13 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
   parts.push(outline(SANS, 'sum of registry flags', 24, YT + 16, 13, t.secondary));
   const telColor = telemetryEndpoints === 0 ? t.LOCAL : t.dormant;
   parts.push(`<path fill="none" stroke="${telColor}" stroke-width="1.5" d="M${X0} ${YT}H${X1}"/>`);
-  parts.push(outline(MONO, `${telemetryEndpoints} endpoints`, X0 + 8, YT - 8, 13, telColor));
+  parts.push(outlineClear(`${telemetryEndpoints} endpoints`, YT - 8, telColor));
 
   // Section divider and caption
   parts.push(hairlineH(t, 24, Y_SEP, W - 48));
-  parts.push(outline(SANS, 'ONE CHANNEL PER APP · NEWEST RELEASE FIRST', 24, Y_SEP + 24, 13, t.secondary, 0.06));
+  const captions = ['ONE CHANNEL PER APP · NEWEST RELEASE FIRST', 'ONE CHANNEL PER APP'];
+  const caption = captions.find((c) => 24 + textWidth(SANS, c, 13, 0.06) <= x60 - LINE_CLEAR) ?? captions[1];
+  parts.push(outline(SANS, caption, 24, Y_SEP + 24, 13, t.secondary, 0.06));
 
   // Per-app channels
   rows.forEach((row, i) => {
@@ -283,26 +331,21 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     const c = t[row.app.privacyClass] ?? t.muted;
     if (row.gap === null || !Number.isFinite(row.gap)) {
       parts.push(`<path fill="none" stroke="${t.muted}" stroke-width="1.5" stroke-dasharray="4 6" d="M${X0} ${y}H${X1}"/>`);
-      parts.push(outline(MONO, `${row.version} · UNKNOWN`, X0 + 8, y - 8, 13, t.muted));
+      parts.push(outlineClear(`${row.version} · UNKNOWN`, y - 8, t.muted));
       return;
     }
     const pipX = dayX(row.gap);
     parts.push(`<path fill="none" stroke="${c}" stroke-width="2" d="M${X0} ${y}H${pipX}"/>`);
     parts.push(`<path fill="none" stroke="${c}" stroke-width="3" d="M${pipX} ${y - 14}V${y + 4}"/>`);
     if (row.demo === 'LIVE') {
-      parts.push(`<circle class="live" cx="${pipX}" cy="${y - 5}" r="7" fill="none" stroke="${t.signal}" stroke-width="1.5"/>`);
+      // A steady ring, plus a pulse that fades out: the marker never disappears.
+      const ring = `cx="${pipX}" cy="${y - 5}" r="7" fill="none" stroke="${t.signal}" stroke-width="1.5"`;
+      parts.push(`<circle ${ring}/>`, `<circle class="live" ${ring}/>`);
     }
-    let label = `${row.version} · ${row.gap} d`;
-    if (row.demo === 'LIVE') label += ' · LIVE';
-    else if (row.demo !== null && row.demo !== undefined) label += ' · demo UNKNOWN';
     const labelColor = row.dormant ? t.dormant : t.secondary;
-    const lw = textWidth(MONO, label, 13);
-    const pad = row.demo === 'LIVE' ? 16 : 8; // clear of the pulsing ring
-    if (pipX + pad + lw <= X1) {
-      parts.push(outline(MONO, label, round2(pipX + pad), y + 4, 13, labelColor));
-    } else {
-      parts.push(outlineRight(MONO, label, round2(pipX - 8), y - 8, 13, labelColor));
-    }
+    const full = channelLabels[i][0];
+    const spot = sc.placeChannel(row, channelLabels[i]) ?? { x: round2(pipX + full.pad), dy: 4, text: full.text };
+    parts.push(outline(MONO, spot.text, spot.x, y + spot.dy, 13, labelColor));
   });
 
   // Legend

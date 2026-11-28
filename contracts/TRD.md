@@ -45,7 +45,8 @@ README.md is assembled top to bottom: comment header, drum `<picture>`,
 flagship section with loupe `<picture>`, ledger table, privacy table, method
 chain, repository index in `<details>`, footer. Each `<picture>` has one
 `<source media="(prefers-color-scheme: light)">` for the light file and an
-`<img width="100%">` for the dark file. Ledger columns: App, Version, Released,
+`<img width="100%">` for the dark file. Ledger dates use U+2011 non-breaking
+hyphens so narrow viewports never split a date. Ledger columns: App, Version, Released,
 Gap (days, right-aligned), Platform, Demo. The App cell carries the dormant tag;
 the Version cell links to the release when the source is the API; the Demo cell
 is LIVE (linked to the demo), UNKNOWN (HTTP n), or a dash. Privacy columns:
@@ -94,6 +95,15 @@ colors beyond the tokens.
 Every asset below is written twice: `<name>.svg` in the dark palette and
 `<name>-light.svg` in the light palette.
 
+- Drum label placement: no label in the chart body may cross the 60-day line
+  (4 px clearance) or the chart's right edge. A channel label sits right of its
+  pip, else above the line to its left; if neither fits, the window widens in
+  further 10-day steps (up to +300 d); if no window fits, the label drops the
+  version, then the demo state, keeping the gap. The flat-stretch label, the
+  telemetry label, UNKNOWN pen-lift labels and the channel caption follow the
+  same rule. `npm test` asserts it over a sweep of gaps.
+- Live-demo ring: a steady circle plus a pulsing copy, so the marker stays
+  visible in every animation frame and with reduced motion.
 - `assets/drum.svg`: generated strip-chart recorder (840 px base canvas width;
   replaces retired `assets/header.svg` and `assets/status.svg`). Chart window is
   `max(70, ceil((maxGap + 4) / 10) * 10)` days; minimum label size 13 px. Channel
@@ -112,7 +122,8 @@ scripts, no external references, camo-proxy safe.
 
 Node 22, `npm ci`, `node scripts/build.mjs`, `GITHUB_TOKEN` from secrets.
 Commit step stages
-`README.md assets/drum.svg assets/drum-light.svg assets/flagship.svg assets/flagship-light.svg`,
+`README.md 'assets/*.svg'` (a pathspec, so a missing optional asset such as the
+flagship loupe is staged as a deletion instead of failing the step),
 commits on diff with `[skip ci]`, rebases on main before push. The push trigger
 covers `data/**`, `scripts/**`, `package.json`, `package-lock.json`,
 `assets/fonts/**`.
