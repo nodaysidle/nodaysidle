@@ -41,30 +41,43 @@ matching the apps site. Gaps are whole days between day keys, not milliseconds.
 
 ## Output grammar
 
-README.md is assembled top to bottom: comment header, drum image
-(`assets/drum.svg`), flagship section with loupe (`assets/flagship.svg`), ledger
-table, selected-work cards grid (`assets/cards/<id>.svg`), method strip
-(`assets/method.svg`), privacy matrix, detail table, footer. Ledger columns: App,
-Version, Released, Gap (days), Platform, Demo, Class. The App cell carries the
-dormant tag; the Version cell links to the release when the source is the API;
-the Demo cell is LIVE, UNKNOWN (HTTP n), or a dash. Cells escape pipes.
+README.md is assembled top to bottom: comment header, drum `<picture>`,
+flagship section with loupe `<picture>`, ledger table, privacy table, method
+chain, repository index in `<details>`, footer. Each `<picture>` has one
+`<source media="(prefers-color-scheme: light)">` for the light file and an
+`<img width="100%">` for the dark file. Ledger dates use U+2011 non-breaking
+hyphens so narrow viewports never split a date. Ledger columns: App, Version, Released,
+Gap (days, right-aligned), Platform, Demo. The App cell carries the dormant tag;
+the Version cell links to the release when the source is the API; the Demo cell
+is LIVE (linked to the demo), UNKNOWN (HTTP n), or a dash. Privacy columns:
+Class, App (with code link), What it does, What leaves your machine. Cells
+escape pipes. Repository names and descriptions from the API go through
+`escapeText` in `scripts/markdown.mjs`. Prose paragraphs are single lines, so
+GitHub's README renderer and its comment-style `gfm` renderer agree. The footer
+uses Markdown links: an HTML anchor around an address gets a second, empty
+anchor from GitHub's autolinker.
 
 ## Design tokens
 
-| Token | Hex | Use |
-|---|---|---|
-| Background | #0B0C0E | Page band |
-| Surface | #131519 | Panels |
-| Hairline | #23262B | 1px rules |
-| Text primary | #E7E4DD | Headings, values |
-| Text secondary | #9AA0A8 | Labels |
-| Text muted | #6B7076 | Metadata |
-| Signal | #B5E853 | Stylus (today) and verified-live markers |
-| LOCAL | #B5E853 | Class tick |
-| KEYS | #E0B458 | Class tick |
-| PUBLIC | #7FA8C9 | Class tick |
-| Grid | #15181B | Chart paper, one square per day |
-| Dormant | #E05A47 | 60-day line, dormant zone, dormant labels |
+Two palettes with the same tokens (`PALETTES` in `scripts/svg.mjs`). The light
+palette keeps every label at a contrast of at least 4.5:1 on its white
+background and on the #F6F8FA panel surface.
+
+| Token | Dark | Light | Use |
+|---|---|---|---|
+| Background | #0B0C0E | #FFFFFF | Page band |
+| Surface | #131519 | #F6F8FA | Panels |
+| Hairline | #23262B | #D1D9E0 | 1px rules |
+| Text primary | #E7E4DD | #1F2328 | Headings, values |
+| Text secondary | #9AA0A8 | #59636E | Labels |
+| Text muted | #6B7076 | #656D76 | Metadata |
+| Signal | #B5E853 | #4A7F12 | Stylus (today) and verified-live markers |
+| LOCAL | #B5E853 | #4A7F12 | Class tick |
+| KEYS | #E0B458 | #9A6700 | Class tick |
+| PUBLIC | #7FA8C9 | #2F6A9A | Class tick |
+| Grid | #15181B | #EFF2F5 | Chart paper, one square per day |
+| Dormant | #E05A47 | #CF222E | 60-day line, dormant zone, dormant labels |
+| Sprocket | #050607 | #D1D9E0 | Drum sprocket holes |
 
 Type: IBM Plex Sans 500 for labels, IBM Plex Mono 400 for data, Barlow Semi
 Condensed 600 for the wordmark and channel names (`assets/fonts/barlow-semi-condensed-600.ttf`,
@@ -79,6 +92,18 @@ colors beyond the tokens.
 
 ## Assets
 
+Every asset below is written twice: `<name>.svg` in the dark palette and
+`<name>-light.svg` in the light palette.
+
+- Drum label placement: no label in the chart body may cross the 60-day line
+  (4 px clearance) or the chart's right edge. A channel label sits right of its
+  pip, else above the line to its left; if neither fits, the window widens in
+  further 10-day steps (up to +300 d); if no window fits, the label drops the
+  version, then the demo state, keeping the gap. The flat-stretch label, the
+  telemetry label, UNKNOWN pen-lift labels and the channel caption follow the
+  same rule. `npm test` asserts it over a sweep of gaps.
+- Live-demo ring: a steady circle plus a pulsing copy, so the marker stays
+  visible in every animation frame and with reduced motion.
 - `assets/drum.svg`: generated strip-chart recorder (840 px base canvas width;
   replaces retired `assets/header.svg` and `assets/status.svg`). Chart window is
   `max(70, ceil((maxGap + 4) / 10) * 10)` days; minimum label size 13 px. Channel
@@ -86,8 +111,9 @@ colors beyond the tokens.
 - `assets/flagship.svg`: generated flagship loupe (840 px base canvas width), a
   magnified strip of the flagship app's own channel with window `max(14, gap + 2)`
   days; minimum label size 13 px.
-- `assets/cards/<id>.svg`: generated selected-work grid cards (560 x 232 px).
-- `assets/method.svg`: generated contract chain strip (1200 x 168 px).
+
+Retired in PR 5: `assets/cards/<id>.svg` (the selected-work grid repeated the
+ledger) and `assets/method.svg` (replaced by linked Markdown).
 
 All SVGs are self-contained: text outlined to paths at build, no `<text>`, no
 scripts, no external references, camo-proxy safe.
@@ -96,7 +122,8 @@ scripts, no external references, camo-proxy safe.
 
 Node 22, `npm ci`, `node scripts/build.mjs`, `GITHUB_TOKEN` from secrets.
 Commit step stages
-`README.md assets/drum.svg assets/flagship.svg assets/method.svg assets/cards/`,
+`README.md 'assets/*.svg'` (a pathspec, so a missing optional asset such as the
+flagship loupe is staged as a deletion instead of failing the step),
 commits on diff with `[skip ci]`, rebases on main before push. The push trigger
 covers `data/**`, `scripts/**`, `package.json`, `package-lock.json`,
 `assets/fonts/**`.

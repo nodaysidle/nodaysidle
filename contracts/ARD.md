@@ -7,11 +7,12 @@ data/apps.json      registry, human-maintained facts only
 data/privacy.json   one verified privacy line per app id
 data/profile.json   site URL, GitHub link, contact address
 scripts/build.mjs   deterministic generator: fetch, compute, write README.md and SVGs
-scripts/svg.mjs     SVG renderer (drum, flagship loupe, cards, method; opentype.js)
+scripts/svg.mjs     SVG renderer (drum, flagship loupe; dark and light palettes; opentype.js)
+scripts/markdown.mjs Markdown fragments: escaping, <picture>, repository index
 scripts/dates.mjs   shared Europe/Ljubljana day-key arithmetic for build and SVGs
 .github/workflows/  daily rebuild, commit only on change, fail on degraded build
 contracts/          this Cascade chain (IDEA, PRD, ARD, TRD, TASKS, AGENTS.md)
-assets/             generated SVGs (drum, flagship, method, cards) and bundled fonts
+assets/             generated SVGs (drum, flagship, each dark and light) and bundled fonts
 ```
 
 ## Data flow
@@ -21,21 +22,21 @@ registry ──┐
 privacy ───┤
 profile ───┼──> scripts/build.mjs ──────────> README.md
 GitHub API ┤     ├── scripts/dates.mjs
-site apps ─┘     └── scripts/svg.mjs ───────> assets/drum.svg
-                                              assets/flagship.svg
-                                              assets/method.svg
-                                              assets/cards/<id>.svg
+site apps ─┘     ├── scripts/markdown.mjs
+                 └── scripts/svg.mjs ───────> assets/drum.svg, assets/drum-light.svg
+                                              assets/flagship.svg, assets/flagship-light.svg
                                               (all committed by CI)
 ```
 
-- The build fetches: the public user object (repo count), the latest release of
-  every registry repo, the apps site's `data/apps.json` (web launch dates, fallback
+- The build fetches: the public user object (repo count), the public repository
+  list (repository index, paged 100 at a time), the latest release of every
+  registry repo, the apps site's `data/apps.json` (web launch dates, fallback
   versions), and a HEAD/GET probe per demo URL.
 - Environment overrides: `NOW` (freeze the clock), `APPS_FILE` (offline site data),
   `RELEASES_FILE` (offline releases and repo count from a fixture), `GITHUB_TOKEN`
   (rate limit), `ALLOW_UNKNOWN` (degraded preview).
 - Output is `README.md` plus the generated SVG assets (`assets/drum.svg`,
-  `assets/flagship.svg`, `assets/method.svg`, `assets/cards/<id>.svg`). The build
+  `assets/drum-light.svg`, `assets/flagship.svg`, `assets/flagship-light.svg`). The build
   writes them even on refusal, so the failure is inspectable, but exits non-zero
   so CI commits nothing.
 
@@ -54,8 +55,11 @@ gap:    days since release; null -> UNKNOWN; > 60 -> dormant tag
 - Registry validation errors (duplicate ids, unknown class, unknown kind, missing
   telemetry flag, two flagships) crash the build before any fetch.
 - Network failures never crash the build; they produce UNKNOWN plus a warning.
-- A total source failure (all versions UNKNOWN, or repo count UNKNOWN) makes the
-  build unpublishable: exit 1, no commit, page still written for inspection.
+- A total source failure (all versions UNKNOWN, repo count UNKNOWN, or the
+  repository index failing 3 attempts with 2 s and 4 s backoff) makes the build
+  unpublishable: exit 1, no commit, page still written for inspection. CI's
+  commit step never runs after a failed build step, so `main` keeps the last
+  good page.
 
 ## CI contract
 

@@ -7,7 +7,8 @@
 Every number on the page is generated at build time. Nothing is hand-typed, so nothing
 can go stale. Sources, in order of authority:
 
-1. The GitHub REST API: public repository count, latest release of every repo.
+1. The GitHub REST API: public repository count, the public repository list (the
+   collapsed index), latest release of every repo.
 2. The apps site's `data/apps.json`: launch dates for web apps, last-resort fallback.
 3. `data/apps.json` in this repo: the app registry, the only human-maintained facts.
 4. `data/privacy.json`: one verified privacy line per app id.
@@ -42,7 +43,9 @@ Everything else (versions, dates, gaps, repo count, LIVE/UNKNOWN) is derived.
 npm run build
 ```
 
-`npm test` runs the SVG self-check (empty data, UNKNOWN gaps, a widened chart window).
+`npm test` runs the self-check: SVG edge cases (empty data, UNKNOWN gaps, a widened
+chart window) in both palettes, palette purity, and the Markdown layer (escaping of
+untrusted repository text, the repository index's UNKNOWN and count-mismatch states).
 
 Offline, or to preview a date:
 
@@ -51,15 +54,24 @@ NOW=2026-12-01T06:00:00Z npm run build
 ```
 
 Fully offline, with the releases and repo count served from a fixture (shape:
-`{ "repos": 71, "latest": { "owner/repo": { "tag", "at", "url" } | null } }`):
+`{ "repos": 71, "latest": { "owner/repo": { "tag", "at", "url" } | null }, "index": [ { "name", "url", "description", "language", "fork", "archived" } ] }`;
+without `index` the build refuses to publish unless `ALLOW_UNKNOWN=1` is set, and the
+repository index then renders as UNKNOWN):
 
 ```bash
 RELEASES_FILE=fixture.json APPS_FILE=../nodaysidle-apps/data/apps.json npm run build
 ```
 
-The build refuses to publish when every version is UNKNOWN or the repository count
-failed: sources are down, so CI fails and commits nothing. Use `ALLOW_UNKNOWN=1`
+The build refuses to publish when every version is UNKNOWN, the repository count
+failed, or the repository list failed three attempts in a row: sources are down, so CI fails and commits nothing. Use `ALLOW_UNKNOWN=1`
 for a degraded local preview.
+
+## Light and dark
+
+Every SVG is written twice: `assets/<name>.svg` (dark palette) and
+`assets/<name>-light.svg` (light palette). The README picks one with `<picture>` and
+`prefers-color-scheme`; the dark file is the `<img>` fallback because it carries its
+own background.
 
 ## Automation
 

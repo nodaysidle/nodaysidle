@@ -1,30 +1,51 @@
 // SVG layer for the profile. All SVGs are self-contained: every glyph is
 // outlined to a path at build time with opentype.js, no <text>, no scripts, no
-// external references. Colors are exactly the TRD tokens; no gradients, no
-// glows, no rounded rectangles. Signal green marks today's stylus and
+// external references. Colors are exactly the TRD tokens of one palette; no
+// gradients, no glows, no rounded rectangles. Signal marks today's stylus and
 // verified-live demos only. The only motion is the stylus and live-ring pulse.
+// Each asset is written once per palette: GitHub serves SVGs through <img>, so
+// the README picks the variant with <picture> and prefers-color-scheme.
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import opentype from 'opentype.js';
 import { isoDate, dayNumber } from './dates.mjs';
 
-export const TOKENS = {
-  bg: '#0B0C0E',
-  surface: '#131519',
-  hairline: '#23262B',
-  text: '#E7E4DD',
-  secondary: '#9AA0A8',
-  muted: '#6B7076',
-  signal: '#B5E853',
-  LOCAL: '#B5E853',
-  KEYS: '#E0B458',
-  PUBLIC: '#7FA8C9',
-  grid: '#15181B', // chart paper, one square per day
-  dormant: '#E05A47', // the 60-day line and anything past it
+export const PALETTES = {
+  dark: {
+    bg: '#0B0C0E',
+    surface: '#131519',
+    hairline: '#23262B',
+    text: '#E7E4DD',
+    secondary: '#9AA0A8',
+    muted: '#6B7076',
+    signal: '#B5E853',
+    LOCAL: '#B5E853',
+    KEYS: '#E0B458',
+    PUBLIC: '#7FA8C9',
+    grid: '#15181B', // chart paper, one square per day
+    dormant: '#E05A47', // the 60-day line and anything past it
+    sprocket: '#050607',
+  },
+  light: {
+    bg: '#FFFFFF',
+    surface: '#F6F8FA',
+    hairline: '#D1D9E0',
+    text: '#1F2328',
+    secondary: '#59636E',
+    muted: '#656D76',
+    signal: '#4A7F12',
+    LOCAL: '#4A7F12',
+    KEYS: '#9A6700',
+    PUBLIC: '#2F6A9A',
+    grid: '#EFF2F5',
+    dormant: '#CF222E',
+    sprocket: '#D1D9E0',
+  },
 };
 
 const GRID = 8;
+const LINE_CLEAR = 4; // minimum gap between a chart label and the 60-day line
 const round2 = (n) => Math.round(n * 100) / 100;
 
 let SANS = null; // IBM Plex Sans 500, labels
@@ -80,7 +101,7 @@ function outline(font, text, x, y, size, fill, tracking = 0) {
   if (drawn !== expected) {
     throw new Error(`scripts/svg.mjs: drew ${drawn} glyph fragments for ${expected} non-space characters of "${text}"; refusing to drop glyphs.`);
   }
-  OUTLINE_STATS.push({ text, drawn, expected });
+  OUTLINE_STATS.push({ text, drawn, expected, x: round2(x), y: baseY, width: round2(textWidth(font, text, size, tracking)) });
   return `<path fill="${fill}" d="${parts.join(' ')}"/>`;
 }
 
@@ -91,13 +112,12 @@ function fitText(font, text, size, maxWidth, tracking = 0) {
   return `${t}…`;
 }
 
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function svg(width, height, body) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">\n<rect width="${width}" height="${height}" fill="${TOKENS.bg}"/>\n${body}\n</svg>\n`;
+function svg(t, width, height, body) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">\n<rect width="${width}" height="${height}" fill="${t.bg}"/>\n${body}\n</svg>\n`;
 }
 
-const hairlineH = (x, y, w) => `<rect x="${x}" y="${y}" width="${w}" height="1" fill="${TOKENS.hairline}"/>`;
+const hairlineH = (t, x, y, w) => `<rect x="${x}" y="${y}" width="${w}" height="1" fill="${t.hairline}"/>`;
 
 // ---- assets/drum.svg: strip-chart recorder ("The Idle Drum") -------------------------
 
@@ -115,16 +135,16 @@ const outlineRight = (font, text, rightX, y, size, fill, tracking = 0) =>
 const outlineCenter = (font, text, centerX, y, size, fill, tracking = 0) =>
   outline(font, text, round2(centerX - textWidth(font, text, size, tracking) / 2), y, size, fill, tracking);
 
-function sprocketStrip(width, y) {
+function sprocketStrip(t, width, y) {
   const segs = [];
   const sy = round2(y);
   for (let x = 9; x + 6 <= width; x += 24) segs.push(`M${x} ${sy}h6v6h-6z`);
-  return `<path fill="#050607" d="${segs.join('')}"/>`;
+  return `<path fill="${t.sprocket}" d="${segs.join('')}"/>`;
 }
 
 const dateAtGap = (baseDay, d) => new Date((baseDay - d) * 86_400_000).toISOString().slice(0, 10);
 
-export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetryEndpoints, rows = [], buildDate }) {
+export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetryEndpoints, rows = [], buildDate }, t) {
   const W = 840;
   const X0 = 184;
   const X1 = 816;
@@ -137,22 +157,61 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
 
   const gaps = rows.map((r) => r.gap).filter((g) => g !== null && Number.isFinite(g));
   const maxGap = gaps.length ? Math.max(0, ...gaps) : 0;
-  const windowDays = Math.max(70, Math.ceil((maxGap + 4) / 10) * 10);
-  const pxPerDay = (X1 - X0) / windowDays;
-  const dayX = (d) => round2(X0 + d * pxPerDay);
+  const baseWindow = Math.max(70, Math.ceil((maxGap + 4) / 10) * 10);
+
+  // A chart label must stay inside the chart and must not cross the 60-day line.
+  // Each channel label goes right of its pip, else above the line to its left.
+  // When the full label fits nowhere, the window widens in 10-day steps; when no
+  // window fits it either, the label drops the version (the ledger carries it),
+  // then the demo state, keeping the gap.
+  const channelLabels = rows.map((row) => {
+    if (row.gap === null || !Number.isFinite(row.gap)) return null;
+    const demo = row.demo === 'LIVE' ? ' · LIVE'
+      : row.demo !== null && row.demo !== undefined ? ' · demo UNKNOWN' : '';
+    const texts = [`${row.version} · ${row.gap} d${demo}`, `${row.gap} d${demo}`, `${row.gap} d`];
+    const pad = row.demo === 'LIVE' ? 16 : 8; // clear of the ring
+    return [...new Set(texts)].map((text) => ({ text, width: textWidth(MONO, text, 13), pad }));
+  });
+  const scale = (days) => {
+    const px = (X1 - X0) / days;
+    const at = (d) => round2(X0 + d * px);
+    const x60 = at(60);
+    const clear = (x, w) => x >= X0 && x + w <= X1 && (x + w <= x60 - LINE_CLEAR || x >= x60 + LINE_CLEAR);
+    const place = (candidates, w) => candidates.find((c) => clear(c.x, w)) ?? null;
+    const placeChannel = (row, variants) => {
+      const pipX = at(row.gap);
+      for (const label of variants) {
+        const spot = place([
+          { x: round2(pipX + label.pad), dy: 4 },
+          { x: Math.floor((pipX - label.pad - label.width) * 100) / 100, dy: -8 },
+        ], label.width);
+        if (spot) return { ...spot, text: label.text };
+      }
+      return null;
+    };
+    return { days, px, at, x60, place, placeChannel };
+  };
+  const fitsAll = (sc, fullOnly) =>
+    rows.every((row, i) => !channelLabels[i] || sc.placeChannel(row, fullOnly ? channelLabels[i].slice(0, 1) : channelLabels[i]));
+  let sc = scale(baseWindow);
+  for (let days = baseWindow; days <= baseWindow + 300 && !fitsAll(sc, true); days += 10) sc = scale(days + 10);
+  if (!fitsAll(sc, true)) sc = scale(baseWindow);
+  const windowDays = sc.days;
+  const pxPerDay = sc.px;
+  const dayX = sc.at;
 
   const lastChannelY = rows.length ? YC0 + (rows.length - 1) * PITCH : Y_SEP + 24;
   const yLegend = lastChannelY + 44;
   const chartBottom = yLegend - 20;
   const H = yLegend + 36;
 
-  const parts = [DRUM_STYLE, sprocketStrip(W, 6)];
+  const parts = [DRUM_STYLE, sprocketStrip(t, W, 6)];
 
   // Masthead
-  parts.push(outline(DISPLAY, profile.name, 24, 76, 56, TOKENS.text, 0.08));
-  parts.push(outline(SANS, fitText(SANS, profile.tagline, 15, W - 48), 24, 102, 15, TOKENS.secondary));
-  parts.push(outlineRight(MONO, `LOG ${buildDate}`, X1, 50, 13, TOKENS.secondary));
-  parts.push(outlineRight(MONO, `1 d = ${pxPerDay.toFixed(1)} px · ${windowDays} d`, X1, 70, 13, TOKENS.secondary));
+  parts.push(outline(DISPLAY, profile.name, 24, 76, 56, t.text, 0.08));
+  parts.push(outline(SANS, fitText(SANS, profile.tagline, 15, W - 48), 24, 102, 15, t.secondary));
+  parts.push(outlineRight(MONO, `LOG ${buildDate}`, X1, 50, 13, t.secondary));
+  parts.push(outlineRight(MONO, `1 d = ${pxPerDay.toFixed(1)} px · ${windowDays} d`, X1, 70, 13, t.secondary));
 
   // Counters
   const counters = [
@@ -163,14 +222,19 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
   ];
   counters.forEach(([value, label], i) => {
     const x = 24 + i * 198;
-    parts.push(outline(MONO, fitText(MONO, value, 28, 190), x, 148, 28, TOKENS.text));
-    parts.push(outline(SANS, label, x, 170, 13, TOKENS.secondary, 0.06));
+    parts.push(outline(MONO, fitText(MONO, value, 28, 190), x, 148, 28, t.text));
+    parts.push(outline(SANS, label, x, 170, 13, t.secondary, 0.06));
   });
 
   // Chart field: dormant tint, day grid, 60-day boundary, axis labels
-  const x60 = dayX(60);
+  const { x60 } = sc;
+  const outlineClear = (text, y, fill) => {
+    const w = textWidth(MONO, text, 13);
+    const spot = sc.place([{ x: X0 + 8 }, { x: round2(x60 + 8) }], w) ?? { x: X0 + 8 };
+    return outline(MONO, text, spot.x, y, 13, fill);
+  };
   parts.push(
-    `<rect x="${x60}" y="${TOP}" width="${round2(X1 - x60)}" height="${round2(chartBottom - TOP)}" fill="${TOKENS.dormant}" fill-opacity="0.08"/>`,
+    `<rect x="${x60}" y="${TOP}" width="${round2(X1 - x60)}" height="${round2(chartBottom - TOP)}" fill="${t.dormant}" fill-opacity="0.08"/>`,
   );
 
   const minorGrid = [];
@@ -180,23 +244,23 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     if (d % 10 === 0) majorGrid.push(seg);
     else minorGrid.push(seg);
   }
-  parts.push(`<path fill="none" stroke="${TOKENS.grid}" stroke-width="1" d="${minorGrid.join('')}"/>`);
-  parts.push(`<path fill="none" stroke="${TOKENS.hairline}" stroke-width="1" d="${majorGrid.join('')}"/>`);
-  parts.push(`<path fill="none" stroke="${TOKENS.dormant}" stroke-width="2" d="M${x60} ${TOP}V${chartBottom}"/>`);
-  parts.push(outline(SANS, 'DORMANT', round2(x60 + 8), TOP + 20, 13, TOKENS.dormant, 0.08));
+  parts.push(`<path fill="none" stroke="${t.grid}" stroke-width="1" d="${minorGrid.join('')}"/>`);
+  parts.push(`<path fill="none" stroke="${t.hairline}" stroke-width="1" d="${majorGrid.join('')}"/>`);
+  parts.push(`<path fill="none" stroke="${t.dormant}" stroke-width="2" d="M${x60} ${TOP}V${chartBottom}"/>`);
+  parts.push(outline(SANS, 'DORMANT', round2(x60 + 8), TOP + 20, 13, t.dormant, 0.08));
 
   const tickStep = windowDays > 100 ? 20 : 10;
-  parts.push(outlineCenter(MONO, 'NOW', dayX(0), TOP - 8, 13, TOKENS.signal));
+  parts.push(outlineCenter(MONO, 'NOW', dayX(0), TOP - 8, 13, t.signal));
   for (let d = tickStep; d <= windowDays; d += tickStep) {
     const label = `${d} d`;
     const cx = dayX(d);
     if (d === windowDays && cx + textWidth(MONO, label, 13) / 2 > X1 + 12) continue;
-    parts.push(outlineCenter(MONO, label, cx, TOP - 8, 13, d === 60 ? TOKENS.dormant : TOKENS.secondary));
+    parts.push(outlineCenter(MONO, label, cx, TOP - 8, 13, d === 60 ? t.dormant : t.secondary));
   }
 
   // CH-00: studio trace
-  parts.push(outline(MONO, 'CH-00 STUDIO', 24, Y00 - 2, 14, TOKENS.text));
-  parts.push(outline(SANS, 'every release', 24, Y00 + 16, 13, TOKENS.secondary));
+  parts.push(outline(MONO, 'CH-00 STUDIO', 24, Y00 - 2, 14, t.text));
+  parts.push(outline(SANS, 'every release', 24, Y00 + 16, 13, t.secondary));
 
   const gapCounts = new Map();
   for (const row of rows) {
@@ -218,7 +282,7 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     );
   }
   trace.push(`L${X1} ${Y00}`);
-  parts.push(`<path fill="none" stroke="${TOKENS.text}" stroke-width="1.5" stroke-linejoin="round" d="${trace.join('')}"/>`);
+  parts.push(`<path fill="none" stroke="${t.text}" stroke-width="1.5" stroke-linejoin="round" d="${trace.join('')}"/>`);
 
   // Longest flat stretch between consecutive distinct release days
   let bestFlat = null;
@@ -234,64 +298,62 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     const bx1 = dayX(bestFlat.b - 1);
     const by = Y00 + 32;
     parts.push(
-      `<path fill="none" stroke="${TOKENS.secondary}" stroke-width="1" d="M${bx0} ${by - 4}V${by + 4}M${bx0} ${by}H${bx1}M${bx1} ${by - 4}V${by + 4}"/>`,
+      `<path fill="none" stroke="${t.secondary}" stroke-width="1" d="M${bx0} ${by - 4}V${by + 4}M${bx0} ${by}H${bx1}M${bx1} ${by - 4}V${by + 4}"/>`,
     );
     const flatLabel = `${bestFlat.span} days flat · ${dateAtGap(baseDay, bestFlat.b - 1)} → ${dateAtGap(baseDay, bestFlat.a + 1)}`;
     const fw = textWidth(MONO, flatLabel, 13);
-    const fx = round2(Math.min(Math.max((bx0 + bx1) / 2 - fw / 2, X0), X1 - fw));
-    parts.push(outline(MONO, flatLabel, fx, Y00 + 52, 13, TOKENS.secondary));
+    const centred = round2(Math.min(Math.max((bx0 + bx1) / 2 - fw / 2, X0), X1 - fw));
+    const spot = sc.place([{ x: centred }, { x: Math.floor((x60 - LINE_CLEAR - fw) * 100) / 100 }, { x: round2(x60 + LINE_CLEAR) }], fw);
+    parts.push(outline(MONO, flatLabel, spot ? spot.x : centred, Y00 + 52, 13, t.secondary));
   }
-  parts.push(`<circle class="sty" cx="${X0}" cy="${Y00}" r="5" fill="${TOKENS.signal}"/>`);
+  parts.push(`<circle class="sty" cx="${X0}" cy="${Y00}" r="5" fill="${t.signal}"/>`);
 
   // CH-T: telemetry
-  parts.push(outline(MONO, 'CH-T TELEMETRY', 24, YT - 2, 14, TOKENS.text));
-  parts.push(outline(SANS, 'sum of registry flags', 24, YT + 16, 13, TOKENS.secondary));
-  const telColor = telemetryEndpoints === 0 ? TOKENS.LOCAL : TOKENS.dormant;
+  parts.push(outline(MONO, 'CH-T TELEMETRY', 24, YT - 2, 14, t.text));
+  parts.push(outline(SANS, 'sum of registry flags', 24, YT + 16, 13, t.secondary));
+  const telColor = telemetryEndpoints === 0 ? t.LOCAL : t.dormant;
   parts.push(`<path fill="none" stroke="${telColor}" stroke-width="1.5" d="M${X0} ${YT}H${X1}"/>`);
-  parts.push(outline(MONO, `${telemetryEndpoints} endpoints`, X0 + 8, YT - 8, 13, telColor));
+  parts.push(outlineClear(`${telemetryEndpoints} endpoints`, YT - 8, telColor));
 
   // Section divider and caption
-  parts.push(hairlineH(24, Y_SEP, W - 48));
-  parts.push(outline(SANS, 'ONE CHANNEL PER APP · NEWEST RELEASE FIRST', 24, Y_SEP + 24, 13, TOKENS.secondary, 0.06));
+  parts.push(hairlineH(t, 24, Y_SEP, W - 48));
+  const captions = ['ONE CHANNEL PER APP · NEWEST RELEASE FIRST', 'ONE CHANNEL PER APP'];
+  const caption = captions.find((c) => 24 + textWidth(SANS, c, 13, 0.06) <= x60 - LINE_CLEAR) ?? captions[1];
+  parts.push(outline(SANS, caption, 24, Y_SEP + 24, 13, t.secondary, 0.06));
 
   // Per-app channels
   rows.forEach((row, i) => {
     const y = YC0 + i * PITCH;
-    const nameColor = row.dormant ? TOKENS.secondary : TOKENS.text;
+    const nameColor = row.dormant ? t.secondary : t.text;
     // The wordmark sits right above, so the studio prefix is dropped in the rail.
     const name = row.app.name.replace(`${profile.name} `, '');
     parts.push(outline(DISPLAY, fitText(DISPLAY, name, 19, 148), 24, y + 5, 19, nameColor));
-    const c = TOKENS[row.app.privacyClass] ?? TOKENS.muted;
+    const c = t[row.app.privacyClass] ?? t.muted;
     if (row.gap === null || !Number.isFinite(row.gap)) {
-      parts.push(`<path fill="none" stroke="${TOKENS.muted}" stroke-width="1.5" stroke-dasharray="4 6" d="M${X0} ${y}H${X1}"/>`);
-      parts.push(outline(MONO, `${row.version} · UNKNOWN`, X0 + 8, y - 8, 13, TOKENS.muted));
+      parts.push(`<path fill="none" stroke="${t.muted}" stroke-width="1.5" stroke-dasharray="4 6" d="M${X0} ${y}H${X1}"/>`);
+      parts.push(outlineClear(`${row.version} · UNKNOWN`, y - 8, t.muted));
       return;
     }
     const pipX = dayX(row.gap);
     parts.push(`<path fill="none" stroke="${c}" stroke-width="2" d="M${X0} ${y}H${pipX}"/>`);
     parts.push(`<path fill="none" stroke="${c}" stroke-width="3" d="M${pipX} ${y - 14}V${y + 4}"/>`);
     if (row.demo === 'LIVE') {
-      parts.push(`<circle class="live" cx="${pipX}" cy="${y - 5}" r="7" fill="none" stroke="${TOKENS.signal}" stroke-width="1.5"/>`);
+      // A steady ring, plus a pulse that fades out: the marker never disappears.
+      const ring = `cx="${pipX}" cy="${y - 5}" r="7" fill="none" stroke="${t.signal}" stroke-width="1.5"`;
+      parts.push(`<circle ${ring}/>`, `<circle class="live" ${ring}/>`);
     }
-    let label = `${row.version} · ${row.gap} d`;
-    if (row.demo === 'LIVE') label += ' · LIVE';
-    else if (row.demo !== null && row.demo !== undefined) label += ' · demo UNKNOWN';
-    const labelColor = row.dormant ? TOKENS.dormant : TOKENS.secondary;
-    const lw = textWidth(MONO, label, 13);
-    const pad = row.demo === 'LIVE' ? 16 : 8; // clear of the pulsing ring
-    if (pipX + pad + lw <= X1) {
-      parts.push(outline(MONO, label, round2(pipX + pad), y + 4, 13, labelColor));
-    } else {
-      parts.push(outlineRight(MONO, label, round2(pipX - 8), y - 8, 13, labelColor));
-    }
+    const labelColor = row.dormant ? t.dormant : t.secondary;
+    const full = channelLabels[i][0];
+    const spot = sc.placeChannel(row, channelLabels[i]) ?? { x: round2(pipX + full.pad), dy: 4, text: full.text };
+    parts.push(outline(MONO, spot.text, spot.x, y + spot.dy, 13, labelColor));
   });
 
   // Legend
   const legendItems = [
-    { kind: 'box', color: TOKENS.LOCAL, full: 'LOCAL stays on your machine', short: 'LOCAL' },
-    { kind: 'box', color: TOKENS.KEYS, full: 'KEYS your own keys', short: 'KEYS' },
-    { kind: 'box', color: TOKENS.PUBLIC, full: 'PUBLIC public data', short: 'PUBLIC' },
-    { kind: 'ring', color: TOKENS.signal, full: 'LIVE demo answered', short: 'LIVE' },
+    { kind: 'box', color: t.LOCAL, full: 'LOCAL stays on your machine', short: 'LOCAL' },
+    { kind: 'box', color: t.KEYS, full: 'KEYS your own keys', short: 'KEYS' },
+    { kind: 'box', color: t.PUBLIC, full: 'PUBLIC public data', short: 'PUBLIC' },
+    { kind: 'ring', color: t.signal, full: 'LIVE demo answered', short: 'LIVE' },
   ];
   const SWATCH = 8;
   const SWATCH_GAP = 8;
@@ -309,17 +371,17 @@ export function drumSvg({ profile, repos, appsShipped, lastReleaseAgo, telemetry
     } else {
       parts.push(`<circle cx="${round2(lx + 4)}" cy="${round2(yLegend - 4)}" r="4" fill="none" stroke="${item.color}" stroke-width="1.5"/>`);
     }
-    parts.push(outline(SANS, text, round2(lx + SWATCH + SWATCH_GAP), yLegend, 13, TOKENS.secondary));
+    parts.push(outline(SANS, text, round2(lx + SWATCH + SWATCH_GAP), yLegend, 13, t.secondary));
     lx = round2(lx + SWATCH + SWATCH_GAP + textWidth(SANS, text, 13) + ITEM_GAP);
   }
 
-  parts.push(sprocketStrip(W, H - 12));
-  return svg(W, H, parts.join('\n'));
+  parts.push(sprocketStrip(t, W, H - 12));
+  return svg(t, W, H, parts.join('\n'));
 }
 
 // ---- assets/flagship.svg: flagship channel loupe, live data injected ----------------
 
-export function flagshipSvg(row) {
+export function flagshipSvg(row, t) {
   const W = 840;
   const H = 216;
   const X0 = 72;
@@ -330,7 +392,7 @@ export function flagshipSvg(row) {
   const windowDays = Math.max(14, (gap ?? 0) + 2);
   const pxPerDay = (X1 - X0) / windowDays;
   const dayX = (d) => round2(X0 + d * pxPerDay);
-  const classColor = TOKENS[row.app.privacyClass] ?? TOKENS.muted;
+  const classColor = t[row.app.privacyClass] ?? t.muted;
   const legend = row.app.privacyClass === 'KEYS' ? 'cloud calls with your own keys, never ours'
     : row.app.privacyClass === 'LOCAL' ? 'stays on your machine'
     : 'public data only';
@@ -344,15 +406,15 @@ export function flagshipSvg(row) {
 
   const parts = [
     '<style>\n.sty{animation:sty 2.4s ease-in-out infinite}@keyframes sty{50%{opacity:.35}}\n@media (prefers-reduced-motion:reduce){.sty{animation:none}}\n</style>',
-    `<rect x="0.5" y="0.5" width="${round2(W - 1)}" height="${round2(H - 1)}" fill="${TOKENS.surface}" stroke="${TOKENS.hairline}" stroke-width="1"/>`,
-    outline(MONO, 'CH-01 LOUPE', 24, 40, 13, TOKENS.muted),
-    outline(MONO, winLabel, round2(816 - textWidth(MONO, winLabel, 13)), 40, 13, TOKENS.secondary),
-    outline(DISPLAY, appName, 24, 82, 34, TOKENS.text, 0.04),
-    outline(MONO, version, round2(816 - textWidth(MONO, version, 20)), 82, 20, TOKENS.text),
+    `<rect x="0.5" y="0.5" width="${round2(W - 1)}" height="${round2(H - 1)}" fill="${t.surface}" stroke="${t.hairline}" stroke-width="1"/>`,
+    outline(MONO, 'CH-01 LOUPE', 24, 40, 13, t.muted),
+    outline(MONO, winLabel, round2(816 - textWidth(MONO, winLabel, 13)), 40, 13, t.secondary),
+    outline(DISPLAY, appName, 24, 82, 34, t.text, 0.04),
+    outline(MONO, version, round2(816 - textWidth(MONO, version, 20)), 82, 20, t.text),
     `<rect x="24" y="98" width="10" height="10" fill="${classColor}"/>`,
-    outline(MONO, classLabel, 44, 108, 14, TOKENS.text),
-    outline(SANS, legend, legendX, 108, 13, TOKENS.muted),
-    outline(MONO, releasedLabel, round2(816 - textWidth(MONO, releasedLabel, 13)), 108, 13, TOKENS.secondary),
+    outline(MONO, classLabel, 44, 108, 14, t.text),
+    outline(SANS, legend, legendX, 108, 13, t.muted),
+    outline(MONO, releasedLabel, round2(816 - textWidth(MONO, releasedLabel, 13)), 108, 13, t.secondary),
   ];
 
   // Emit all day ticks in one <path>; step by 5 days once the window exceeds 60 d.
@@ -361,28 +423,28 @@ export function flagshipSvg(row) {
   for (let d = 0; d <= windowDays; d += tickStep) {
     ticks.push(`M${dayX(d)} ${round2(Y - 6)}V${round2(Y + 6)}`);
   }
-  parts.push(`<path d="${ticks.join(' ')}" fill="none" stroke="${TOKENS.hairline}" stroke-width="1"/>`);
+  parts.push(`<path d="${ticks.join(' ')}" fill="none" stroke="${t.hairline}" stroke-width="1"/>`);
 
   if (!hasGap) {
     const unknownLabel = 'UNKNOWN';
     const unknownX = round2((X0 + X1) / 2 - textWidth(MONO, unknownLabel, 14) / 2);
-    parts.push(`<line x1="${round2(X0)}" y1="${round2(Y)}" x2="${round2(X1)}" y2="${round2(Y)}" stroke="${TOKENS.muted}" stroke-width="1.5" stroke-dasharray="4 6"/>`);
-    parts.push(outline(MONO, unknownLabel, unknownX, round2(Y - 14), 14, TOKENS.muted));
+    parts.push(`<line x1="${round2(X0)}" y1="${round2(Y)}" x2="${round2(X1)}" y2="${round2(Y)}" stroke="${t.muted}" stroke-width="1.5" stroke-dasharray="4 6"/>`);
+    parts.push(outline(MONO, unknownLabel, unknownX, round2(Y - 14), 14, t.muted));
   } else {
     const pipX = dayX(gap);
-    parts.push(`<line x1="${round2(X0)}" y1="${round2(Y)}" x2="${round2(X1)}" y2="${round2(Y)}" stroke="${TOKENS.hairline}" stroke-width="1"/>`);
+    parts.push(`<line x1="${round2(X0)}" y1="${round2(Y)}" x2="${round2(X1)}" y2="${round2(Y)}" stroke="${t.hairline}" stroke-width="1"/>`);
     parts.push(`<line x1="${round2(X0)}" y1="${round2(Y)}" x2="${pipX}" y2="${round2(Y)}" stroke="${classColor}" stroke-width="3"/>`);
     parts.push(`<line x1="${pipX}" y1="${round2(Y - 22)}" x2="${pipX}" y2="${round2(Y + 8)}" stroke="${classColor}" stroke-width="4"/>`);
   }
 
-  parts.push(`<circle class="sty" cx="${round2(X0)}" cy="${round2(Y)}" r="6" fill="${TOKENS.signal}"/>`);
+  parts.push(`<circle class="sty" cx="${round2(X0)}" cy="${round2(Y)}" r="6" fill="${t.signal}"/>`);
 
   const labelY = round2(Y + 34);
   const nowLabel = 'NOW';
   const nowW = textWidth(MONO, nowLabel, 13);
   const nowX = round2(X0 - nowW / 2);
   const nowRight = nowX + nowW;
-  parts.push(outline(MONO, nowLabel, nowX, labelY, 13, TOKENS.signal));
+  parts.push(outline(MONO, nowLabel, nowX, labelY, 13, t.signal));
 
   let pipLabelRight = null;
   if (hasGap) {
@@ -393,83 +455,28 @@ export function flagshipSvg(row) {
     const maxPipX = 816 - pipW;
     const pipLabelX = round2(Math.min(maxPipX, Math.max(minPipX, pipX - pipW / 2)));
     pipLabelRight = pipLabelX + pipW;
-    parts.push(outline(MONO, pipLabel, pipLabelX, labelY, 13, row.dormant ? TOKENS.dormant : TOKENS.secondary));
+    parts.push(outline(MONO, pipLabel, pipLabelX, labelY, 13, row.dormant ? t.dormant : t.secondary));
   }
 
   const endLabel = `${windowDays} d`;
   const endX = round2(X1 - textWidth(MONO, endLabel, 13));
   if (pipLabelRight === null || endX - pipLabelRight >= 12) {
-    parts.push(outline(MONO, endLabel, endX, labelY, 13, TOKENS.muted));
+    parts.push(outline(MONO, endLabel, endX, labelY, 13, t.muted));
   }
 
-  return svg(W, H, parts.join('\n'));
-}
-
-// ---- assets/cards/<id>.svg: selected work cards --------------------------------------
-
-export function cardSvg(row) {
-  const W = 560;
-  const H = 232;
-  const P = 24;
-  const maxText = W - 2 * P;
-  const classColor = TOKENS[row.app.privacyClass] ?? TOKENS.muted;
-  const released = row.releasedAt ? isoDate(row.releasedAt) : 'UNKNOWN';
-  const parts = [
-    `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="${TOKENS.surface}" stroke="${TOKENS.hairline}" stroke-width="1"/>`,
-    outline(SANS, fitText(SANS, row.app.name, 20, maxText), P, 56, 20, TOKENS.text),
-    outline(SANS, fitText(SANS, row.app.description, 14, maxText), P, 84, 14, TOKENS.secondary),
-    hairlineH(P, 112, maxText),
-    outline(SANS, row.app.platform.toUpperCase(), P, 144, 12, TOKENS.secondary, 0.08),
-    `<rect x="${round2(P + textWidth(SANS, row.app.platform.toUpperCase(), 12, 0.08) + 16)}" y="136" width="8" height="8" fill="${classColor}"/>`,
-    outline(SANS, row.app.privacyClass, round2(P + textWidth(SANS, row.app.platform.toUpperCase(), 12, 0.08) + 32), 144, 12, classColor, 0.08),
-    outline(MONO, `${row.version} · ${released}`, P, 192, 12, TOKENS.muted),
-  ];
-  if (row.demo === 'LIVE') {
-    const label = 'LIVE';
-    const lw = textWidth(SANS, label, 12, 0.08);
-    parts.push(`<rect x="${round2(W - P - lw - 24)}" y="184" width="8" height="8" fill="${TOKENS.signal}"/>`);
-    parts.push(outline(SANS, label, round2(W - P - lw - 8), 192, 12, TOKENS.signal, 0.08));
-  }
-  return svg(W, H, parts.join('\n'));
-}
-
-// ---- assets/method.svg: contract chain, static content -------------------------------
-
-export function methodSvg() {
-  const W = 1200;
-  const H = 168;
-  const M = 48;
-  const gap = 16;
-  const boards = [
-    ['01', 'IDEA'], ['02', 'PRD'], ['03', 'ARD'], ['04', 'TRD'], ['05', 'TASKS'], ['+', 'AGENTS.md'],
-  ];
-  const bw = (W - 2 * M - (boards.length - 1) * gap) / boards.length;
-  const parts = [];
-  boards.forEach(([num, name], i) => {
-    const x = round2(M + i * (bw + gap));
-    parts.push(`<rect x="${x + 0.5}" y="24.5" width="${round2(bw - 1)}" height="119" fill="${TOKENS.surface}" stroke="${TOKENS.hairline}" stroke-width="1"/>`);
-    parts.push(outline(MONO, num, x + 16, 64, 12, TOKENS.muted));
-    parts.push(outline(SANS, fitText(SANS, name, 16, bw - 32), x + 16, 104, 16, num === '+' ? TOKENS.secondary : TOKENS.text));
-  });
-  return svg(W, H, parts.join('\n'));
+  return svg(t, W, H, parts.join('\n'));
 }
 
 // ---- write all assets ------------------------------------------------------------------
 
-export const CARD_IDS = ['browser-linux', 'scratch-pad', 'sonora', 'f1-telemetry-pro', 'ai-rules-builder', 'cascade'];
+const variantPath = (base, theme) => `assets/${base}${theme === 'dark' ? '' : `-${theme}`}.svg`;
 
 export async function writeAssets(root, ctx) {
-  const { rows } = ctx;
-  await mkdir(join(root, 'assets/cards'), { recursive: true });
-  const flagship = rows.find(({ app }) => app.flagship);
-  const files = new Map([
-    ['assets/drum.svg', drumSvg(ctx)],
-    ['assets/method.svg', methodSvg()],
-  ]);
-  if (flagship) files.set('assets/flagship.svg', flagshipSvg(flagship));
-  for (const id of CARD_IDS) {
-    const row = rows.find((r) => r.app.id === id);
-    if (row) files.set(`assets/cards/${id}.svg`, cardSvg(row));
+  const flagship = ctx.rows.find(({ app }) => app.flagship);
+  const files = new Map();
+  for (const [theme, t] of Object.entries(PALETTES)) {
+    files.set(variantPath('drum', theme), drumSvg(ctx, t));
+    if (flagship) files.set(variantPath('flagship', theme), flagshipSvg(flagship, t));
   }
   for (const [path, content] of files) {
     if (content.includes('NaN')) throw new Error(`scripts/svg.mjs: NaN coordinate in ${path}; refusing to write a broken SVG.`);

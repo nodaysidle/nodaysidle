@@ -29,9 +29,11 @@ README.md directly, stop: you are in the wrong file.
 ## Scope
 
 - PR 1 (deterministic core), PR 2 (generated SVG layer), PR 3 (retire the old
-  design), and PR 4 (The Idle Drum) are complete; see TASKS.md. New work gets its
+  design), and PR 4 (The Idle Drum) are complete; PR 5 (light and dark, fewer
+  sections) is in review; see TASKS.md. New work gets its
   own entry in TASKS.md before it starts.
-- Use the design tokens in TRD.md exactly. Signal color is used for the stylus
+- Use the design tokens in TRD.md exactly, per palette: a dark asset uses only
+  dark tokens and a light asset only light tokens (`npm test` enforces it). Signal color is used for the stylus
   (today) and verified-live markers only. Radius 0 applies to every rectangle;
   circles are allowed only for the stylus and the live-demo ring. Two subtle CSS
   animations inside the SVG are allowed (the stylus pulse and the live ring), both
