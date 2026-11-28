@@ -22,7 +22,7 @@ A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from an
 
 ## Release ledger
 
-Every shipped app, newest release first. The gap is days since the last release, computed at build time; web apps count from their launch. Over 60 days reads as dormant, not deleted.
+Every shipped app, newest release first. The gap is days since the last release; web apps count from their launch. Over 60 days reads as dormant, not deleted.
 
 | App | Version | Released | Gap (days) | Platform | Demo |
 | :--- | :--- | :--- | ---: | :--- | :--- |

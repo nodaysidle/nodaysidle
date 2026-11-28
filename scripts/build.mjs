@@ -299,7 +299,7 @@ ${flagshipBlock()}
 
 ## Release ledger
 
-Every shipped app, newest release first. The gap is days since the last release, computed at build time; web apps count from their launch. Over 60 days reads as dormant, not deleted.
+Every shipped app, newest release first. The gap is days since the last release; web apps count from their launch. Over 60 days reads as dormant, not deleted.
 
 ${ledgerTable()}
 
