@@ -6,14 +6,14 @@
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/drum-light.svg">
-  <img src="assets/drum.svg" width="100%" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux. 71 public repositories · 11 apps shipped · last release 3 days ago · 0 telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.">
+  <img src="assets/drum.svg" width="100%" alt="NODAYSIDLE — Independent software studio. Deterministic, privacy-first software for Linux. 71 public repositories · 11 apps shipped · last release 0 days ago · 0 telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.">
 </picture>
 
 ## Flagship: Kureksistant
 
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="assets/flagship-light.svg">
-  <img src="assets/flagship.svg" width="100%" alt="Kureksistant v0.2.5, released 2026-11-22, 6 days ago, class KEYS">
+  <img src="assets/flagship.svg" width="100%" alt="Kureksistant v0.2.6, released 2026-11-28, 0 days ago, class KEYS">
 </picture>
 
 A voice-first AI assistant daemon for Arch Linux and Hyprland. Summon it from anywhere, it answers with voice, deep-searches, and keeps its own notes.
@@ -26,9 +26,9 @@ Every shipped app, newest release first. The gap is days since the last release;
 
 | App | Version | Released | Gap (days) | Platform | Demo |
 | :--- | :--- | :--- | ---: | :--- | :--- |
+| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.6](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.6) | 2026‑11‑28 | 0 | Linux | - |
 | [NODAYSIDLE Browser for Linux](https://nodaysidle-apps.vercel.app/apps/browser-linux/) | [v0.4.0](https://github.com/nodaysidle/nodaysidle-browser-linux/releases/tag/v0.4.0) | 2026‑11‑25 | 3 | Linux | - |
 | [Scratch Pad](https://nodaysidle-apps.vercel.app/apps/scratch-pad/) | [v0.2.2](https://github.com/nodaysidle/scratch-pad/releases/tag/v0.2.2) | 2026‑11‑24 | 4 | Linux | - |
-| [Kureksistant](https://nodaysidle-apps.vercel.app/apps/kurek/) | [v0.2.5](https://github.com/nodaysidle/kureksistant/releases/tag/v0.2.5) | 2026‑11‑22 | 6 | Linux | - |
 | [NeuralCanvas](https://nodaysidle-apps.vercel.app/apps/neuralcanvas/) | [v0.1.0](https://github.com/nodaysidle/neural-canvas/releases/tag/v0.1.0) | 2026‑10‑25 | 34 | Linux | - |
 | [F1 Telemetry Pro](https://nodaysidle-apps.vercel.app/apps/f1-telemetry-pro/) | web | 2026‑10‑24 | 35 | Web | [LIVE](https://f1-telemetry-pro.vercel.app) |
 | [VectorStudio](https://nodaysidle-apps.vercel.app/apps/vectorstudio/) | [v0.3.0](https://github.com/nodaysidle/no-vector-days/releases/tag/v0.3.0) | 2026‑10‑22 | 37 | Linux | - |
