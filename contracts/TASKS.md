@@ -76,6 +76,30 @@ A task is done only when its verification step passes live; otherwise it is UNKN
   phone and confirmed it before the merge. The Actions run on `main` passed and
   found no changes to commit.
 
+## PR 5: Light and dark, fewer sections
+
+- [x] `scripts/svg.mjs`: `PALETTES.dark` (the existing tokens) and
+      `PALETTES.light`; drum and loupe written in both; README uses `<picture>`
+      with the dark file as the fallback `<img>`.
+- [x] Retire the selected-work cards (they repeated the ledger) and
+      `assets/method.svg` (six labelled boxes); the method becomes a linked
+      Markdown chain to `contracts/`.
+- [x] Merge the privacy matrix and the detail table into one class-grouped table
+      with generated class counts; drop the Class column from the ledger.
+- [x] Repository index: every public repository from the GitHub API in a
+      collapsed `<details>`, descriptions escaped as untrusted text, UNKNOWN when
+      the API fails.
+- [x] Footer links as Markdown (GitHub's autolinker added an empty anchor to the
+      HTML mailto link); prose paragraphs on single lines.
+- [x] Workflow staging: the commit step stages the four generated SVGs instead
+      of the retired `method.svg` and `cards/`. Schedule, permissions and push
+      behaviour unchanged.
+- Verification: `npm test` checks both palettes, palette purity, hostile
+  repository descriptions and the index's UNKNOWN and count-mismatch states. The
+  dark SVGs are byte-identical to PR 4's output on the same data. GitHub's
+  Markdown API render checked in light and dark. Live check at 1280 px and in
+  GitHub mobile: UNKNOWN until the branch is pushed and the owner checks it.
+
 ## Standing verification for every PR
 
 - Build runs clean from a fresh clone after `npm ci` (`opentype.js` for font
