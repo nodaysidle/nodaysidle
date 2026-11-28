@@ -20,7 +20,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadFonts, writeAssets, CARD_IDS, OUTLINE_STATS } from './svg.mjs';
+import { loadFonts, writeAssets, OUTLINE_STATS } from './svg.mjs';
+import { cell, link, themedImage, repoIndexBlock } from './markdown.mjs';
 import { dayKey, dayNumber, isoDate } from './dates.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -85,6 +86,25 @@ async function publicRepoCount() {
   }
   const { data } = await gh(`/users/${profile.github.split('/').pop()}`);
   return data ? data.public_repos : 'UNKNOWN';
+}
+
+async function repoIndex() {
+  if (process.env.RELEASES_FILE) {
+    const fixture = JSON.parse(await readFile(process.env.RELEASES_FILE, 'utf8'));
+    return fixture.index ?? null;
+  }
+  const login = profile.github.split('/').pop();
+  const repos = [];
+  for (let page = 1; page <= 10; page += 1) {
+    const { data } = await gh(`/users/${login}/repos?type=owner&per_page=100&page=${page}`);
+    if (!Array.isArray(data)) return null;
+    for (const r of data) {
+      repos.push({ name: r.name, url: r.html_url, description: r.description, language: r.language, fork: r.fork, archived: r.archived });
+    }
+    if (data.length < 100) return repos;
+  }
+  warn('repo index: more than 1000 repositories; the index is UNKNOWN.');
+  return null;
 }
 
 async function siteApps() {
@@ -177,13 +197,16 @@ for (const app of apps) rows.push(await buildRow(app, site));
 rows.sort((a, b) => (b.releasedAt ? Date.parse(b.releasedAt) : 0) - (a.releasedAt ? Date.parse(a.releasedAt) : 0) || a.app.order - b.app.order);
 
 const repos = await publicRepoCount();
+const index = await repoIndex();
+if (index === null) warn('repo index: GitHub API unavailable, the index renders as UNKNOWN.');
+else if (repos !== 'UNKNOWN' && index.length !== repos) warn(`repo index lists ${index.length} repositories, the profile reports ${repos}.`);
 const telemetryEndpoints = apps.reduce((sum, app) => sum + (app.telemetry ? 1 : 0), 0);
 const newest = rows.find((row) => row.gap !== null);
 const dayWord = (n) => `${n} day${Number(n) === 1 ? '' : 's'}`;
 const lastReleaseAgo = newest ? `${dayWord(newest.gap)} ago` : 'UNKNOWN';
 const buildDate = isoDate(now.toISOString());
 
-// ---- SVG assets (PR 2): outlined text, TRD tokens, live data injected -------------------
+// ---- SVG assets: outlined text, TRD tokens, one file per palette ---------------------------
 
 await loadFonts(ROOT);
 const svgFiles = await writeAssets(ROOT, {
@@ -199,49 +222,36 @@ if (process.env.SVG_STATS) console.error(JSON.stringify(OUTLINE_STATS));
 
 // ---- README ----------------------------------------------------------------------------
 
-const cell = (s) => String(s).replace(/\|/g, '\\|');
-const link = (text, url) => `[${cell(text)}](${url})`;
+const CLASS_ORDER = Object.fromEntries(CLASSES.map((cls, i) => [cls, i]));
 
 function ledgerTable() {
-  const head = '| App | Version | Released | Gap (days) | Platform | Demo | Class |';
-  const rule = '| --- | --- | --- | --- | --- | --- | --- |';
+  const head = '| App | Version | Released | Gap (days) | Platform | Demo |';
+  const rule = '| :--- | :--- | :--- | ---: | :--- | :--- |';
   const body = rows.map((row) => {
     const name = link(row.app.name, row.page) + (row.dormant ? ' · dormant' : '');
     const version = row.source === 'github' && row.releaseUrl ? link(row.version, row.releaseUrl) : row.version;
     const released = row.releasedAt ? isoDate(row.releasedAt) : 'UNKNOWN';
     const gap = row.gap === null ? 'UNKNOWN' : String(row.gap);
-    const demo = row.demo ?? '-';
-    return `| ${name} | ${version} | ${released} | ${gap} | ${cell(row.app.platform)} | ${demo} | ${row.app.privacyClass} |`;
+    const demo = row.demo === 'LIVE' ? link('LIVE', row.app.demo) : (row.demo ?? '-');
+    return `| ${name} | ${version} | ${released} | ${gap} | ${cell(row.app.platform)} | ${demo} |`;
   });
   return [head, rule, ...body].join('\n');
 }
 
-function privacyMatrix() {
-  const byClass = Object.fromEntries(CLASSES.map((cls) => [cls, []]));
-  for (const row of rows) byClass[row.app.privacyClass].push(link(row.app.name, row.page));
-  const columns = [
-    ['Stays on your machine', byClass.LOCAL],
-    ['Cloud calls, your own keys', byClass.KEYS],
-    ['Public data only', byClass.PUBLIC],
-  ];
-  const height = Math.max(...columns.map(([, names]) => names.length));
-  const head = `| ${columns.map(([title]) => title).join(' | ')} |`;
-  const rule = `| ${columns.map(() => ' --- ').join('|')}|`;
-  const body = [];
-  for (let i = 0; i < height; i += 1) {
-    body.push(`| ${columns.map(([, names]) => names[i] ?? '').join(' | ')} |`);
-  }
+function privacyTable() {
+  const ordered = rows.slice().sort((a, b) => CLASS_ORDER[a.app.privacyClass] - CLASS_ORDER[b.app.privacyClass]);
+  const head = '| Class | App | What it does | What leaves your machine |';
+  const rule = '| :--- | :--- | :--- | :--- |';
+  const body = ordered.map((row) => {
+    const name = `${link(row.app.name, row.page)}<br><sub>${link('Code', `https://github.com/${row.app.repo}`)}</sub>`;
+    return `| ${row.app.privacyClass} | ${name} | ${cell(row.app.description)} | ${cell(row.privacyLine)} |`;
+  });
   return [head, rule, ...body].join('\n');
 }
 
-function detailTable() {
-  const head = '| App | What it does | What leaves your machine |';
-  const rule = '| :--- | :--- | :--- |';
-  const body = rows.map((row) => {
-    const name = `${link(row.app.name, row.page)} · ${link('Code', `https://github.com/${row.app.repo}`)}`;
-    return `| ${name} | ${cell(row.app.description)} | ${cell(row.privacyLine)} |`;
-  });
-  return [head, rule, ...body].join('\n');
+function classCounts() {
+  const count = (cls) => rows.filter((row) => row.app.privacyClass === cls).length;
+  return `**LOCAL** stays on your machine (${count('LOCAL')}) · **KEYS** cloud calls with your own keys (${count('KEYS')}) · **PUBLIC** public data only (${count('PUBLIC')})`;
 }
 
 function flagshipBlock() {
@@ -250,25 +260,20 @@ function flagshipBlock() {
   const repoUrl = `https://github.com/${row.app.repo}`;
   const when = row.releasedAt ? `${isoDate(row.releasedAt)}, ${dayWord(row.gap)} ago` : 'UNKNOWN';
   const alt = `${row.app.name} ${row.version}, released ${when}, class ${row.app.privacyClass}`;
-  return `## ${row.app.name}
+  return `## Flagship: ${row.app.name}
 
-<img src="assets/flagship.svg" alt="${cell(alt)}">
+${themedImage('flagship', alt)}
 
-${row.app.description} ${link('Repository', repoUrl)} · ${link('App page', row.page)}`;
+${row.app.description}
+
+${link('Repository', repoUrl)} · ${link('App page', row.page)}`;
 }
 
-function cardsGrid() {
-  const picked = CARD_IDS.map((id) => rows.find((row) => row.app.id === id)).filter(Boolean);
-  const lines = [];
-  for (let i = 0; i < picked.length; i += 2) {
-    const pair = picked.slice(i, i + 2).map((row) => {
-      const alt = `${row.app.name} — ${row.app.description}`;
-      return `<img src="assets/cards/${row.app.id}.svg" width="49%" alt="${cell(alt)}">`;
-    });
-    lines.push(pair.join(' '));
-  }
-  return `## Selected work\n\n${lines.join('\n')}`;
-}
+const contractLink = (label, file) => `[\`${label}\`](contracts/${file}.md)`;
+const CONTRACTS = [['01 IDEA', 'IDEA'], ['02 PRD', 'PRD'], ['03 ARD', 'ARD'], ['04 TRD', 'TRD'], ['05 TASKS', 'TASKS']];
+const contractChain = `${CONTRACTS.map(([label, file]) => contractLink(label, file)).join(' → ')} + ${contractLink('AGENTS.md', 'AGENTS')}`;
+
+const drumAlt = `${profile.name} — ${profile.tagline} ${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.`;
 
 const readme = `<!--
   Generated by scripts/build.mjs from data/apps.json, data/privacy.json, data/profile.json,
@@ -276,36 +281,37 @@ const readme = `<!--
   Every number on this page is generated. Anything unverifiable is UNKNOWN.
 -->
 
-<img src="assets/drum.svg" alt="${cell(`${profile.name} — ${profile.tagline} ${repos} public repositories · ${apps.length} apps shipped · last release ${lastReleaseAgo} · ${telemetryEndpoints} telemetry endpoints. A strip chart of the days since each app's last release; the release ledger below carries the same numbers.`)}">
+${themedImage('drum', drumAlt)}
 
 ${flagshipBlock()}
 
 ## Release ledger
 
-Every shipped app, one row, sorted by the newest release. The gap is days since the
-last release, computed at build time; web apps count from their launch. A gap over
-60 days reads as dormant, not deleted.
+Every shipped app, newest release first. The gap is days since the last release, computed at build time; web apps count from their launch. Over 60 days reads as dormant, not deleted.
 
 ${ledgerTable()}
 
-${cardsGrid()}
+## What leaves your machine
+
+Each app appears once, in the class its repository README states.
+
+${classCounts()}
+
+${privacyTable()}
 
 ## How software is built here
 
-<img src="assets/method.svg" alt="01 IDEA, 02 PRD, 03 ARD, 04 TRD, 05 TASKS + AGENTS.md">
+${contractChain}
 
-One idea becomes five agent-ready contracts. Coding agents build from them.
-Nothing is called done until it runs live. [Cascade](https://github.com/nodaysidle/nodaysidle-cascade-v3) writes the contracts.
+One idea becomes five agent-ready contracts. Coding agents build from them. Nothing is called done until it runs live. ${link('Cascade', 'https://github.com/nodaysidle/nodaysidle-cascade-v3')} writes the contracts; the links above are the ones this page was built from.
 
-## What leaves your machine
+## Repositories
 
-Each app appears exactly once below, in the class that matches its repository README.
+${repoIndexBlock(index, repos)}
 
-${privacyMatrix()}
+---
 
-${detailTable()}
-
-<sub><code>${profile.site.replace('https://', '')}</code> · <a href="${profile.github}">GitHub</a> · <a href="mailto:${profile.email}">${profile.email}</a> · rebuilt daily by CI, last build ${buildDate}</sub>
+<sub>${link(profile.site.replace('https://', ''), profile.site)} · ${link('GitHub', profile.github)} · ${link(profile.email, `mailto:${profile.email}`)} · rebuilt daily by CI · last build ${buildDate}</sub>
 `;
 
 await writeFile(join(ROOT, 'README.md'), readme);
